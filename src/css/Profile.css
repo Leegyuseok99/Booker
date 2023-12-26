@@ -1,0 +1,136 @@
+.profile {
+  margin: 1.5% auto;
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+}
+.profileLeft {
+  width: 40%;
+  height: auto;
+  border-right: 1px solid #888888;
+  display: flex;
+  flex-direction: column;
+}
+.profileImg {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 1px solid black;
+  margin: 30px auto 80px;
+}
+.nickName > span:first-of-type {
+  font-size: 35px;
+  font-weight: 900;
+  padding: 30px 10% 0px;
+}
+.nickName > span:last-of-type {
+  font-size: 30px;
+  padding: 20px 10%;
+  display: inline-block;
+  color: #6b6b6b;
+}
+.introduction > span:first-of-type {
+  font-size: 35px;
+  font-weight: 900;
+  padding: 30px 10% 0px;
+  display: inline-block;
+}
+.introduction > span:last-of-type {
+  font-size: 30px;
+  padding: 20px 10%;
+  display: inline-block;
+  color: #6b6b6b;
+}
+.input {
+  width: 100%;
+}
+.pro_inputWrap {
+  display: flex;
+  width: 70%;
+  border-radius: 8px;
+  padding: 16px;
+  margin-left: 10%;
+  background-color: white;
+  border: 1px solid #e2e0e0;
+  text-decoration: none;
+  box-shadow: 2px 2px 2px 2px #e2e0e0;
+}
+.pro_inputWrap:focus-within {
+  border: 1px solid #5e3fa7;
+}
+.profileRight {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+.categorySection {
+  padding: 30px;
+}
+.categorySection > span:first-of-type {
+  font-size: 35px;
+  font-weight: 900;
+  display: inline-block;
+  padding: 10px 20px;
+}
+.categorySection > span:last-of-type {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6b6b6b;
+  display: inline-block;
+  padding: 10px 20px;
+}
+.categorySelector {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+@media screen and (max-width: 768px) {
+  .profileImg {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin: 30px auto 50px;
+  }
+  .nickName > span:first-of-type {
+    font-size: 25px;
+    font-weight: 900;
+    padding: 30px 10% 0px;
+  }
+  .nickName > span:last-of-type {
+    font-size: 18px;
+    padding: 20px 10%;
+    display: inline-block;
+    color: #6b6b6b;
+  }
+  .introduction > span:first-of-type {
+    font-size: 25px;
+    font-weight: 900;
+    padding: 30px 10% 0px;
+    display: inline-block;
+  }
+  .introduction > span:last-of-type {
+    font-size: 18px;
+    padding: 20px 10%;
+    display: inline-block;
+    color: #6b6b6b;
+  }
+  .profileLeft {
+    height: 700px;
+  }
+}
+@media screen and (max-width: 1600px) {
+  .profile {
+    flex-direction: column;
+  }
+  .profileLeft {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #888888;
+    padding-bottom: 50px;
+  }
+  .profileRight {
+    width: 100%;
+  }
+}
