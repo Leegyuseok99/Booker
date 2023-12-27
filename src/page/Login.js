@@ -85,7 +85,7 @@ function Login() {
       </div>
       <div>
         <button disabled={notAllow} onClick={loginhandle} className="login_btn">
-          확인
+          로그인
         </button>
         <button className="login_btn Naver">네이버</button>
         <button className="login_btn Google">

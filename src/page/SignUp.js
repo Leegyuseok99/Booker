@@ -102,7 +102,7 @@ function SignUp() {
   const onSubmithandle = async (e) => {
     e.preventDefault();
     await axios
-      .post("/", {
+      .post("/signup", {
         id: id,
         pw: pw,
         email: email,
@@ -111,7 +111,8 @@ function SignUp() {
       })
       .then((response) => {
         window.alert("회원가입 완료");
-        navigate("/login");
+        const idx = response.data.idx;
+        navigate(`/Profile/${idx}`);
         setId("");
         setPw("");
         setEmail("");

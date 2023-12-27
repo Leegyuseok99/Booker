@@ -12,10 +12,6 @@
   flex-direction: column;
 }
 .profileImg {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  border: 1px solid black;
   margin: 30px auto 80px;
 }
 .nickName > span:first-of-type {
@@ -64,13 +60,13 @@
   flex-direction: column;
 }
 .categorySection {
-  padding: 30px;
+  padding: 20px 30px;
 }
 .categorySection > span:first-of-type {
   font-size: 35px;
   font-weight: 900;
   display: inline-block;
-  padding: 10px 20px;
+  padding: 0px 20px;
 }
 .categorySection > span:last-of-type {
   font-size: 20px;
@@ -84,13 +80,47 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+  padding-top: 30px;
+}
+.categoryTotal {
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.categoryTotal > span {
+  font-size: 35px;
+  font-weight: 900;
+}
+.selectedCategories {
+  display: flex;
+  flex-direction: row;
+  padding-top: 40px;
+  flex-wrap: wrap;
+}
+.proBtnWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 70px 30px 0px;
+}
+.profile_btn {
+  width: 250px;
+  height: 70px;
+  font-size: 26px;
+  font-weight: 900;
+  border-radius: 30px;
+  background-color: #ff6f61;
+  border: 1px solid black;
+  box-shadow: 2px 2px 2px 2px gray;
+  color: white;
+}
+.profile_btn:hover {
+  background-color: white;
+  color: #ff6f61;
+  border: 1px solid #ff6f61;
 }
 @media screen and (max-width: 768px) {
   .profileImg {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 1px solid black;
     margin: 30px auto 50px;
   }
   .nickName > span:first-of-type {
@@ -116,8 +146,21 @@
     display: inline-block;
     color: #6b6b6b;
   }
-  .profileLeft {
-    height: 700px;
+  .categoryTotal {
+    border-top: 1px solid #888888;
+    padding-top: 20px;
+  }
+  .categoryTotal > span {
+  }
+  .profile_btn {
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .proBtnWrap {
+    justify-content: center;
+    padding: 20px 30px 20px;
   }
 }
 @media screen and (max-width: 1600px) {
