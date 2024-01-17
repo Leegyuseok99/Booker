@@ -1,13 +1,13 @@
 .ctg_btn {
-  width: 200px;
-  height: 60px;
+  width: 100px;
+  height: 45px;
   border-radius: 30px;
-  font-size: 25px;
+  font-size: 17px;
   font-weight: 600;
   margin-bottom: 30px;
   background-color: white;
   box-shadow: 2px 2px 2px 2px gray;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 .ctg_btn:hover {
   border: 3px solid #5e3fa7;

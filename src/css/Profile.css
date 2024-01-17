@@ -12,48 +12,44 @@
   flex-direction: column;
 }
 .profileImg {
-  margin: 30px auto 80px;
+  margin: 30px auto 50px;
 }
 .nickName > span:first-of-type {
-  font-size: 35px;
+  font-size: 20px;
   font-weight: 900;
-  padding: 30px 10% 0px;
+  padding: 20px 10% 0px;
 }
 .nickName > span:last-of-type {
-  font-size: 30px;
-  padding: 20px 10%;
+  font-size: 13px;
+  padding: 10px 10%;
   display: inline-block;
   color: #6b6b6b;
 }
 .introduction > span:first-of-type {
-  font-size: 35px;
+  font-size: 20px;
   font-weight: 900;
-  padding: 30px 10% 0px;
+  padding: 20px 10% 0px;
   display: inline-block;
 }
 .introduction > span:last-of-type {
-  font-size: 30px;
-  padding: 20px 10%;
+  font-size: 13px;
+  padding: 10px 10%;
   display: inline-block;
   color: #6b6b6b;
 }
-.input {
+.pro_input {
   width: 100%;
 }
 .pro_inputWrap {
   display: flex;
   width: 70%;
   border-radius: 8px;
-  padding: 16px;
   margin-left: 10%;
   background-color: white;
-  border: 1px solid #e2e0e0;
   text-decoration: none;
   box-shadow: 2px 2px 2px 2px #e2e0e0;
 }
-.pro_inputWrap:focus-within {
-  border: 1px solid #5e3fa7;
-}
+
 .profileRight {
   width: 60%;
   display: flex;
@@ -63,14 +59,13 @@
   padding: 20px 30px;
 }
 .categorySection > span:first-of-type {
-  font-size: 35px;
+  font-size: 22px;
   font-weight: 900;
   display: inline-block;
   padding: 0px 20px;
 }
 .categorySection > span:last-of-type {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 15px;
   color: #6b6b6b;
   display: inline-block;
   padding: 10px 20px;
@@ -80,7 +75,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding-top: 30px;
+  padding-top: 20px;
 }
 .categoryTotal {
   padding-left: 40px;
@@ -88,7 +83,7 @@
   flex-direction: column;
 }
 .categoryTotal > span {
-  font-size: 35px;
+  font-size: 22px;
   font-weight: 900;
 }
 .selectedCategories {
@@ -101,11 +96,11 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 70px 30px 0px;
+  padding: 20px 30px 0px;
 }
 .profile_btn {
-  width: 250px;
-  height: 70px;
+  width: 200px;
+  height: 65px;
   font-size: 26px;
   font-weight: 900;
   border-radius: 30px;
@@ -163,7 +158,7 @@
     padding: 20px 30px 20px;
   }
 }
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1024px) {
   .profile {
     flex-direction: column;
   }

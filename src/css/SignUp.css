@@ -1,5 +1,5 @@
 .signUpContent {
-  top: 155px;
+  top: 100px;
   bottom: 0;
   position: absolute;
   background-color: #f7f7f7;
@@ -12,9 +12,32 @@
   padding: 0 20px;
   margin: 0;
 }
+.stitleWrap {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: left;
+  color: #262626;
+}
+.sinput {
+  width: 100%;
+}
+.sinputWrap {
+  display: flex;
+  border-radius: 8px;
+  padding: 4px 10px 13px;
+  margin-top: 10px;
+  background-color: white;
+  border: 1px solid #e2e0e0;
+  text-decoration: none;
+}
+.sinputWrap:focus-within {
+  border: 1px solid #5e3fa7;
+}
 .signUp_btn {
   width: 100%;
-  height: 50px;
+  height: 45px;
   border: none;
   background-color: #5e3fa7;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
@@ -39,21 +62,16 @@
   .signUpContent {
     top: 105px;
     padding: 0px;
-    max-width: 800px;
+    max-width: 80%;
   }
 
-  .titleWrap {
-    padding: 0 7%;
-  }
-
-  .input {
-    width: 18em;
+  .sinput {
+    width: 90%;
     margin-left: 10%;
   }
 
-  .inputWrap {
-    margin-left: 7%;
-    width: 18em;
+  .sinputWrap {
+    width: 90%;
     margin-top: 10px;
   }
 
@@ -63,6 +81,5 @@
 
   .signUp_btn {
     width: 90%;
-    margin-left: 5%;
   }
 }

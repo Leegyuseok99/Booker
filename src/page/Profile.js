@@ -9,28 +9,35 @@ import "../css/Profile.css";
 
 function Profile() {
   const navigate = useNavigate();
-  const { idx } = useParams();
+  const { memberId } = useParams();
   const [nickName, setNickName] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [Image, setImage] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
 
   const fileInput = useRef(null);
   const onChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
     } else {
       //업로드 취소할 시
       setImage(Image);
+      setPreviewImage(null);
       return;
     }
     //화면에 프로필 사진 표시
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //     if (reader.readyState === 2) {
+    //         setImage(reader.result);
+    //     }
+    // };
+    // reader.readAsDataURL(e.target.files[0]);
   };
   const habdleNickName = (e) => {
     setNickName(e.target.value);
@@ -93,36 +100,35 @@ function Profile() {
   };
 
   const onProfilehandle = async (e) => {
-    const [interest1, interest2, interest3, interest4, interest5] =
-      selectedCategories;
-
     const formData = new FormData();
-    formData.append("idx", idx);
-    formData.append("image", Image);
+    formData.append("memberId", memberId);
+    if (Image) {
+      formData.append("imageFile", Image);
+    }
     formData.append("nickname", nickName);
-    formData.append("introduction", introduction);
-    formData.append("category", JSON.stringify(selectedCategories));
+    formData.append("intro", introduction);
+
+    selectedCategories.forEach((value, index) => {
+      formData.append(`interestList[${index}]`, value);
+    });
+
     await axios
       .post("/profile", formData)
       .then((response) => {
-        console.log(response.data);
-        window.alert("프로필 설정 완료");
-        navigate("/login");
+        if (response.data.social === "NORMARL") {
+          console.log(response.data);
+          window.alert("프로필 설정 완료");
+          navigate(response.data.redirect);
+        } else {
+          localStorage.setItem("accesstoken", response.data.accessToken);
+          localStorage.setItem("refreshtoken", response.data.refreshToken);
+          navigate("/Main");
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log(
-      Image,
-      nickName,
-      introduction,
-      selectedCategories,
-      interest1,
-      interest2,
-      interest3,
-      interest4,
-      interest5
-    );
+    console.log(Image, nickName, introduction);
   };
   return (
     <div>
@@ -131,7 +137,7 @@ function Profile() {
           <div className="profileImg">
             <Avatar
               className="profileImgSelect"
-              src={Image}
+              src={previewImage || Image}
               style={{
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -142,7 +148,6 @@ function Profile() {
                 fileInput.current.click();
               }}
             />
-            {Image.name}
             <input
               type="file"
               style={{ display: "none" }}

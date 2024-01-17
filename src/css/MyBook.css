@@ -1,0 +1,126 @@
+.myBookWrap {
+  width: 70%;
+  height: 100%;
+  background-color: white;
+  border: 1px solid #999999;
+  box-shadow: 2px 2px 2px 2px gray;
+  border-radius: 20px;
+  margin: 40px auto 0px;
+  padding: 5%;
+}
+.mbProfile {
+  display: flex;
+  flex-direction: row;
+}
+.mbProfileImg {
+  width: 15%;
+}
+.mbImg {
+  margin-left: 7%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+.mbInfo {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+}
+.mbNickname {
+  padding-top: 10px;
+  font-size: 22px;
+  font-weight: 400;
+}
+.mbFavoriteWrap {
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+}
+.mbFavorite {
+  width: 80px;
+  height: 25px;
+  border: 1px solid #888888;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+.message {
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.message_btn {
+  width: 170px;
+  height: 40px;
+  border: 1px solid #ebedf0;
+  border-radius: 20px;
+  background-color: #ebedf0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.message_btn:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
+}
+.followWrap {
+  display: flex;
+  flex-direction: row;
+  font-size: 15px;
+  width: 200px;
+  font-weight: 300;
+  padding: 20px 3%;
+}
+.followWrap > span {
+  font-size: 10px;
+  margin: 2px 10px;
+}
+.follower > span {
+  font-weight: 600;
+}
+.following > span {
+  font-weight: 600;
+}
+.plusWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.mbIntro {
+  padding: 0px 3%;
+  font-size: 14px;
+  font-weight: 600;
+}
+.bookPlus_btn {
+  width: 150px;
+  height: 40px;
+  border: 1px solid #ebedf0;
+  border-radius: 20px;
+  background-color: #ebedf0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bookPlus_btn:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
+}
+.mbBookListWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mbBookList {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 95%;
+  margin: 0 auto;
+  height: 200px;
+  border: 1px solid #dadada;
+  border-radius: 20px;
+  margin-top: 10px; /* 적절한 간격 설정 */
+}

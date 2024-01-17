@@ -1,0 +1,131 @@
+.bookInfo {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+.infoTitle {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 0px;
+}
+.infoImgWrap {
+  width: 150px;
+  height: 200px;
+}
+.infoImg {
+  width: 100%;
+  height: 100%;
+}
+.left {
+  margin-left: 7%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #777777;
+  box-shadow: 2px 2px 2px 2px gray;
+  border-radius: 20px;
+  width: 35%;
+  height: 370px;
+  padding: 20px 30px;
+}
+.leftUp {
+  display: flex;
+  flex-direction: row;
+}
+.select {
+  margin-top: 20px;
+  font-weight: 600;
+  text-align: center;
+  width: 150px;
+  height: 40px;
+  border: 1px solid #777777;
+  border-radius: 10px;
+}
+
+.leftUpLeft {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+}
+.infoauthor {
+  padding: 20px 0px 0px 0px;
+  color: #262626;
+  font-size: 14px;
+}
+.infoCategoryWrap {
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 20px;
+}
+.infoCategory {
+  font-size: 14px;
+  padding: 10px;
+  color: #666666;
+}
+.infoIntroWrap {
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 20px;
+}
+.infointro {
+  width: 80%;
+  font-size: 14px;
+  padding: 10px;
+  color: #666666;
+}
+.rightWrap {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  margin-left: 5%;
+}
+.right {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #777777;
+  box-shadow: 2px 2px 2px 2px gray;
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 25px 0px 0px 50px;
+}
+.reportTitle {
+  font-size: 20px;
+  font-weight: 600;
+}
+.reportWrap {
+  width: 90%;
+  height: 70%;
+  padding-top: 20px;
+  overflow-y: scroll;
+}
+.report {
+  padding: 15px;
+  border-bottom: 1px solid #ccd0d5;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reportBtnWrap {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  padding-right: 10%;
+}
+.reportAdd_btn {
+  margin-left: 20px;
+  width: 140px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #ebedf0;
+  border: 1px solid #ebedf0;
+  box-shadow: 1px 1px 1px 1px gray;
+  cursor: pointer;
+}
+.reportAdd_btn:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
+}

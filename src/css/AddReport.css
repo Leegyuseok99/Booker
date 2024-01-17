@@ -1,0 +1,79 @@
+.addReport {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  margin: 30px auto 0px;
+}
+.imgWrap {
+  width: 45%;
+  height: 400px;
+  margin-right: 5%;
+  border: 1px solid #e2e0e0;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px 2px #e2e0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.imgWrap > span {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 300;
+}
+.imgWrap > img {
+  width: 100%;
+}
+.addReportWrap {
+  width: 50%;
+  height: 400px;
+}
+.file_btn {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.InputImg {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.public_radio {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.public_radio > label {
+  font-weight: 300;
+  margin-left: 10px;
+}
+.rptitleWrap > input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #e2e0e0;
+  border-radius: 8px;
+  background-color: white;
+  text-decoration: none;
+  box-shadow: 2px 2px 2px 2px #e2e0e0;
+  padding-left: 10px;
+  margin: 10px 0px;
+}
+.rpcommentWrap > textarea {
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  border: 1px solid #e2e0e0;
+  background-color: white;
+  text-decoration: none;
+  box-shadow: 2px 2px 2px 2px #e2e0e0;
+  padding-top: 10px;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+.addReportWrap > span {
+  font-size: 16px;
+  font-weight: 600;
+}
