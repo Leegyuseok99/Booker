@@ -4,7 +4,9 @@ import { TextField } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-
+import PersonIcon from "@mui/icons-material/Person";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import "../css/Profile.css";
 
 function Profile() {
@@ -151,14 +153,16 @@ function Profile() {
             <input
               type="file"
               style={{ display: "none" }}
-              accept="image/jpg,impge/png,image/jpeg"
+              accept="image/*"
               name="profile_img"
               onChange={onChange}
               ref={fileInput}
             />
           </div>
           <div className="nickName">
-            <span>닉네임</span>
+            <span>
+              <PersonIcon style={{ marginBottom: "-4px" }}></PersonIcon>닉네임
+            </span>
             <br />
             <span>사용자님의 닉네임을 작성해주세요.</span>
           </div>
@@ -176,7 +180,12 @@ function Profile() {
             ></TextField>
           </div>
           <div className="introduction">
-            <span>소개글</span>
+            <span>
+              <StickyNote2Icon
+                style={{ marginBottom: "-5px" }}
+              ></StickyNote2Icon>
+              소개글
+            </span>
             <br />
             <span>본인을 소개하는 간단한 소개글을 작성해주세요.</span>
           </div>
@@ -196,7 +205,10 @@ function Profile() {
         </div>
         <div className="profileRight">
           <div className="categorySection">
-            <span>관심 분야 선택</span>
+            <span>
+              <BookmarksIcon style={{ marginBottom: "-5px" }}></BookmarksIcon>
+              관심 분야 선택
+            </span>
             <br />
             <span>본인의 관심 카테고리를 알려주세요!</span>
             <div className="categorySelector">

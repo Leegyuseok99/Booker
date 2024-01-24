@@ -50,7 +50,7 @@
   flex-direction: column;
   justify-content: center;
 }
-.submessage_btn {
+#submessage_btn {
   width: 170px;
   height: 40px;
   border: 1px solid #ebedf0;
@@ -59,8 +59,9 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  color: black;
 }
-.submessage_btn:hover {
+#submessage_btn:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
 }
@@ -92,21 +93,27 @@
   font-size: 14px;
   font-weight: 600;
 }
-.following_btn {
+#following_btn {
   width: 150px;
   height: 40px;
   border: 1px solid #ebedf0;
   border-radius: 20px;
   background-color: #ebedf0;
+  color: black;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
 }
-.following_btn:hover {
+#following_btn:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
 }
-
+.sellIconWrap {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+  color: #888888;
+}
 .subBookListWrap {
   display: flex;
   flex-direction: column;
@@ -124,4 +131,9 @@
   border: 1px solid #dadada;
   border-radius: 20px;
   margin-top: 10px; /* 적절한 간격 설정 */
+}
+
+.bookListCard {
+  display: flex;
+  flex-direction: row;
 }

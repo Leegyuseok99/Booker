@@ -29,9 +29,10 @@ function Login() {
     }
     setNotAllow(true);
   }, [id, pw]);
-
   const loginhandle = async (e) => {
     e.preventDefault();
+    localStorage.setItem("accesstoken", "1");
+    localStorage.setItem("refreshtoken", "2");
     navigate("/Main");
     await axios
       .post("/login", {
@@ -39,10 +40,10 @@ function Login() {
         pw: pw,
       })
       .then((response) => {
-        navigate("/Main");
-        console.log(response.data);
         localStorage.setItem("accesstoken", response.data.accessToken);
         localStorage.setItem("refreshtoken", response.data.refreshToken);
+        navigate("/Main");
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error.response.data.resultCode);
@@ -127,7 +128,7 @@ function Login() {
             <a>아이디 찾기</a>
           </li>
           <li>
-            <Link to="/SignUp" className="SignUp_btn">
+            <Link to="/SignUp" className="SignUp_li">
               회원가입
             </Link>
           </li>

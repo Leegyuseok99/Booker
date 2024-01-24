@@ -50,7 +50,7 @@
   flex-direction: column;
   justify-content: center;
 }
-.message_btn {
+#message_btn {
   width: 170px;
   height: 40px;
   border: 1px solid #ebedf0;
@@ -58,9 +58,10 @@
   background-color: #ebedf0;
   font-size: 16px;
   font-weight: 600;
+  color: black;
   cursor: pointer;
 }
-.message_btn:hover {
+#message_btn:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
 }
@@ -92,7 +93,7 @@
   font-size: 14px;
   font-weight: 600;
 }
-.bookPlus_btn {
+#bookPlus_btn {
   width: 150px;
   height: 40px;
   border: 1px solid #ebedf0;
@@ -100,11 +101,18 @@
   background-color: #ebedf0;
   font-size: 15px;
   font-weight: 600;
+  color: black;
   cursor: pointer;
 }
-.bookPlus_btn:hover {
+#bookPlus_btn:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
+}
+.sellIconWrap {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+  color: #888888;
 }
 .mbBookListWrap {
   display: flex;
@@ -123,4 +131,8 @@
   border: 1px solid #dadada;
   border-radius: 20px;
   margin-top: 10px; /* 적절한 간격 설정 */
+}
+.bookListCard {
+  display: flex;
+  flex-direction: row;
 }

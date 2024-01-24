@@ -1,0 +1,41 @@
+.recommendWrap {
+  padding: 3%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.bestSellerListWrap {
+  width: 35vw;
+  height: 60vh;
+  padding: 30px;
+  border: 1px solid #f7f7f7;
+  box-shadow: 2px 2px 2px 2px #999999;
+  border-radius: 20px;
+}
+.bsList {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.bestSellerListWrap > span {
+  font-size: 17px;
+  font-weight: 600;
+}
+.similarUserWrap {
+  width: 37vw;
+  height: 60vh;
+  padding: 30px;
+  border: 1px solid #f7f7f7;
+  box-shadow: 2px 2px 2px 2px #999999;
+  border-radius: 20px;
+}
+.similarUserWrap > span {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.suList {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

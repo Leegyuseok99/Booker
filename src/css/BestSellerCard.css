@@ -1,0 +1,47 @@
+.bsc {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 0px;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.bscImgWrap {
+  margin-right: 20px;
+}
+
+.bscImgWrap > img {
+  width: 85px;
+  height: 110px;
+}
+
+.bscInfoWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.bscTitle {
+  width: 75%;
+  word-wrap: break-word;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.bscAuthor {
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #333333;
+}
+
+.bdcDiscriprion {
+  width: 75%;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #777777;
+}

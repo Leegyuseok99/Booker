@@ -19,58 +19,35 @@ function Main() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
   const [userPw, setUserPw] = useState();
-  const reads = [
-    {
-      cover:
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788914020406.jpg",
-      title: "짜라투스",
-      story: "짜라투스 트라는 내친구",
-      isbn13: "1111123",
-    },
-    {
-      title: "로빈슨dsdsadaddsadasdsadsadasdsadsadsadsadsd",
-      story:
-        "무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 무인도에서 살아남기 ",
-    },
-    {
-      title: "마이클 조던",
-      story: "농구 천재의 이야기",
-    },
-    {
-      title: "서울",
-      story: "과거 서울의 이야기",
-    },
-    {
-      title: "누가 치즈를",
-      story: "철학자들의 이야기",
-    },
-  ];
+  const [reads, setReads] = useState([]);
   const [userData, setUserData] = useState();
-  const getHome = async () => {
+  const getReading = async () => {
     const accessToken = localStorage.getItem("accesstoken");
     await axios
-      .get("", {
+      .get("/book/reading", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
         console.log(response.data);
-        setUserData(response.data);
+        setUserData(response.data.userNickname);
+        setReads(response.data.readingList);
       })
       .catch((error) => {
-        if (error.response.message == "토큰이 만료 되었습니다.") {
-          //토큰 기간이 만료가 된 경우
-          const { accessToken, refreshToken } = getNewRefreshToken();
-          error.config.headers.Authorization = accessToken; //새로운 accesstoken 넣어주기
-          localStorage.setItem("accesstoken", accessToken);
-          localStorage.setItem("refreshtoken", refreshToken);
-          return axios.get(error.config.url, error.config).data;
-        }
+        // if (error.response.message == "토큰이 만료 되었습니다.") {
+        //         //토큰 기간이 만료가 된 경우
+        //         const { accessToken, refreshToken } = getNewRefreshToken();
+        //         error.config.headers.Authorization = accessToken; //새로운 accesstoken 넣어주기
+        //         localStorage.setItem("accesstoken", accessToken);
+        //         localStorage.setItem("refreshtoken", refreshToken);
+        //     return axios.get(error.config.url, error.config).data;
+        // }
+        console.log(error);
       });
   };
   useEffect(() => {
-    getHome();
+    getReading();
   }, []);
 
   const getNewRefreshToken = async () => {
@@ -120,9 +97,7 @@ function Main() {
   };
   return (
     <div>
-      <div className="mainTitleWrap">
-        {localStorage.getItem("accesstoken")} 님, 안녕하세요
-      </div>
+      <div className="mainTitleWrap">{userData} 님, 안녕하세요</div>
       <div className="readingBook">
         <h1>읽고 있는 책 목록</h1>
         <Swiper
@@ -148,9 +123,9 @@ function Main() {
                   onClick={() => handleBookClick(read.isbn13)}
                 >
                   <ReadingBookitem
-                    cover={read.cover}
+                    cover={read.img}
                     title={read.title}
-                    story={read.story}
+                    story={read.description}
                     onClick={() => handleBookClick(read.isbn13)}
                   />
                 </SwiperSlide>

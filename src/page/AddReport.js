@@ -2,12 +2,15 @@ import React from "react";
 import { useRef, useState } from "react";
 import "../css/AddReport.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import CreateIcon from "@mui/icons-material/Create";
 
 function AddReport() {
+  const { bookId } = useParams();
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accesstoken");
 
-  const [Image, setImage] = useState("");
+  const [Image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
   const fileInput = useRef(null);
@@ -29,7 +32,7 @@ function AddReport() {
   const handleButtonClick = () => {
     fileInput.current.click();
   };
-  const [radioStatus, setRadioStatus] = useState("public");
+  const [radioStatus, setRadioStatus] = useState("PUBLIC");
 
   const handleRadioChange = (e) => {
     setRadioStatus(e.target.value);
@@ -50,18 +53,26 @@ function AddReport() {
 
   const handleAddReport = async (e) => {
     const formData = new FormData();
-    formData.append("imageFile", Image);
+    formData.append("bookId", bookId);
+    if (Image !== null) {
+      formData.append("imageFile", Image);
+    }
     formData.append("title", title);
     formData.append("content", comment);
     formData.append("sharing", radioStatus);
     await axios
-      .post("/report", formData)
+      .post("/report", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((response) => {
         window.alert("독후감 등록 완료");
         navigate("/");
       })
       .catch((error) => {
         if (error.response && error.response.data) {
+          console.log(error.response.data);
           const { title, content } = error.response.data;
 
           if (title) {
@@ -104,7 +115,7 @@ function AddReport() {
               <input
                 type="radio"
                 value="public"
-                checked={radioStatus === "public"}
+                checked={radioStatus === "PUBLIC"}
                 onChange={handleRadioChange}
               />
               Public
@@ -113,14 +124,16 @@ function AddReport() {
               <input
                 type="radio"
                 value="private"
-                checked={radioStatus === "private"}
+                checked={radioStatus === "PRIVATE"}
                 onChange={handleRadioChange}
               />
               Private
             </label>
           </div>
         </div>
-        <span>제목</span>
+        <span>
+          <CreateIcon style={{ marginBottom: "-3px" }}></CreateIcon>제목
+        </span>
         <div className="rptitleWrap">
           <input
             className="input"
@@ -130,7 +143,9 @@ function AddReport() {
             onChange={handleTitle}
           ></input>
         </div>
-        <span>독서록</span>
+        <span>
+          <CreateIcon style={{ marginBottom: "-3px" }}></CreateIcon>독서록
+        </span>
         <div className="rpcommentWrap">
           <textarea
             cols="30"

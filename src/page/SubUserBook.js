@@ -1,21 +1,52 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../css/SubUserBook.css";
 import BookListCard from "../component/BookListCard";
 import SubUserFollowerModal from "../modals/SubUserFollowerModal";
 import FollowingModal from "../modals/FollowingModal";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import Button from "@mui/material/Button";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import MessageSendModal from "../modals/MessageSendModal";
 
 function SubUserBook() {
   const navigate = useNavigate();
+  const { profileId } = useParams();
+
+  const [isOpen, setOpen] = useState(false);
+
+  const modalOpenhandle = () => {
+    setOpen(true);
+  };
+  const handleModalSubmit = () => {
+    // 모달1 비지니스 로직
+    setOpen(false);
+  };
+
+  const handleModalCancel = () => {
+    setOpen(false);
+    console.log("close");
+  };
 
   const [follower, setFollower] = useState("");
   const [following, setFollowing] = useState("");
+  const accessToken = localStorage.getItem("accesstoken");
 
   const getFollow = async () => {
     await axios
-      .get("/follow/count")
+      .get("/follow/count", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          profileId: profileId,
+        },
+      })
       .then((response) => {
         console.log(response.data);
         setFollower(response.data.followerCount);
@@ -38,7 +69,14 @@ function SubUserBook() {
   const followerModalOpenhandle = () => {
     setOpen1(true);
     axios
-      .get("/follower/list")
+      .get("/follower/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          profileId: profileId,
+        },
+      })
       .then((response) => {
         const followerList = response.data;
         setFollowerList(followerList);
@@ -57,7 +95,14 @@ function SubUserBook() {
   const followingModalOpenhandle = () => {
     setOpen2(true);
     axios
-      .get("/following/list")
+      .get("/following/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          profileId: profileId,
+        },
+      })
       .then((response) => {
         const followingList = response.data;
         setFollowingList(followingList);
@@ -72,18 +117,33 @@ function SubUserBook() {
   };
 
   const [followingStatus, setFollowingStatus] = useState("");
-  useEffect(async () => {
-    await axios.get(`/follow/isFollowing`).then((response) => {
-      setFollowingStatus(response.data.following);
-    });
+  const isFollowing = async () => {
+    await axios
+      .get(`/follow/isFollowing`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          targetProfileId: profileId,
+        },
+      })
+      .then((response) => {
+        setFollowingStatus(response.data.following);
+      });
+  };
+  useEffect(() => {
+    isFollowing();
   }, []);
 
   const handleFollowToggle = async () => {
     if (followingStatus) {
       try {
         await axios.delete("/unfollow", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
           params: {
-            //프로필 id
+            targetProfileId: profileId,
           },
         });
         setFollowingStatus(false);
@@ -92,9 +152,17 @@ function SubUserBook() {
       }
     } else {
       try {
-        await axios.post("/follow", {
-          //프로필 ID
-        });
+        await axios.post(
+          "/follow",
+          {
+            profileId: profileId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         setFollowingStatus(true);
       } catch (error) {
         console.error("사용자 팔로우 중 오류 발생:", error);
@@ -104,13 +172,28 @@ function SubUserBook() {
 
   const reads = [
     {
-      cover: "https://gdimg.gmarket.co.kr/681948050/still/400?ver=1704238629",
-      isbn13: "1111111",
+      bookId: "3zx3SoJbytMSDrMNPatet",
+      isbn13: "9788901276533",
+      progress: "READING",
+      saleState: "IMP",
+      cover:
+        "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
     },
     {
+      bookId: "BKVl2gBsviqimxTWGFgrV",
+      isbn13: "9788917239508",
+      progress: "READING",
+      saleState: "IMP",
       cover:
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788914020406.jpg",
-      isbn13: "1111111",
+        "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
+    },
+    {
+      bookId: "Oyc1vJwLOtTiQF6x9aYuf",
+      isbn13: "9788917239492",
+      progress: "READING",
+      saleState: "IMP",
+      cover:
+        "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
     },
   ];
   const chunkSize = 5;
@@ -130,10 +213,24 @@ function SubUserBook() {
   const handleBookClick = async (isbn13) => {
     navigate(`/bookinfo/${isbn13}`);
     try {
-      const response = await axios.get(`/book/${isbn13}`);
+      const response = await axios.get(`/book/${isbn13}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setSelectedBook(response.data);
     } catch (error) {
       console.error("Error fetching book details:", error);
+    }
+  };
+
+  const [saleStatus, setSaleStatus] = useState("POS");
+
+  const saleStatusChange = () => {
+    if (saleStatus === "POS") {
+      setSaleStatus("IMP");
+    } else {
+      setSaleStatus("POS");
     }
   };
   return (
@@ -153,7 +250,15 @@ function SubUserBook() {
           </div>
         </div>
         <div className="submessage">
-          <button className="submessage_btn">쪽지 보내기</button>
+          <Button id="submessage_btn" onClick={modalOpenhandle}>
+            <TelegramIcon style={{ margin: "0px 5px -5px 0px" }}></TelegramIcon>{" "}
+            쪽지 보내기
+          </Button>
+          <MessageSendModal
+            isOpen={isOpen}
+            onSubmit={handleModalSubmit}
+            onCancle={handleModalCancel}
+          ></MessageSendModal>
         </div>
       </div>
       <div className="followWrap">
@@ -187,17 +292,52 @@ function SubUserBook() {
       <div className="subplusWrap">
         <div className="subIntro">저는 sf를 좋아하는 이규석이라고 합니다.</div>
         <div>
-          <button className="following_btn" onClick={handleFollowToggle}>
-            {followingStatus ? "- 팔로잉" : "+ 팔로우"}
-          </button>
+          <Button
+            id="following_btn"
+            onClick={handleFollowToggle}
+            startIcon={
+              followingStatus ? <PersonRemoveIcon /> : <PersonAddAlt1Icon />
+            }
+          >
+            {followingStatus ? " 팔로잉" : " 팔로우"}
+          </Button>
         </div>
       </div>
-      <hr style={{ margin: "30px 0px" }} />
+      <hr style={{ margin: "30px 0px 15px" }} />
+      <div className="sellIconWrap">
+        <span>
+          <ShoppingCartIcon style={{ marginBottom: "-5px" }}></ShoppingCartIcon>{" "}
+          거래 가능
+        </span>
+        <span>
+          <RemoveShoppingCartIcon
+            style={{ marginBottom: "-5px" }}
+          ></RemoveShoppingCartIcon>{" "}
+          거래 불가능
+        </span>
+      </div>
       <div className="subBookListWrap">
         {chunkedReads.map((chunk, idx) => (
           <div key={idx} className="subBookList">
             {chunk.map((read, i) => (
-              <BookListCard key={i} cover={read.cover}></BookListCard>
+              <div className="bookListCard">
+                <BookListCard
+                  key={i}
+                  cover={read.cover}
+                  onClick={handleBookClick}
+                ></BookListCard>
+                <div className="sellIconWrap">
+                  {saleStatus === "POS" ? (
+                    <span onClick={saleStatusChange}>
+                      <ShoppingCartIcon></ShoppingCartIcon>
+                    </span>
+                  ) : (
+                    <span onClick={saleStatusChange}>
+                      <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
+                    </span>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         ))}

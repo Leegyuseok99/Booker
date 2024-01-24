@@ -65,7 +65,7 @@ function BookeModal({ isOpen, selectedBook, onSubmit, onCancle }) {
             </div>
             <div className={styles.leftUpLeft}>
               <div className={styles.bmTitle}>{selectedBook.title}</div>
-              <div className={styles.bmauthor}>저자 글쓴이 책 발행 년도</div>
+              <div className={styles.bmauthor}>{selectedBook.author}</div>
               <div>
                 <select
                   onChange={errorhandle}
@@ -89,7 +89,7 @@ function BookeModal({ isOpen, selectedBook, onSubmit, onCancle }) {
                 책 소개 {isIntroductionVisible ? ">" : "<"}
               </span>
               <div className={styles.bmintro}>
-                {isIntroductionVisible && selectedBook.introduction}
+                {isIntroductionVisible && selectedBook.description}
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/BookListCard.css";
 
-function BookListCard({ cover, onClick }) {
+function BookListCard({ cover, bookId, isbn13, progress, onClick }) {
   return (
     <div className="blcWrap" onClick={onClick}>
       <div className="blcImg">

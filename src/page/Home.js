@@ -4,27 +4,7 @@ import BestSeller from "../component/BestSeller";
 import axios from "axios";
 import BestBookModal from "../modals/BestBookModal";
 function Home() {
-  const [bestSeller, setBestSeller] = useState([
-    {
-      key: "1",
-      cover: "https://gdimg.gmarket.co.kr/681948050/still/400?ver=1704238629",
-      title: "누가 내 치즈를 옮겼을까?",
-      isbn13: "1111111",
-      category: "국내도서> 소설/시/희곡> 이탈리아소설",
-      introduction:
-        "이 책은 니가 알아서 뭐하게 이 책은 이 책은 이 책은 이 책은이 책은 이 책은 이 책은이 책은 이 책은 이 책은 이 책은이 책은 이 책은 이 책은이 책은 이 책은 이 책은",
-    },
-    {
-      key: "2",
-      cover:
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788914020406.jpg",
-      title: "로빈슨 크루소",
-      isbn13: "2222222",
-      category: "국내도서> 소설/시/희곡> 프랑스소설",
-      introduction:
-        "이 책은 이 책은 이 책은 이 책은 이 책은이 책은 이 책은 이 책은이 책은 이 책은 이 책은 이 책은이 책은 이 책은 이 책은이 책은 이 책은 이 책은",
-    },
-  ]);
+  const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
     getBook();
@@ -35,15 +15,18 @@ function Home() {
       .get("/book/bestseller")
       .then((response) => {
         console.log(response);
-        const newBestSeller = response.data.item.map((item) => ({
-          isbn13: item.ISBN13,
+        const newBestSeller = response.data.bestSellerList.map((item) => ({
+          isbn13: item.isbn13,
           title: item.title,
           cover: item.cover,
+          author: item.author,
+          description: item.description,
+          category: item.category,
         }));
         setBestSeller(newBestSeller);
       })
       .catch((error) => {
-        console.log(error.config.url);
+        console.log(error);
       });
   }
   const [selectedBook, setSelectedBook] = useState(null); // 선택한 도서 정보 저장 상태 추가
@@ -81,6 +64,9 @@ function Home() {
             Rank={seller.key}
             title={seller.title}
             cover={seller.cover}
+            author={seller.author}
+            description={seller.description}
+            category={seller.category}
             onClick={() => bookInfohandle(seller.isbn13)}
           />
         ))}

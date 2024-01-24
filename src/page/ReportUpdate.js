@@ -3,28 +3,44 @@ import { useRef, useState, useEffect } from "react";
 import "../css/ReportUpdate.css";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
+import CreateIcon from "@mui/icons-material/Create";
 function ReportUpdate() {
   const { reportId } = useParams();
+  const accessToken = localStorage.getItem("accesstoken");
   const navigate = useNavigate();
   const [reportData, setReportData] = useState({
     image: "",
     title: "",
     content: "",
-    radioStatus: "public",
+    radioStatus: "",
+    defaultImg: false,
   });
-
+  const [imageSrc, setImageSrc] = useState();
   useEffect(() => {
     const fetchReportData = async () => {
       try {
-        const response = await axios.get(`/report/${reportId}`);
-        const { image, title, content, sharing } = response.data;
+        const response = await axios.get(`/report`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            reportId: reportId,
+          },
+        });
+        const image = response.data.imgBytes;
+        const mimeType = response.data.mimeType;
+        // Spring에서 받은 Base64 문자열
+        setImageSrc(`data:${mimeType};base64, ${image}`);
+        const { title, content, sharing } = response.data;
         setReportData({
-          image,
+          ...reportData,
+          imageSrc,
           title,
           content,
-          radioStatus: sharing || "public",
+          radioStatus: sharing || "PUBLIC",
         });
+
+        console.log(reportData);
       } catch (error) {
         console.error(error);
       }
@@ -46,15 +62,16 @@ function ReportUpdate() {
       reader.readAsDataURL(e.target.files[0]);
     } else {
       //업로드 취소할 시
-      setImage(Image);
+      setImage(null); //Image
       setPreviewImage(null);
       return;
     }
   };
   const handleButtonClick = () => {
     fileInput.current.click();
+    setIsDefaultImage(false);
   };
-  const [radioStatus, setRadioStatus] = useState("public");
+  const [radioStatus, setRadioStatus] = useState("");
 
   const handleRadioChange = (e) => {
     setReportData({
@@ -79,29 +96,50 @@ function ReportUpdate() {
   const handleCancel = () => {
     navigate(-1);
   };
+  const handleImageReset = () => {
+    setIsDefaultImage(true);
+    setReportData({
+      ...reportData,
+      defaultImg: true,
+      image: null,
+    });
+    setPreviewImage(null);
+  };
+  const [isDefaultImage, setIsDefaultImage] = useState(false);
 
   const handleUpdateReport = async (e) => {
     const formData = new FormData();
     formData.append("reportId", reportId);
-    formData.append("imageFile", reportData.image);
+    formData.append(
+      "imageFile",
+      reportData.defaultImg ? null : reportData.image
+    );
     formData.append("title", reportData.title);
     formData.append("content", reportData.content);
     formData.append("sharing", reportData.radioStatus);
-    await axios.post("/report", formData).then((response) => {
-      window.alert("독후감 수정 완료");
-      navigate(`/reportview${reportId}`);
-    });
+    formData.append("defaultImg", reportData.defaultImg);
+    await axios
+      .patch("/report", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        window.alert("독후감 수정 완료");
+        navigate(`/reportview${reportId}`);
+      });
   };
   return (
     <div className="reportUpdate">
       <div className="ruimgWrap">
-        <img
-          src={previewImage || Image}
-          img="img"
-          onClick={handleButtonClick}
-        />
-        {!reportData.image && !reportData.previewImage && (
-          <span>이미지 등록해주세요</span>
+        {isDefaultImage ? (
+          <span>기본 이미지로 설정</span>
+        ) : (
+          <img
+            src={previewImage ? previewImage : imageSrc}
+            alt="img"
+            onClick={handleButtonClick}
+          />
         )}
         <input
           type="file"
@@ -116,13 +154,16 @@ function ReportUpdate() {
           <button className="rufile_btn" onClick={handleButtonClick}>
             파일 선택
           </button>
+          <button className="rufile_btn" onClick={handleImageReset}>
+            기본 이미지 설정
+          </button>
           <div className="rupublic_radio">
             공개 여부
             <label>
               <input
                 type="radio"
-                value="public"
-                checked={radioStatus === "public"}
+                value="PUBLIC"
+                checked={reportData.radioStatus === "PUBLIC"}
                 onChange={handleRadioChange}
               />
               Public
@@ -130,15 +171,17 @@ function ReportUpdate() {
             <label>
               <input
                 type="radio"
-                value="private"
-                checked={radioStatus === "private"}
+                value="PRIVATE"
+                checked={reportData.radioStatus === "PRIVATE"}
                 onChange={handleRadioChange}
               />
               Private
             </label>
           </div>
         </div>
-        <span>제목</span>
+        <span>
+          <CreateIcon style={{ marginBottom: "-3px" }}></CreateIcon>제목
+        </span>
         <div className="rutitleWrap">
           <input
             className="input"
@@ -148,7 +191,9 @@ function ReportUpdate() {
             onChange={handleTitle}
           ></input>
         </div>
-        <span>독서록</span>
+        <span>
+          <CreateIcon style={{ marginBottom: "-3px" }}></CreateIcon>독서록
+        </span>
         <div className="rucommentWrap">
           <textarea
             cols="30"

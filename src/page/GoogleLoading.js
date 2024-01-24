@@ -21,7 +21,7 @@ function GoogleLoading() {
           response.data.memberId !== undefined
         ) {
           const memberId = response.data.memberId;
-          navigate(`/Profile/W${memberId}`);
+          navigate(`/Profile/${memberId}`);
         } else {
           navigate("/Main");
           localStorage.setItem("accesstoken", response.data.accessToken);

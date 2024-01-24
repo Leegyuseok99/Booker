@@ -99,10 +99,10 @@
 .findWrap > li > a {
   cursor: pointer;
 }
-.SignUp_btn {
+.SignUp_li {
   text-decoration: none;
 }
-.SignUp_btn:visited {
+.SignUp_li:visited {
   color: #888888;
 }
 @media screen and (max-width: 1024px) {

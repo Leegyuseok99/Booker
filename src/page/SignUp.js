@@ -4,6 +4,7 @@ import { lazy, Suspense, createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../css/SignUp.css";
+
 function SignUp() {
   const navigate = useNavigate();
   /*회원 정보*/
@@ -20,7 +21,6 @@ function SignUp() {
 
   const handleId = (e) => {
     setId(e.target.value);
-    setIdTouched(true);
   };
   const handlePw = (e) => {
     setPw(e.target.value);
@@ -35,7 +35,6 @@ function SignUp() {
   };
   const handleName = (e) => {
     setName(e.target.value);
-    setNameTouched(true);
   };
   const handleBirth = (e) => {
     let inputValue = e.target.value;
@@ -55,16 +54,6 @@ function SignUp() {
     setBirth(inputValue);
     setBirthTouched(true);
   };
-
-  //아이디 필수 입력
-  const [idErr, setIdErr] = useState(false);
-  const [idTouched, setIdTouched] = useState(false);
-  const hasNotId = (idEntered) => (id != "" ? false : true);
-  useEffect(() => {
-    if (idTouched) {
-      setIdErr(hasNotId(id));
-    }
-  }, [id, idTouched]);
   //비밀번호 길이 체크
   const [pwLengthErr, setPwLengthErr] = useState(false);
   const [pwTouched, setPwTouched] = useState(false);
@@ -73,7 +62,7 @@ function SignUp() {
     if (pwTouched) {
       setPwLengthErr(hasNotPwLength(pw));
     }
-  }, [pw, pwCheck, pwTouched]);
+  }, [pw, pwTouched]);
 
   //비밀번호 확인
   const hasNotPwSame = (passwordEntered) => (pw != pwCheck ? true : false);
@@ -90,17 +79,7 @@ function SignUp() {
     if (emailTouched) {
       setEmailFormErr(isEmailValid(email));
     }
-    console.log(emailFormErr);
   }, [email, emailTouched]);
-  //이름 필수 입력
-  const [nameErr, setNameErr] = useState(false);
-  const [nameTouched, setNameTouched] = useState(false);
-  const hasNotName = (nameEntered) => (name != "" ? false : true);
-  useEffect(() => {
-    if (nameTouched) {
-      setNameErr(hasNotName(name));
-    }
-  }, [name, nameTouched]);
 
   //생년월일 글자수
   const [birthLengthErr, setBirthLengthErr] = useState(false);
@@ -114,17 +93,7 @@ function SignUp() {
 
   //확인 버튼 활성화
   useEffect(() => {
-    if (
-      id &&
-      pw &&
-      pwCheck &&
-      email &&
-      name &&
-      birth &&
-      !hasNotPwLength() &&
-      !hasNotPwSame() &&
-      emailFormErr
-    ) {
+    if (id && pw && pwCheck && email && name && birth) {
       setNotAllow(false);
       return;
     }
@@ -142,8 +111,9 @@ function SignUp() {
         birth: birth,
       })
       .then((response) => {
-        const idx = response.data.idx;
-        navigate(`/Profile/${idx}`);
+        window.alert("회원가입 완료");
+        const memberId = response.data.memberId;
+        navigate(`/Profile/${memberId}`);
         setId("");
         setPw("");
         setEmail("");
@@ -151,39 +121,20 @@ function SignUp() {
         setBirth("");
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
-          const errorCode = error.response.data.code;
-          const errorMessage = error.response.data.message;
-          const errorEmail = error.response.data.email;
-
-          if (errorCode === "DUPLICATED_USER_ID") {
-            console.log(errorMessage);
-          }
-          // else if (error.response.data.email === "이메일 형식으로 입력해주세요.") {
-
-          // }
-          else {
-            console.error(error);
-          }
-        }
+        console.log(error);
       });
   };
   return (
     <div className="signUpContent">
-      <div className="stitleWrap">
+      <div className="titleWrap">
         회원가입
         <br />
         정보를 입력해 주세요
       </div>
       <div className="SingUp">
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
-            className="sinput"
-            autoFocus
-            error={idTouched && idErr}
-            helperText={
-              idTouched && idErr ? "아이디는 필수 입력 사항입니다." : null
-            }
+            className="input"
             label="ID"
             value={id}
             placeholder="ID 입력"
@@ -195,13 +146,13 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
             error={pwTouched && pwLengthErr}
             helperText={
               pwTouched && pwLengthErr ? "비밀번호는 8자리 이상." : null
             }
-            className="sinput"
+            className="input"
             label="PASSWORD"
             value={pw}
             type="password"
@@ -213,7 +164,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
             error={hasNotPwSame("pwCheck")}
             helperText={
@@ -221,7 +172,7 @@ function SignUp() {
                 ? "입력하신 비밀번호가 일치하지 않습니다."
                 : null
             }
-            className="sinput"
+            className="input"
             label="PASSWORD *"
             value={pwCheck}
             type="password"
@@ -233,7 +184,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
             error={emailTouched && !emailFormErr}
             helperText={
@@ -241,7 +192,7 @@ function SignUp() {
                 ? "이메일 형식으로 작성해주세요"
                 : null
             }
-            className="sinput"
+            className="input"
             label="Email"
             value={email}
             type="Email"
@@ -252,13 +203,9 @@ function SignUp() {
             onChange={handleEmail}
           ></TextField>
         </div>
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
-            className="sinput"
-            error={nameTouched && nameErr}
-            helperText={
-              nameTouched && nameErr ? "이름은 필수 입력 사항입니다." : null
-            }
+            className="input"
             label="Name"
             value={name}
             type="text"
@@ -270,7 +217,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="sinputWrap">
+        <div className="inputWrap">
           <TextField
             error={birthTouched && birthLengthErr}
             helperText={
@@ -278,11 +225,12 @@ function SignUp() {
                 ? "생년월일 8자리 입력해 주세요."
                 : null
             }
-            className="sinput"
+            className="input"
             label="Birth"
             value={birth}
             type="text"
             placeholder="생년월일 8자리"
+            maxLength
             InputProps={{
               disableUnderline: true,
             }}
