@@ -1,0 +1,307 @@
+import React, { useEffect, useRef, useState } from "react";
+import Category from "../component/Category";
+import { TextField } from "@material-ui/core";
+import Avatar from "@mui/material/Avatar";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import PersonIcon from "@mui/icons-material/Person";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import styles from "../css/ProfileUpdate.module.css";
+
+function ProfileUpdate() {
+  const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accesstoken");
+
+  //기존 프로필 정보 가져오기
+  const [imageSrc, setImageSrc] = useState("");
+  const [interests, setInterests] = useState([
+    "정치",
+    "수필집1",
+    "정치1",
+    "수학1",
+    "천문학1",
+  ]);
+  const [userData, setUserData] = useState({
+    nickname: "naver",
+    intro: "naver",
+    defaultImg: false,
+  });
+
+  const getProfile = async () => {
+    axios
+      .get("profileInfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const image = response.data.imgFile.base64Image;
+        const mimeType = response.data.imgFile.mimeType;
+        // Spring에서 받은 Base64 문자열
+        setImageSrc(`data:${mimeType};base64, ${image}`);
+        const interest = response.data.interets;
+        const nickname = response.data.nickname;
+        const intro = response.data.intro;
+        setInterests({ ...interests, interest });
+        setUserData({ ...userData, nickname, intro });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
+  const [Image, setImage] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const fileInput = useRef(null);
+  const onChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      //업로드 취소할 시
+      setImage(Image);
+      setPreviewImage(null);
+      return;
+    }
+  };
+  const handleButtonClick = () => {
+    fileInput.current.click();
+    setIsDefaultImage(false);
+  };
+  const habdleNickName = (e) => {
+    setUserData({
+      ...userData,
+      nickname: e.target.value,
+    });
+  };
+  const handleIntroduction = (e) => {
+    setUserData({
+      ...userData,
+      intro: e.target.value,
+    });
+  };
+
+  const categoryList = [
+    "백과사전",
+    "수필집",
+    "시집",
+    "철학",
+    "경제/경영",
+    "정치",
+    "수학",
+    "천문학",
+    "만화",
+    "언어",
+    "백과사전1",
+    "수필집1",
+    "시집1",
+    "철학1",
+    "경제/경영1",
+    "정치1",
+    "수학1",
+    "천문학1",
+    "만화1",
+    "언어1",
+  ];
+
+  const [selectedCategories, setSelectedCategories] = useState(interests);
+
+  const handleCategorySelect = (categoryName) => {
+    if (selectedCategories) {
+      if (selectedCategories.length < 5) {
+        setSelectedCategories((prevSelected) => {
+          const isSelected = prevSelected.includes(categoryName);
+
+          if (isSelected) {
+            // 이미 선택된 경우, 해당 카테고리를 리스트에서 제거
+            return prevSelected.filter((category) => category !== categoryName);
+          } else {
+            // 선택되지 않은 경우, 최대 5개까지 추가
+            return [...prevSelected, categoryName];
+          }
+        });
+      } else {
+        // 이미 5개가 선택된 경우, 선택을 추가하지 않음
+        if (!selectedCategories.includes(categoryName)) {
+          window.alert("카테고리의 선택 가능 개수는 최대 5개 입니다.");
+        }
+        setSelectedCategories((prevSelected) =>
+          prevSelected.includes(categoryName)
+            ? prevSelected.filter((category) => category !== categoryName)
+            : prevSelected
+        );
+      }
+    }
+  };
+  const handleImageReset = () => {
+    setIsDefaultImage(true);
+    setUserData({
+      ...userData,
+      defaultImg: true,
+      image: null,
+    });
+    setPreviewImage(null);
+  };
+  const [isDefaultImage, setIsDefaultImage] = useState(false);
+  const onProfilehandle = async (e) => {
+    const formData = new FormData();
+    console.log(userData.intro);
+    console.log(selectedCategories);
+    if (Image) {
+      formData.append("imageFile", Image);
+    }
+    formData.append("intro", userData.introduction);
+
+    selectedCategories.forEach((value, index) => {
+      formData.append(`interestList[${index}]`, value);
+    });
+    formData.append("defaultImg", userData.defaultImg);
+    if (userData.defaultImg === false) {
+      if (previewImage !== null) {
+        formData.append("imageFile", Image);
+      }
+    }
+    await axios
+      .patch("/profileInfo", formData)
+      .then((response) => {
+        console.log(response.data);
+        window.alert("프로필 수정 완료");
+        navigate("/main");
+      })
+      .catch((error) => {
+        if (error.data.intro === "소개글은 30자 이내로 작성해주세요.") {
+          window.alert(error.data.intro);
+        }
+      });
+  };
+  return (
+    <div>
+      <div className={styles.profile}>
+        <div className={styles.profileLeft}>
+          <div className={styles.profileImg}>
+            {isDefaultImage ? (
+              <div className={styles.defaultImgWrap}>
+                <span>기본 이미지로 설정</span>
+              </div>
+            ) : (
+              <Avatar
+                className={styles.profileImgSelect}
+                src={previewImage ? previewImage : imageSrc}
+                style={{
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
+                }}
+                sx={{ width: 260, height: 260 }}
+                onClick={handleButtonClick}
+              />
+            )}
+            <input
+              type="file"
+              style={{ display: "none" }}
+              accept="image/*"
+              name="profile_img"
+              onChange={onChange}
+              ref={fileInput}
+            />
+          </div>
+          <div className={styles.puInputImg}>
+            <button className={styles.pufile_btn} onClick={handleButtonClick}>
+              파일 선택
+            </button>
+            <button className={styles.pufile_btn} onClick={handleImageReset}>
+              기본 이미지 설정
+            </button>
+          </div>
+          <div className={styles.nickName}>
+            <span>
+              <PersonIcon style={{ marginBottom: "-4px" }}></PersonIcon>닉네임
+            </span>
+            <br />
+            <span>사용자님의 닉네임을 작성해주세요.</span>
+          </div>
+          <div className={styles.pro_inputWrap}>
+            <TextField
+              disabled
+              className={styles.input}
+              label="NICKNAME"
+              value={userData.nickname}
+              type="text"
+              placeholder="사용하실 닉네임을 입력해주세요"
+              InputProps={{
+                disableUnderline: true,
+              }}
+              onChange={habdleNickName}
+            ></TextField>
+          </div>
+          <div className={styles.introduction}>
+            <span>
+              <StickyNote2Icon
+                style={{ marginBottom: "-5px" }}
+              ></StickyNote2Icon>
+              소개글
+            </span>
+            <br />
+            <span>본인을 소개하는 간단한 소개글을 작성해주세요.</span>
+          </div>
+          <div className={styles.pro_inputWrap}>
+            <TextField
+              className={styles.input}
+              label="INTRODUCTION"
+              value={userData.intro}
+              type="text"
+              placeholder="본인을 소개하는 간단한 글 작성해주세요."
+              InputProps={{
+                disableUnderline: true,
+              }}
+              onChange={handleIntroduction}
+            ></TextField>
+          </div>
+        </div>
+        <div className={styles.profileRight}>
+          <div className={styles.categorySection}>
+            <span>
+              <BookmarksIcon style={{ marginBottom: "-5px" }}></BookmarksIcon>
+              관심 분야 선택
+            </span>
+            <br />
+            <span>본인의 관심 카테고리를 알려주세요!</span>
+            <div className={styles.categorySelector}>
+              {categoryList.map((categoryName, index) => (
+                <Category
+                  key={index}
+                  Category={categoryName}
+                  onClick={() => handleCategorySelect(categoryName)}
+                  isSelected={selectedCategories.includes(categoryName)}
+                />
+              ))}
+            </div>
+          </div>
+          <div className={styles.categoryTotal}>
+            <span>선택된 카테고리</span>
+            <div className={styles.selectedCategories}>
+              {selectedCategories.map((category, index) => (
+                <Category key={index} Category={category} />
+              ))}
+            </div>
+          </div>
+          <div className={styles.proBtnWrap}>
+            <button className={styles.profile_btn} onClick={onProfilehandle}>
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export default ProfileUpdate;

@@ -1,0 +1,36 @@
+.usc {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 0px 15px 15px;
+  border-bottom: 1px solid #dcdcdc;
+  height: 110px;
+}
+
+.uscImgWrap {
+  margin-right: 20px;
+  padding: 5px;
+}
+
+.uscImgWrap > img {
+  width: 75px;
+  height: 100px;
+}
+
+.uscInfoWrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.uscNickname {
+  width: 65%;
+  word-wrap: break-word;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 50px;
+}
+.uscIntro {
+  font-size: 14px;
+  font-weight: 300;
+  color: #333333;
+}

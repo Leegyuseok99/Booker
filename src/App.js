@@ -18,6 +18,9 @@ import AddReport from "./page/AddReport";
 import ReportView from "./page/ReportView";
 import ReportUpdate from "./page/ReportUpdate";
 import SearchPage from "./page/SearchPage";
+import ProfileUpdate from "./page/ProfileUpdate";
+import BookSale from "./page/BookSale";
+import SaleReason from "./page/SaleReason";
 
 function App() {
   // 페이지를 떠날 때나 컴포넌트가 언마운트 될 때 localStorage에서 토큰 제거
@@ -34,6 +37,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile/:memberId" element={<Profile />} />
+        <Route path="/profileupdate" element={<ProfileUpdate />} />
         <Route path="/main" element={<Main />} />
         <Route path="/" element={<Home />} />
         <Route path="/mybook" element={<MyBook />} />
@@ -46,6 +50,8 @@ function App() {
         <Route path="/Naver_Loading" element={<NaverLoading />}></Route>
         <Route path="/Google_Loading" element={<GoogleLoading />}></Route>
         <Route path="/searchpage" element={<SearchPage />}></Route>
+        <Route path="/booksale" element={<BookSale />}></Route>
+        <Route path="/salereason/:isbn13" element={<SaleReason />}></Route>
       </Routes>
     </Router>
   );

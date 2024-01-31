@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import BestSeller from "../component/BestSeller";
 import axios from "axios";
 import BestBookModal from "../modals/BestBookModal";
+import Computer from "../assets/computer.jpg";
 function Home() {
   const [bestSeller, setBestSeller] = useState([]);
 
@@ -52,10 +53,10 @@ function Home() {
 
   return (
     <div>
-      <div className="banner">Img</div>
-      <div className="bsContainerTitle">
-        이달의 <br />
-        베스트 셀러
+      <div className="banner">
+        <div className="bannerImgWrap">
+          <img src={Computer}></img>
+        </div>
       </div>
       <div className="bsContainer">
         {bestSeller.map((seller) => (

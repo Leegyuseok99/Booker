@@ -1,0 +1,76 @@
+.MC-content {
+  width: 48vw;
+  height: 70vh;
+  z-index: 150;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  justify-content: center;
+  overflow: auto;
+  padding: 30px 0px 30px 60px;
+}
+
+.MC-overlay {
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.messageWrap {
+  display: flex;
+  flex-direction: column;
+}
+.other {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.close {
+  margin-right: 45px;
+  margin-top: -20px;
+  cursor: pointer;
+}
+.userInfoWrap {
+  width: 44vw;
+  display: flex;
+  flex-direction: row;
+}
+.profileWrap {
+  width: 5vw;
+  height: 10vh;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.nicknameWrap {
+  line-height: 9vh;
+  font-size: 18px;
+  font-weight: 600;
+  color: #5e3fa7;
+}
+.showWrap {
+  margin-top: 20px;
+  width: 44vw;
+  height: 35vh;
+}
+.titleWrap {
+  width: 44vw;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 3px;
+}
+.contentWrap {
+  width: 44vw;
+  height: 30vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #777777;
+  padding: 3px;
+  font-weight: 300;
+}

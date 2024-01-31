@@ -1,0 +1,17 @@
+.searchWrap {
+  padding: 2.5vh 5vw;
+  font-size: 18px;
+  font-weight: 600;
+  color: #777777;
+}
+.reasonWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 96vw;
+  padding: 0vh 2vw;
+  height: 70vh;
+  background-color: white;
+  border-top: 1px solid #999999;
+}

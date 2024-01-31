@@ -2,6 +2,7 @@ import React from "react";
 import "../css/SimilarUser.css";
 
 function SimilarUser(props) {
+  console.log("profileimage=", props.profileimage);
   return (
     <div className="smu" onClick={props.onClick}>
       <div className="smuProfileWrap">

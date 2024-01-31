@@ -7,10 +7,13 @@ import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 function BookInfo({ selectedBook, onSubmit }) {
-  const { isbn13, bookId } = useParams();
+  const { isbn13, bookId: initialBookId } = useParams();
+  const [bookId, setBookId] = useState(initialBookId);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accesstoken");
   const [bookData, setBookData] = useState([]);
+  const [reportList, setReportList] = useState([]);
+  const [progress, setProgress] = useState();
   const bookInfo = async () => {
     await axios
       .get(`/book`, {
@@ -30,20 +33,25 @@ function BookInfo({ selectedBook, onSubmit }) {
   }, []);
 
   // 책 존재 여부 확인(셀렉트 박스, 책 추가 버튼)
-  const [exsit, setExsit] = useState("false");
+  const [exist, setExist] = useState(false);
   const bookExist = async () => {
-    await axios
-      .get("/book/newbook", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          isbn13: isbn13,
-        },
-      })
-      .then((response) => {
-        setExsit(response.data.exsit);
-      });
+    if (bookId === "null") {
+      await axios
+        .get("/book/newbook", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            isbn13: isbn13,
+          },
+        })
+        .then((response) => {
+          setExist(response.data.exist);
+          setBookId(response.data.bookId);
+          setProgress(response.data.progress);
+          setReportList(response.data.simpleReports);
+        });
+    }
   };
   useEffect(() => {
     bookExist();
@@ -51,31 +59,59 @@ function BookInfo({ selectedBook, onSubmit }) {
 
   //책 추가 버튼
   const existhandle = () => {
-    navigate("/mybook");
+    axios
+      .post(
+        "/book/mybook",
+        {
+          isbn13: bookData.isbn13,
+          img: bookData.cover,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        navigate("/mybook");
+      });
   };
 
   const [selected, setSelected] = useState("");
   const [selectedBooks, setSelectedBooks] = useState({});
 
-  useEffect(() => {
-    // onSubmit(selectedBook.isbn13, selected);
-
-    setSelected(selectedBooks[selectedBook?.isbn13] || "");
-  }, [selectedBook, selectedBooks]);
-
   const onSubmithandle = () => {
-    setSelectedBooks({
-      ...selectedBooks,
-      // [selectedBook.isbn13]: selected,
-    });
+    if (selected == "DELETE") {
+      axios.delete("/book", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          bookId: bookId,
+        },
+      });
+    } else {
+      console.log(selected.key);
+      axios.patch(
+        "/book/progress",
+        {
+          bookId: bookId,
+          progress: selected,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+    }
     navigate("/main");
   };
   const selectList = [
-    "읽기 전",
-    "읽고 싶은 책",
-    "읽는 중",
-    "독서 완료",
-    "책 삭제하기",
+    { key: "BEFORE", value: "읽기 전" },
+    { key: "READING", value: "읽는 중" },
+    { key: "COMP", value: "독서 완료" },
+    { key: "DELETE", value: "책 삭제하기" },
   ];
   const selecthandle = (e) => {
     setSelected(e.target.value);
@@ -87,26 +123,29 @@ function BookInfo({ selectedBook, onSubmit }) {
   const toggleIntroduction = () => {
     setIsIntroductionVisible(!isIntroductionVisible);
   };
-  const [reportList, setReportList] = useState([]);
 
   const getReport = async () => {
-    await axios
-      .get(`/book/progress/reports`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          bookId: bookId,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setReportList(response.data.simpleReports);
-      });
+    if (bookId !== "null") {
+      await axios
+        .get(`/book/progress/reports`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            bookId: bookId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setExist(response.data.exist);
+          setProgress(response.data.progress);
+          setReportList(response.data.simpleReports);
+        });
+    }
   };
   const renderReportList = () => {
     if (reportList.length === 0) {
-      return <div>독후감이 없습니다.</div>;
+      return <div className="noreportWrap">독후감이 없습니다.</div>;
     }
 
     return (
@@ -130,21 +169,27 @@ function BookInfo({ selectedBook, onSubmit }) {
     navigate(`/reportview/${reportId}`);
   };
   const addReporthandle = () => {
+    console.log(bookId);
     navigate(`/addreport/${bookId}`);
   };
+  // progress에 해당하는 항목을 찾음
+  const selectedOption = selectList.find((item) => item.key === progress);
+
+  // progress에 해당하는 항목을 제외한 나머지 목록
+  const restOfSelectList = selectList.filter((item) => item.key !== progress);
   return (
     <div>
       <div className="bookInfo">
         <div className="left">
           <div className="leftUp">
             <div className="infoImgWrap">
-              <img className="infoImg" />
+              <img className="infoImg" src={bookData.cover} />
             </div>
             <div className="leftUpLeft">
               <div className="infoTitle">{bookData.title}</div>
               <div className="infoauthor">저자 글쓴이 책 발행 년도</div>
               <div>
-                {exsit === "false" ? (
+                {exist == false ? (
                   <button onClick={existhandle}>책 추가</button>
                 ) : (
                   <select
@@ -152,9 +197,17 @@ function BookInfo({ selectedBook, onSubmit }) {
                     value={selected}
                     className="select"
                   >
-                    {selectList.map((item) => (
-                      <option value={item} key={item}>
-                        {item}
+                    {selectedOption && (
+                      <option
+                        value={selectedOption.key}
+                        key={selectedOption.key}
+                      >
+                        {selectedOption.value}
+                      </option>
+                    )}
+                    {restOfSelectList.map((item) => (
+                      <option value={item.key} key={item.key}>
+                        {item.value}
                       </option>
                     ))}
                   </select>
@@ -166,7 +219,7 @@ function BookInfo({ selectedBook, onSubmit }) {
             <div className="infoCategoryWrap">
               <FolderIcon style={{ marginBottom: "-5px" }}></FolderIcon>카테고리
             </div>
-            <div className="infoCategory">{selectedBook?.category}</div>
+            <div className="infoCategory">{bookData.category}</div>
             <div>
               <span className="infoIntroWrap" onClick={toggleIntroduction}>
                 <span className="introIcon">
@@ -175,7 +228,7 @@ function BookInfo({ selectedBook, onSubmit }) {
                 책 소개
               </span>
               {isIntroductionVisible && (
-                <div className="infointro">{selectedBook?.introduction}</div>
+                <div className="infointro">{bookData.description}</div>
               )}
             </div>
           </div>
@@ -193,9 +246,13 @@ function BookInfo({ selectedBook, onSubmit }) {
               <button className="reportAdd_btn" onClick={onSubmithandle}>
                 메인 페이지
               </button>
-              <button className="reportAdd_btn" onClick={addReporthandle}>
-                독서록 추가
-              </button>
+              {exist === true ? (
+                <button className="reportAdd_btn" onClick={addReporthandle}>
+                  독서록 추가
+                </button>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </div>

@@ -1,10 +1,14 @@
 import Modal from "react-modal";
 import styles from "../css/modal/SubUserFollowerModal.module.css";
+import { useNavigate } from "react-router-dom";
 
 function FollowerModal({ isOpen, onCancle, followerList }) {
+  const navigate = useNavigate();
   const onCanclehandle = () => {
     onCancle();
   };
+  const nickname = localStorage.getItem("nickname");
+
   return (
     <Modal
       className={styles["Follower-content"]}
@@ -15,7 +19,18 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
       <div className={styles.ListTitle}>팔로워</div>
       <div className={styles.followerListWrap}>
         {followerList.map((follower) => (
-          <div key={follower.nickname} className={styles.followerWrap}>
+          <div
+            key={follower.nickname}
+            className={styles.followerWrap}
+            onClick={() => {
+              if (nickname === follower.nickname) {
+                navigate("/mybook");
+              } else {
+                navigate(`/subuserbook/${follower.profileId}`);
+                onCancle();
+              }
+            }}
+          >
             <span>{follower.intro}</span>
             <span>{follower.nickname}</span>
           </div>

@@ -6,6 +6,7 @@
   font-weight: 600;
   margin-bottom: 30px;
   background-color: white;
+  border: 3px solid white;
   box-shadow: 2px 2px 2px 2px gray;
   margin-right: 10px;
 }
@@ -14,6 +15,7 @@
   color: #5e3fa7;
 }
 .ctg_btn.selected {
+  border: 3px solid #5e3fa7;
   background-color: #5e3fa7;
   color: white;
 }

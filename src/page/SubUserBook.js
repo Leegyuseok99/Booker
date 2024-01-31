@@ -16,6 +16,7 @@ import MessageSendModal from "../modals/MessageSendModal";
 
 function SubUserBook() {
   const navigate = useNavigate();
+  const mynickname = localStorage.getItem("nickname");
   const { profileId } = useParams();
 
   const [isOpen, setOpen] = useState(false);
@@ -32,6 +33,37 @@ function SubUserBook() {
     setOpen(false);
     console.log("close");
   };
+
+  const [subUserInfo, setSubUserInfo] = useState([]);
+  const [imageSrc, setImageSrc] = useState("");
+  const [interests, setInterests] = useState([]);
+
+  const profileInfo = async () => {
+    await axios
+      .get("/profileInfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          profileId: profileId,
+        },
+      })
+      .then((response) => {
+        const image = response.data.imgFile.base64Image;
+        const mimeType = response.data.imgFile.mimeType;
+        // Spring에서 받은 Base64 문자열
+        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setInterests(response.data.interets);
+        setSubUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    profileInfo();
+  }, []);
 
   const [follower, setFollower] = useState("");
   const [following, setFollowing] = useState("");
@@ -170,32 +202,7 @@ function SubUserBook() {
     }
   };
 
-  const reads = [
-    {
-      bookId: "3zx3SoJbytMSDrMNPatet",
-      isbn13: "9788901276533",
-      progress: "READING",
-      saleState: "IMP",
-      cover:
-        "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
-    },
-    {
-      bookId: "BKVl2gBsviqimxTWGFgrV",
-      isbn13: "9788917239508",
-      progress: "READING",
-      saleState: "IMP",
-      cover:
-        "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-    {
-      bookId: "Oyc1vJwLOtTiQF6x9aYuf",
-      isbn13: "9788917239492",
-      progress: "READING",
-      saleState: "IMP",
-      cover:
-        "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-  ];
+  const reads = [];
   const chunkSize = 5;
 
   // 배열을 지정된 크기의 청크로 나누는 함수
@@ -237,16 +244,16 @@ function SubUserBook() {
     <div className="SubUserBookWrap">
       <div className="subProfile">
         <div className="subProfileImg">
-          <img className="subImg"></img>
+          <img className="subImg" src={imageSrc}></img>
         </div>
         <div className="subInfo">
-          <div className="subNickname">gyu_stone99</div>
+          <div className="subNickname">{subUserInfo.nickname}</div>
           <div className="subFavoriteWrap">
-            <div className="subFavorite"></div>
-            <div className="subFavorite"></div>
-            <div className="subFavorite"></div>
-            <div className="subFavorite"></div>
-            <div className="subFavorite"></div>
+            {interests.map((interest, idx) => (
+              <div key={idx} className="subFavorite">
+                {interest}
+              </div>
+            ))}
           </div>
         </div>
         <div className="submessage">
@@ -258,6 +265,9 @@ function SubUserBook() {
             isOpen={isOpen}
             onSubmit={handleModalSubmit}
             onCancle={handleModalCancel}
+            profileId={profileId}
+            profileImg={imageSrc}
+            nickname={subUserInfo.nickname}
           ></MessageSendModal>
         </div>
       </div>
@@ -290,7 +300,7 @@ function SubUserBook() {
         </div>
       </div>
       <div className="subplusWrap">
-        <div className="subIntro">저는 sf를 좋아하는 이규석이라고 합니다.</div>
+        <div className="subIntro">{subUserInfo.intro}</div>
         <div>
           <Button
             id="following_btn"

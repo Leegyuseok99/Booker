@@ -103,6 +103,11 @@
   padding-top: 20px;
   overflow-y: scroll;
 }
+.noreportWrap {
+  width: 90%;
+  height: 70%;
+  padding-top: 20px;
+}
 .report {
   padding: 15px;
   border-bottom: 1px solid #ccd0d5;

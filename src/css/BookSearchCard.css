@@ -1,4 +1,4 @@
-.sc {
+.bsc {
   display: flex;
   flex-direction: row;
   padding: 15px 0px;
@@ -6,42 +6,42 @@
   height: 110px;
 }
 
-.scImgWrap {
+.bscImgWrap {
   margin-right: 20px;
   padding: 5px;
 }
 
-.scImgWrap > img {
+.bscImgWrap > img {
   width: 75px;
   height: 100px;
 }
 
-.scInfoWrap {
+.bscInfoWrap {
   display: flex;
   flex-direction: row;
   width: 100%;
 }
 
-.scTitle {
+.bscTitle {
   width: 65%;
   word-wrap: break-word;
   font-size: 17px;
   font-weight: 600;
   line-height: 50px;
 }
-.scplus {
+.bscplus {
   width: 35%;
   display: flex;
   flex-direction: column;
 }
-.scAuthor {
+.bscAuthor {
   font-size: 12px;
   font-weight: 300;
   color: #333333;
   padding-top: 20px;
 }
 
-.scPublisher {
+.bscPublisher {
   margin-top: 7px;
   font-size: 12px;
   font-weight: 300;

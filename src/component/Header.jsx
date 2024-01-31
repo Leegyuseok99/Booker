@@ -5,8 +5,10 @@ import "../css/App.css";
 import Modal from "@material-ui/core";
 import LogoutModal from "../modals/LogoutModal";
 import "../css/modal/LogoutModal.module.css";
+import axios from "axios";
 
 function Header() {
+  const accessToken = localStorage.getItem("accesstoken");
   const navigator = useNavigate();
   const [user, setUser] = useState(false);
   useEffect(() => {
@@ -34,6 +36,21 @@ function Header() {
     console.log("close");
   };
 
+  const [userInfo, setUserInfo] = useState(null);
+  const userData = async () => {
+    await axios
+      .get("/profileInfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user info:", error);
+      });
+  };
   return (
     <div>
       {user ? (
@@ -45,11 +62,11 @@ function Header() {
             <Link to="/mybook" className="header_individual">
               <span>개인 서재</span>
             </Link>
-            <Link to="/bookrecomend" className="header_recomend">
+            <Link to="/bookrecommend" className="header_recomend">
               <span>책 추천</span>
             </Link>
-            <Link to="/main" className="header_place">
-              <span>도서관</span>
+            <Link to="/booksale" className="header_place">
+              <span>책 거래</span>
             </Link>
             <TextField
               className="search"

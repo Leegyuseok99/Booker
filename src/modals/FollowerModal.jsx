@@ -7,9 +7,7 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
   const onCanclehandle = () => {
     onCancle();
   };
-  // const subUserhandle = () =>{
-  //     navigate(`/subuserbook/${followerList.profileId}`)
-  // }
+
   return (
     <Modal
       className={styles["Follower-content"]}

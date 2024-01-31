@@ -1,10 +1,41 @@
 import Modal from "react-modal";
 import styles from "../css/modal/MessageSendModal.module.css";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function MessageSendModal({ isOpen, onSubmit, onCancle }) {
+function MessageSendModal({
+  isOpen,
+  onSubmit,
+  onCancle,
+  profileId,
+  profileImg,
+  nickname,
+}) {
+  const accessToken = localStorage.getItem("accesstoken");
   const onSubmithandle = () => {
+    axios
+      .post(
+        "/message",
+        {
+          recipientId: profileId,
+          title: title,
+          content: content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+        {
+          recipientId: profileId,
+          title: title,
+          content: content,
+        }
+      )
+      .then((response) => {
+        window.alert("발신 완료");
+      });
     onSubmit();
   };
   const onCanclehandle = () => {
@@ -29,9 +60,9 @@ function MessageSendModal({ isOpen, onSubmit, onCancle }) {
       <div className={styles.msm}>
         <div className={styles.msmUser}>
           <div className={styles.msmprofileImgWrap}>
-            <img></img>
+            <img className={styles.msmprofileImg} src={profileImg}></img>
           </div>
-          <div className={styles.msmNicknameWrap}>규석 님</div>
+          <div className={styles.msmNicknameWrap}>{nickname} 님</div>
         </div>
         <div className={styles.msmTitleInputWrap}>
           <span>제목</span>

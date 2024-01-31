@@ -33,6 +33,7 @@ function Login() {
     e.preventDefault();
     localStorage.setItem("accesstoken", "1");
     localStorage.setItem("refreshtoken", "2");
+    localStorage.setItem("nickname", "테스트");
     navigate("/Main");
     await axios
       .post("/login", {
@@ -42,6 +43,7 @@ function Login() {
       .then((response) => {
         localStorage.setItem("accesstoken", response.data.accessToken);
         localStorage.setItem("refreshtoken", response.data.refreshToken);
+        localStorage.setItem("nickname", response.data.nickname);
         navigate("/Main");
         console.log(response.data);
       })

@@ -34,13 +34,10 @@ function ReportUpdate() {
         const { title, content, sharing } = response.data;
         setReportData({
           ...reportData,
-          imageSrc,
           title,
           content,
           radioStatus: sharing || "PUBLIC",
         });
-
-        console.log(reportData);
       } catch (error) {
         console.error(error);
       }
@@ -108,16 +105,19 @@ function ReportUpdate() {
   const [isDefaultImage, setIsDefaultImage] = useState(false);
 
   const handleUpdateReport = async (e) => {
+    console.log("reportData=", reportData);
+    console.log("previewImage", previewImage);
     const formData = new FormData();
     formData.append("reportId", reportId);
-    formData.append(
-      "imageFile",
-      reportData.defaultImg ? null : reportData.image
-    );
     formData.append("title", reportData.title);
     formData.append("content", reportData.content);
     formData.append("sharing", reportData.radioStatus);
     formData.append("defaultImg", reportData.defaultImg);
+    if (reportData.defaultImg === false) {
+      if (previewImage !== null) {
+        formData.append("imageFile", Image);
+      }
+    }
     await axios
       .patch("/report", formData, {
         headers: {

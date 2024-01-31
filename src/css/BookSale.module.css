@@ -1,0 +1,28 @@
+.bgWrap {
+  padding: 4vh 0vw 4vh 15vw;
+  font-size: 35px;
+  font-weight: 300;
+}
+.bgWrap > span > span {
+  color: #5e3fa7;
+}
+.searchWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+#searchinput {
+  width: 45vw;
+  height: 9vh;
+  padding: 0px 15px;
+}
+.reasonListWrap {
+  margin: 40px auto 0px;
+  width: 70vw;
+  min-height: 50vh;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #f7f7f7;
+  box-shadow: 2px 2px 2px 2px #999999;
+}

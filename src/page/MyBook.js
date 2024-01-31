@@ -132,29 +132,10 @@ function MyBook() {
     console.log("close");
   };
 
-  const [reads, setReads] = useState([
-    {
-      bookId: "3zx3SoJbytMSDrMNPatet",
-      isbn13: "9788901276533",
-      progress: "READING",
-      saleState: "POS",
-      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
-    },
-    {
-      bookId: "BKVl2gBsviqimxTWGFgrV",
-      isbn13: "9788917239508",
-      progress: "READING",
-      saleState: "POS",
-      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-    {
-      bookId: "Oyc1vJwLOtTiQF6x9aYuf",
-      isbn13: "9788917239492",
-      progress: "READING",
-      saleState: "IMP",
-      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-  ]);
+  const handleBookplus = () => {
+    navigate("/searchpage");
+  };
+  const [reads, setReads] = useState([]);
 
   const [nowPage, setNowPage] = useState(0);
   const [hasNext, setHasNext] = useState(true);
@@ -168,7 +149,7 @@ function MyBook() {
     const fullHeight = document.body.scrollHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
-    if (scrollY + viewportHeight === fullHeight) {
+    if (scrollY + viewportHeight === fullHeight && hasNext) {
       getMyBook();
     }
   };
@@ -181,7 +162,7 @@ function MyBook() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [hasNext]);
 
   const getMyBook = async () => {
     if (!hasNext) return;
@@ -192,7 +173,7 @@ function MyBook() {
         },
       })
       .then((response) => {
-        console.log(response.data.bookLists);
+        console.log(response.data);
         const updatedReads =
           nowPage === 0
             ? response.data.bookLists
@@ -201,6 +182,9 @@ function MyBook() {
         setReads(updatedReads);
         setNowPage(nowPage + 1);
         setHasNext(response.data.hasNext);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -240,7 +224,7 @@ function MyBook() {
       axios.patch(
         "/book/saleState",
         {
-          bookId: reads.bookId,
+          bookId: reads[clickedBookIndex].bookId,
           saleState: newSaleStatus,
         },
         {
@@ -308,13 +292,14 @@ function MyBook() {
             isOpen={isOpen2}
             onCancle={followinghandleModalCancel}
             followingList={followingList}
+            myProfileId={userData.profileId}
           ></FollowingModal>
         </div>
       </div>
       <div className={styles.plusWrap}>
         <div className={styles.mbIntro}>{userData.intro}</div>
         <div>
-          <Button id={styles.bookPlus_btn}>
+          <Button id={styles.bookPlus_btn} onClick={handleBookplus}>
             <AddIcon style={{ marginBottom: "-5px" }}></AddIcon> 책 추가
           </Button>
         </div>
