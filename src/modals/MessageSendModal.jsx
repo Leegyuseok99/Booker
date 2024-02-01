@@ -18,11 +18,6 @@ function MessageSendModal({
       .post(
         "/message",
         {
-          recipientId: profileId,
-          title: title,
-          content: content,
-        },
-        {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

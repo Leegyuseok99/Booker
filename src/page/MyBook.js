@@ -16,7 +16,6 @@ import MessageListModal from "../modals/MessageListModal";
 
 function MyBook() {
   const navigate = useNavigate();
-
   const [isOpen, setOpen] = useState(false);
 
   const modalOpenhandle = () => {
@@ -46,10 +45,7 @@ function MyBook() {
       })
       .then((response) => {
         console.log(response.data);
-        const image = response.data.imgFile.base64Image;
-        const mimeType = response.data.imgFile.mimeType;
-        // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setImageSrc(response.data.imgURL);
         setInterests(response.data.interets);
         setUserData(response.data);
       })
@@ -135,9 +131,9 @@ function MyBook() {
   const handleBookplus = () => {
     navigate("/searchpage");
   };
-  const [reads, setReads] = useState([]);
+  let [reads, setReads] = useState([]);
 
-  const [nowPage, setNowPage] = useState(0);
+  let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
 
   const handleScroll = () => {
@@ -149,7 +145,7 @@ function MyBook() {
     const fullHeight = document.body.scrollHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
-    if (scrollY + viewportHeight === fullHeight && hasNext) {
+    if (scrollY + viewportHeight >= fullHeight && hasNext) {
       getMyBook();
     }
   };
@@ -166,10 +162,14 @@ function MyBook() {
 
   const getMyBook = async () => {
     if (!hasNext) return;
+    console.log(nowPage);
     await axios
       .get("/book/library/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: nowPage,
         },
       })
       .then((response) => {
@@ -179,8 +179,8 @@ function MyBook() {
             ? response.data.bookLists
             : [...reads, ...response.data.bookLists];
 
-        setReads(updatedReads);
-        setNowPage(nowPage + 1);
+        setReads((prevReads) => [...prevReads, ...updatedReads]);
+        nowPage = response.data.nowPage + 1;
         setHasNext(response.data.hasNext);
       })
       .catch((error) => {
@@ -191,7 +191,7 @@ function MyBook() {
   useEffect(() => {
     getMyBook();
   }, []);
-  const chunkSize = 5;
+  const chunkSize = 4;
 
   const chunkArray = (arr, size) => {
     const chunks = [];
@@ -330,6 +330,7 @@ function MyBook() {
                   cover={read.img}
                   onClick={() => handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
+                {console.log(reads)}
                 <div className={styles.sellIconWrap}>
                   {read.saleState === "POS" ? (
                     <span onClick={() => saleStatusChange(read.bookId)}>

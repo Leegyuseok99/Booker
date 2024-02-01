@@ -43,7 +43,7 @@ function App() {
         <Route path="/mybook" element={<MyBook />} />
         <Route path="/subuserbook/:profileId" element={<SubUserBook />} />
         <Route path="/bookinfo/:isbn13/:bookId" element={<BookInfo />} />
-        <Route path="/reportview/:reportId" element={<ReportView />} />
+        <Route path="/reportview/:reportId/:user" element={<ReportView />} />
         <Route path="/addreport/:bookId" element={<AddReport />} />
         <Route path="/reportupdate/:reportId" element={<ReportUpdate />} />
         <Route path="/bookrecommend" element={<BookRecommend />} />

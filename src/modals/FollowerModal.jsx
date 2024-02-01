@@ -7,7 +7,7 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
   const onCanclehandle = () => {
     onCancle();
   };
-
+  const nickname = localStorage.getItem("nickname");
   return (
     <Modal
       className={styles["Follower-content"]}
@@ -22,7 +22,12 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
             key={follower.nickname}
             className={styles.followerWrap}
             onClick={() => {
-              navigate(`/subuserbook/${follower.profileId}`);
+              if (nickname === follower.nickname) {
+                navigate("/mybook");
+              } else {
+                navigate(`/subuserbook/${follower.profileId}`);
+                onCancle();
+              }
             }}
           >
             <span>{follower.intro}</span>

@@ -27,10 +27,7 @@ function ReportUpdate() {
             reportId: reportId,
           },
         });
-        const image = response.data.imgBytes;
-        const mimeType = response.data.mimeType;
-        // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setImageSrc(response.data.imgURL);
         const { title, content, sharing } = response.data;
         setReportData({
           ...reportData,
@@ -68,7 +65,6 @@ function ReportUpdate() {
     fileInput.current.click();
     setIsDefaultImage(false);
   };
-  const [radioStatus, setRadioStatus] = useState("");
 
   const handleRadioChange = (e) => {
     setReportData({

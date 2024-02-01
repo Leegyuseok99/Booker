@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 function BookInfo({ selectedBook, onSubmit }) {
-  const { isbn13, bookId: initialBookId } = useParams();
+  const { isbn13, bookId: initialBookId, otherbookstate } = useParams();
   const [bookId, setBookId] = useState(initialBookId);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accesstoken");
@@ -123,7 +123,7 @@ function BookInfo({ selectedBook, onSubmit }) {
   const toggleIntroduction = () => {
     setIsIntroductionVisible(!isIntroductionVisible);
   };
-
+  const [user, setUser] = useState("");
   const getReport = async () => {
     if (bookId !== "null") {
       await axios
@@ -137,6 +137,7 @@ function BookInfo({ selectedBook, onSubmit }) {
         })
         .then((response) => {
           console.log(response.data);
+          setUser(response.data.user);
           setExist(response.data.exist);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
@@ -154,7 +155,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           <div
             key={report.reportId}
             className="report"
-            onClick={() => handleReportClick(report.reportId)}
+            onClick={() => handleReportClick(report.reportId, user)}
           >
             {report.title} - 작성일: {report.redate}
           </div>
@@ -165,8 +166,8 @@ function BookInfo({ selectedBook, onSubmit }) {
   useEffect(() => {
     getReport();
   }, []);
-  const handleReportClick = (reportId) => {
-    navigate(`/reportview/${reportId}`);
+  const handleReportClick = (reportId, user) => {
+    navigate(`/reportview/${reportId}/${user}`);
   };
   const addReporthandle = () => {
     console.log(bookId);
@@ -196,6 +197,7 @@ function BookInfo({ selectedBook, onSubmit }) {
                     onChange={selecthandle}
                     value={selected}
                     className="select"
+                    disabled={user === "me" ? false : true}
                   >
                     {selectedOption && (
                       <option
@@ -246,10 +248,14 @@ function BookInfo({ selectedBook, onSubmit }) {
               <button className="reportAdd_btn" onClick={onSubmithandle}>
                 메인 페이지
               </button>
-              {exist === true ? (
-                <button className="reportAdd_btn" onClick={addReporthandle}>
-                  독서록 추가
-                </button>
+              {user === "me" ? (
+                exist === true ? (
+                  <button className="reportAdd_btn" onClick={addReporthandle}>
+                    독서록 추가
+                  </button>
+                ) : (
+                  <div></div>
+                )
               ) : (
                 <div></div>
               )}

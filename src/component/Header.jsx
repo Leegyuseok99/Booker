@@ -35,9 +35,9 @@ function Header() {
     setOpen(false);
     console.log("close");
   };
-
-  const [userInfo, setUserInfo] = useState(null);
-  const userData = async () => {
+  const [imageSrc, setImageSrc] = useState("");
+  const [userInfo, setUserInfo] = useState(false);
+  const getUser = async () => {
     await axios
       .get("/profileInfo", {
         headers: {
@@ -45,11 +45,20 @@ function Header() {
         },
       })
       .then((response) => {
-        setUserInfo(response.data);
+        console.log(response.data);
+        setImageSrc(response.data.imgURL);
       })
       .catch((error) => {
-        console.error("Error fetching user info:", error);
+        console.log(error);
       });
+  };
+  useEffect(() => {
+    if (user) {
+      getUser();
+    }
+  }, [user]);
+  const profilenavigate = () => {
+    navigator("/profileupdate");
   };
   return (
     <div>
@@ -81,7 +90,13 @@ function Header() {
                 },
               }}
             ></TextField>
-            <div className="user_profile"></div>
+            <div
+              className="user_profile"
+              onClick={profilenavigate}
+              style={{ cursor: "pointer" }}
+            >
+              <img src={imageSrc} alt="프로필(클릭 시 프로필 수정)"></img>
+            </div>
             <button className="headerLogout_bnt" onClick={modalOpenhandle}>
               로그아웃
             </button>

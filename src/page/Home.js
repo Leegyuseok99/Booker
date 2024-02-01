@@ -58,28 +58,6 @@ function Home() {
           <img src={Computer}></img>
         </div>
       </div>
-      <div className="bsContainer">
-        {bestSeller.map((seller) => (
-          <BestSeller
-            key={seller.key}
-            Rank={seller.key}
-            title={seller.title}
-            cover={seller.cover}
-            author={seller.author}
-            description={seller.description}
-            category={seller.category}
-            onClick={() => bookInfohandle(seller.isbn13)}
-          />
-        ))}
-        {selectedBook && (
-          <BestBookModal
-            isOpen={isOpen}
-            selectedBook={selectedBook} // 선택한 도서 정보를 모달에 전달
-            onSubmit={handleModalSubmit}
-            onCancle={handleModalCancel}
-          />
-        )}
-      </div>
     </div>
   );
 }

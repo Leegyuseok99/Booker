@@ -34,7 +34,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
             state: message.state,
             redate: message.redate,
             nickname: message.nickname,
-            image: `data:${message.imgFileDto.mimeType};base64, ${message.imgFileDto.base64Image}`,
+            image: message.imgURL,
           }));
           setReceivedMessageList(messages);
         });
@@ -58,7 +58,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
             state: message.state,
             redate: message.redate,
             nickname: message.nickname,
-            image: `data:${message.imgFileDto.mimeType};base64, ${message.imgFileDto.base64Image}`,
+            image: message.imgURL,
           }));
           setSentMessageList(messages);
         });

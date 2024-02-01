@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../css/ReportView.css";
 import CreateIcon from "@mui/icons-material/Create";
 function ReportView() {
-  const { reportId } = useParams();
+  const { reportId, user } = useParams();
   const navigate = useNavigate();
   const [report, setReport] = useState({});
   const [imageSrc, setImageSrc] = useState("");
@@ -21,10 +21,7 @@ function ReportView() {
             reportId: reportId,
           },
         });
-        const image = response.data.imgBytes;
-        const mimeType = response.data.mimeType;
-        // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setImageSrc(response.data.imgURL);
         setReport(response.data);
       } catch (error) {
         console.error(error);
@@ -80,8 +77,14 @@ function ReportView() {
         <div className="rvcommentWrap">{report.content}</div>
         <div className="rvbtnWrap">
           <button onClick={handleCancel}>뒤로가기</button>
-          <button onClick={handleUpdateReport}>수정 하기</button>
-          <button onClick={handleDeleteReport}>삭제</button>
+          {user === "me" ? (
+            <div>
+              <button onClick={handleUpdateReport}>수정 하기</button>
+              <button onClick={handleDeleteReport}>삭제</button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>

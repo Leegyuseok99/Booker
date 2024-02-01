@@ -25,7 +25,7 @@ function SaleReason() {
         const otherUser = response.data.salePosMembers.map((user) => ({
           profileId: user.profileId,
           nickname: user.nickname,
-          image: `data:${user.imgFileDto.mimeType};base64, ${user.imgFileDto.base64Image}`,
+          image: user.imgURL,
           intro: user.intro,
         }));
         setPosUserList(otherUser);

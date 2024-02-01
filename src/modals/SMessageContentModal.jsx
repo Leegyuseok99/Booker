@@ -19,10 +19,7 @@ function SMessageContentModal({ isOpen, onCancle, messageId }) {
         },
       })
       .then((response) => {
-        const image = response.data.imgFileDto.base64Image;
-        const mimeType = response.data.imgFileDto.mimeType;
-        // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setImageSrc(response.data.imgURL);
         setMessage(response.data);
       });
   };

@@ -114,7 +114,7 @@ function Login() {
             </a>
           </button>
           <button className="login_btn Google">
-            <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=763294776408-sfbjopkckihspia8kjrrdekk3250bg25.apps.googleusercontent.com&redirect_uri=http://localhost:3000/Google_Loading&response_type=code&scope=email profile">
+            <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=763294776408-sfbjopkckihspia8kjrrdekk3250bg25.apps.googleusercontent.com&redirect_uri=https://booker.kro.kr:3000/Google_Loading&response_type=code&scope=email profile">
               <img
                 className="google"
                 src="https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"

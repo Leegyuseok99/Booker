@@ -49,10 +49,7 @@ function SubUserBook() {
         },
       })
       .then((response) => {
-        const image = response.data.imgFile.base64Image;
-        const mimeType = response.data.imgFile.mimeType;
-        // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
+        setImageSrc(response.data.imgURL);
         setInterests(response.data.interets);
         setSubUserInfo(response.data);
       })
@@ -202,7 +199,67 @@ function SubUserBook() {
     }
   };
 
-  const reads = [];
+  let [reads, setReads] = useState([]);
+
+  let nowPage = 0;
+  const [hasNext, setHasNext] = useState(true);
+
+  const handleScroll = () => {
+    // 현재 스크롤 위치
+    const scrollY = window.scrollY;
+    // 뷰포트의 높이
+    const viewportHeight = window.innerHeight;
+    // 문서의 전체 높이
+    const fullHeight = document.body.scrollHeight;
+
+    // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
+    if (scrollY + viewportHeight >= fullHeight && hasNext) {
+      getUserBook();
+    }
+  };
+
+  useEffect(() => {
+    // 스크롤 이벤트 리스너
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasNext]);
+
+  const getUserBook = async () => {
+    if (!hasNext) return;
+    console.log(nowPage);
+    await axios
+      .get("/book/library/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: nowPage,
+          profileId: profileId,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const updatedReads =
+          nowPage === 0
+            ? response.data.bookLists
+            : [...reads, ...response.data.bookLists];
+
+        setReads((prevReads) => [...prevReads, ...updatedReads]);
+        nowPage = response.data.nowPage + 1;
+        setHasNext(response.data.hasNext);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getUserBook();
+  }, []);
   const chunkSize = 5;
 
   // 배열을 지정된 크기의 청크로 나누는 함수
@@ -217,8 +274,8 @@ function SubUserBook() {
 
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const handleBookClick = async (isbn13) => {
-    navigate(`/bookinfo/${isbn13}`);
+  const handleBookClick = async (isbn13, bookId) => {
+    navigate(`/bookinfo/${isbn13}/${bookId}`);
     try {
       const response = await axios.get(`/book/${isbn13}`, {
         headers: {
@@ -333,8 +390,11 @@ function SubUserBook() {
               <div className="bookListCard">
                 <BookListCard
                   key={i}
-                  cover={read.cover}
-                  onClick={handleBookClick}
+                  bookId={read.bookId}
+                  progress={read.progress}
+                  isbn13={read.isbn13}
+                  cover={read.img}
+                  onClick={() => handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
                 <div className="sellIconWrap">
                   {saleStatus === "POS" ? (
