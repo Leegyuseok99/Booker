@@ -6,6 +6,7 @@ import Modal from "@material-ui/core";
 import LogoutModal from "../modals/LogoutModal";
 import "../css/modal/LogoutModal.module.css";
 import axios from "axios";
+import { refreshTokenFunc } from "./Token/RefreshTokenFunc";
 
 function Header() {
   const accessToken = localStorage.getItem("accesstoken");
@@ -20,23 +21,6 @@ function Header() {
   useEffect(() => {
     userData();
   }, [accessToken]);
-  const refreshTokenFunc = () => {
-    const refreshToken = localStorage.getItem("refreshtoken");
-    axios
-      .post("/auth/refresh/token", {
-        refreshToken: refreshToken,
-      })
-      .then((response) => {
-        localStorage.setItem("accesstoken", response.data.accessToken);
-        console.log(localStorage.getItem("accesstoken"));
-      })
-      .catch((error) => {
-        if (error.response.data.code === "INVALID_RefreshToken") {
-          window.alert(error.response.data.message);
-          navigator("/login");
-        }
-      });
-  };
   //로그아웃 모달
 
   const [isOpen, setOpen] = useState(false);
@@ -108,7 +92,9 @@ function Header() {
                 },
               }}
             ></TextField>
-            <div className="user_profile"></div>
+            <div className="user_profile">
+              <img src={userInfo.imgURL}></img>
+            </div>
             <button className="headerLogout_bnt" onClick={modalOpenhandle}>
               로그아웃
             </button>
