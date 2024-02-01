@@ -12,11 +12,31 @@ function Header() {
   const navigator = useNavigate();
   const [user, setUser] = useState(false);
   useEffect(() => {
-    if (localStorage.getItem("accesstoken") !== null) {
+    if (accessToken !== null) {
       setUser(true);
     } else setUser(false);
-  }, [localStorage.getItem("accesstoken")]);
+  }, [accessToken]);
 
+  useEffect(() => {
+    userData();
+  }, [accessToken]);
+  const refreshTokenFunc = () => {
+    const refreshToken = localStorage.getItem("refreshtoken");
+    axios
+      .post("/auth/refresh/token", {
+        refreshToken: refreshToken,
+      })
+      .then((response) => {
+        localStorage.setItem("accesstoken", response.data.accessToken);
+        console.log(localStorage.getItem("accesstoken"));
+      })
+      .catch((error) => {
+        if (error.response.data.code === "INVALID_RefreshToken") {
+          window.alert(error.response.data.message);
+          navigator("/login");
+        }
+      });
+  };
   //로그아웃 모달
 
   const [isOpen, setOpen] = useState(false);
@@ -45,10 +65,17 @@ function Header() {
         },
       })
       .then((response) => {
+        console.log(localStorage.getItem("accesstoken"));
         setUserInfo(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching user info:", error);
+        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigator("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc();
+        }
       });
   };
   return (

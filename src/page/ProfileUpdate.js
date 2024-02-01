@@ -12,43 +12,57 @@ import styles from "../css/ProfileUpdate.module.css";
 function ProfileUpdate() {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accesstoken");
+  //refreshtoken으로 accesstoken 재발급
+  const refreshTokenFunc = () => {
+    const refreshToken = localStorage.getItem("refreshtoken");
+    axios
+      .post("/auth/refresh/token", {
+        refreshToken: refreshToken,
+      })
+      .then((response) => {
+        localStorage.setItem("accesstoken", response.data.accessToken);
+      })
+      .catch((error) => {
+        if (error.response.data.code === "INVALID_RefreshToken") {
+          window.alert(error.response.data.message);
+          navigate("/login");
+        }
+      });
+  };
 
   //기존 프로필 정보 가져오기
   const [imageSrc, setImageSrc] = useState("");
-  const [interests, setInterests] = useState([
-    "정치",
-    "수필집1",
-    "정치1",
-    "수학1",
-    "천문학1",
-  ]);
+  const [interests, setInterests] = useState([]);
   const [userData, setUserData] = useState({
-    nickname: "naver",
-    intro: "naver",
+    nickname: "",
+    intro: "",
     defaultImg: false,
   });
 
   const getProfile = async () => {
     axios
-      .get("profileInfo", {
+      .get("/profileInfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
         console.log(response.data);
-        const image = response.data.imgFile.base64Image;
-        const mimeType = response.data.imgFile.mimeType;
         // Spring에서 받은 Base64 문자열
-        setImageSrc(`data:${mimeType};base64, ${image}`);
-        const interest = response.data.interets;
+        setImageSrc(response.data.imgURL);
         const nickname = response.data.nickname;
         const intro = response.data.intro;
-        setInterests({ ...interests, interest });
+        setInterests(response.data.interets);
         setUserData({ ...userData, nickname, intro });
       })
       .catch((error) => {
         console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc();
+        }
       });
   };
   useEffect(() => {
@@ -114,6 +128,10 @@ function ProfileUpdate() {
   ];
 
   const [selectedCategories, setSelectedCategories] = useState(interests);
+  useEffect(() => {
+    // interests 배열이 변경될 때 selectedCategories를 업데이트
+    setSelectedCategories(interests);
+  }, [interests]);
 
   const handleCategorySelect = (categoryName) => {
     if (selectedCategories) {
@@ -159,7 +177,7 @@ function ProfileUpdate() {
     if (Image) {
       formData.append("imageFile", Image);
     }
-    formData.append("intro", userData.introduction);
+    formData.append("intro", userData.intro);
 
     selectedCategories.forEach((value, index) => {
       formData.append(`interestList[${index}]`, value);
@@ -171,16 +189,18 @@ function ProfileUpdate() {
       }
     }
     await axios
-      .patch("/profileInfo", formData)
+      .patch("/profileInfo", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((response) => {
         console.log(response.data);
         window.alert("프로필 수정 완료");
         navigate("/main");
       })
       .catch((error) => {
-        if (error.data.intro === "소개글은 30자 이내로 작성해주세요.") {
-          window.alert(error.data.intro);
-        }
+        console.log(error);
       });
   };
   return (
