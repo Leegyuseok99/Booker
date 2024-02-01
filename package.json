@@ -21,7 +21,7 @@
     "swiper": "^11.0.5",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://www.aladin.co.kr",
+  "proxy": "http://booker.kro.kr:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
