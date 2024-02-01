@@ -18,14 +18,14 @@ function MessageSendModal({
       .post(
         "/message",
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-        {
           recipientId: profileId,
           title: title,
           content: content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       )
       .then((response) => {
