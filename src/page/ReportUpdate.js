@@ -19,7 +19,7 @@ function ReportUpdate() {
   useEffect(() => {
     const fetchReportData = async () => {
       try {
-        const response = await axios.get(`/report`, {
+        const response = await axios.get(`/api/report`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -115,7 +115,7 @@ function ReportUpdate() {
       }
     }
     await axios
-      .patch("/report", formData, {
+      .patch("/api/report", formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

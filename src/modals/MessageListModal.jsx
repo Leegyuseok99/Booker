@@ -22,7 +22,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
     setSelectedContent("received");
     const receivedMessage = () => {
       axios
-        .get("/received/message", {
+        .get("/api/received/message", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -46,7 +46,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
     setSelectedContent("sent");
     const sentMessage = () => {
       axios
-        .get("/sent/message", {
+        .get("/api/sent/message", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

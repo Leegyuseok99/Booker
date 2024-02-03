@@ -115,7 +115,7 @@ function Profile() {
     });
 
     await axios
-      .post("/profile", formData)
+      .post("/api/profile", formData)
       .then((response) => {
         if (response.data.social === "NORMARL") {
           console.log(response.data);

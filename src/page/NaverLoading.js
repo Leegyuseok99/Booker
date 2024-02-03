@@ -14,7 +14,7 @@ function NaverLoading() {
   console.log(state);
   useEffect(() => {
     axios
-      .post("/oauth2/code/naver", {
+      .post("/api/oauth2/code/naver", {
         code: code,
         state: state,
       })

@@ -16,7 +16,7 @@ function BookInfo({ selectedBook, onSubmit }) {
   const [progress, setProgress] = useState();
   const bookInfo = async () => {
     await axios
-      .get(`/book`, {
+      .get(`/api/book`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -37,7 +37,7 @@ function BookInfo({ selectedBook, onSubmit }) {
   const bookExist = async () => {
     if (bookId === "null") {
       await axios
-        .get("/book/newbook", {
+        .get("/api/book/newbook", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -61,7 +61,7 @@ function BookInfo({ selectedBook, onSubmit }) {
   const existhandle = () => {
     axios
       .post(
-        "/book/mybook",
+        "/api/book/mybook",
         {
           isbn13: bookData.isbn13,
           img: bookData.cover,
@@ -82,7 +82,7 @@ function BookInfo({ selectedBook, onSubmit }) {
 
   const onSubmithandle = () => {
     if (selected == "DELETE") {
-      axios.delete("/book", {
+      axios.delete("/api/book", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -93,7 +93,7 @@ function BookInfo({ selectedBook, onSubmit }) {
     } else {
       console.log(selected.key);
       axios.patch(
-        "/book/progress",
+        "/api/book/progress",
         {
           bookId: bookId,
           progress: selected,
@@ -127,7 +127,7 @@ function BookInfo({ selectedBook, onSubmit }) {
   const getReport = async () => {
     if (bookId !== "null") {
       await axios
-        .get(`/book/progress/reports`, {
+        .get(`/api/book/progress/reports`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

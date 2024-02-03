@@ -103,7 +103,7 @@ function SignUp() {
   const onSubmithandle = async (e) => {
     e.preventDefault();
     await axios
-      .post("/signup", {
+      .post("/api/signup", {
         id: id,
         pw: pw,
         email: email,

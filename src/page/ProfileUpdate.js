@@ -24,7 +24,7 @@ function ProfileUpdate() {
 
   const getProfile = async () => {
     axios
-      .get("/profileInfo", {
+      .get("/api/profileInfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -166,7 +166,7 @@ function ProfileUpdate() {
       }
     }
     await axios
-      .patch("/profileInfo", formData, {
+      .patch("/api/profileInfo", formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

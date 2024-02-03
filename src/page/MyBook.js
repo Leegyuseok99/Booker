@@ -38,7 +38,7 @@ function MyBook() {
   const [userData, setUserData] = useState({});
   const getUser = () => {
     axios
-      .get("/profileInfo", {
+      .get("/api/profileInfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -60,7 +60,7 @@ function MyBook() {
   const [following, setFollowing] = useState("");
   const getFollow = async () => {
     await axios
-      .get("/follow/count", {
+      .get("/api/follow/count", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -87,7 +87,7 @@ function MyBook() {
   const followerModalOpenhandle = () => {
     setOpen1(true);
     axios
-      .get("/follower/list", {
+      .get("/api/follower/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -110,7 +110,7 @@ function MyBook() {
   const followingModalOpenhandle = () => {
     setOpen2(true);
     axios
-      .get("/following/list", {
+      .get("/api/following/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -164,7 +164,7 @@ function MyBook() {
     if (!hasNext) return;
     console.log(nowPage);
     await axios
-      .get("/book/library/list", {
+      .get("/api/book/library/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -207,12 +207,6 @@ function MyBook() {
 
   const handleBookClick = async (isbn13, bookId) => {
     navigate(`/bookinfo/${isbn13}/${bookId}`);
-    // try {
-    //     const response = await axios.get(`/book/${isbn13}`);
-    //     setSelectedBook(response.data);
-    // } catch (error) {
-    //     console.error("Error fetching book details:", error);
-    // }
   };
 
   const saleStatusChange = (bookId) => {
@@ -222,7 +216,7 @@ function MyBook() {
       reads[clickedBookIndex].saleState === "POS" ? "IMP" : "POS";
     try {
       axios.patch(
-        "/book/saleState",
+        "/api/book/saleState",
         {
           bookId: reads[clickedBookIndex].bookId,
           saleState: newSaleStatus,

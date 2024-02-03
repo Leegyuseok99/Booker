@@ -27,7 +27,7 @@ function SearchPage() {
   };
   const searchBook = async () => {
     await axios
-      .get("/book/search", {
+      .get("/api/book/search", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -57,7 +57,7 @@ function SearchPage() {
   };
   const searchUser = async () => {
     await axios
-      .get("/profile/search", {
+      .get("/api/profile/search", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

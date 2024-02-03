@@ -12,7 +12,7 @@ function GoogleLoading() {
   console.log("code: ", code);
   useEffect(() => {
     axios
-      .post("/oauth2/code/google", {
+      .post("/api/oauth2/code/google", {
         code: code,
       })
       .then((response) => {

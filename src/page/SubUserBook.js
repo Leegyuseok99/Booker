@@ -40,7 +40,7 @@ function SubUserBook() {
 
   const profileInfo = async () => {
     await axios
-      .get("/profileInfo", {
+      .get("/api/profileInfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -68,7 +68,7 @@ function SubUserBook() {
 
   const getFollow = async () => {
     await axios
-      .get("/follow/count", {
+      .get("/api/follow/count", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -98,7 +98,7 @@ function SubUserBook() {
   const followerModalOpenhandle = () => {
     setOpen1(true);
     axios
-      .get("/follower/list", {
+      .get("/api/follower/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -124,7 +124,7 @@ function SubUserBook() {
   const followingModalOpenhandle = () => {
     setOpen2(true);
     axios
-      .get("/following/list", {
+      .get("/api/following/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -148,7 +148,7 @@ function SubUserBook() {
   const [followingStatus, setFollowingStatus] = useState("");
   const isFollowing = async () => {
     await axios
-      .get(`/follow/isFollowing`, {
+      .get(`/api/follow/isFollowing`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -167,7 +167,7 @@ function SubUserBook() {
   const handleFollowToggle = async () => {
     if (followingStatus) {
       try {
-        await axios.delete("/unfollow", {
+        await axios.delete("/api/unfollow", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -182,7 +182,7 @@ function SubUserBook() {
     } else {
       try {
         await axios.post(
-          "/follow",
+          "/api/follow",
           {
             profileId: profileId,
           },
@@ -232,7 +232,7 @@ function SubUserBook() {
     if (!hasNext) return;
     console.log(nowPage);
     await axios
-      .get("/book/library/list", {
+      .get("/api/book/library/list", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -277,7 +277,7 @@ function SubUserBook() {
   const handleBookClick = async (isbn13, bookId) => {
     navigate(`/bookinfo/${isbn13}/${bookId}`);
     try {
-      const response = await axios.get(`/book/${isbn13}`, {
+      const response = await axios.get(`/api/book/${isbn13}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

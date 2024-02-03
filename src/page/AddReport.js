@@ -61,7 +61,7 @@ function AddReport() {
     formData.append("content", comment);
     formData.append("sharing", radioStatus);
     await axios
-      .post("/report", formData, {
+      .post("/api/report", formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

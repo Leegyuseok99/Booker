@@ -39,7 +39,7 @@ function Header() {
   const [userInfo, setUserInfo] = useState(false);
   const getUser = async () => {
     await axios
-      .get("/profileInfo", {
+      .get("/api/profileInfo", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

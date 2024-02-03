@@ -13,7 +13,7 @@ function Home() {
 
   async function getBook() {
     await axios
-      .get("/book/bestseller")
+      .get("/api/book/bestseller")
       .then((response) => {
         console.log(response);
         const newBestSeller = response.data.bestSellerList.map((item) => ({

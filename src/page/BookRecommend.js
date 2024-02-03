@@ -17,7 +17,7 @@ function BookRecommend() {
   let start = 2;
   const getBook = async () => {
     await axios
-      .get("/book/bestseller", {
+      .get("/api/book/bestseller", {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: {
           start: start,
@@ -68,7 +68,7 @@ function BookRecommend() {
   const getOtherUser = async () => {
     if (!hasNext) return;
     await axios
-      .get("/profile/Recommendation", {
+      .get("/api/profile/Recommendation", {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: {
           page: nowPage,

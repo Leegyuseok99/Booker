@@ -11,7 +11,7 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
   const [imageSrc, setImageSrc] = useState("");
   const messageContent = async () => {
     await axios
-      .get("/received/message/content", {
+      .get("/api/received/message/content", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

@@ -16,7 +16,7 @@ function MessageSendModal({
   const onSubmithandle = () => {
     axios
       .post(
-        "/message",
+        "/api/message",
         {
           recipientId: profileId,
           title: title,

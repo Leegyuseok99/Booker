@@ -13,7 +13,7 @@ function ReportView() {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const response = await axios.get(`/report`, {
+        const response = await axios.get(`/api/report`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -45,7 +45,7 @@ function ReportView() {
 
   const handleDeleteReport = () => {
     axios
-      .delete("/report", {
+      .delete("/api/report", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

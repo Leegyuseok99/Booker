@@ -5,7 +5,7 @@ import styles from "../css/modal/SentMessage.module.css";
 function SentMessage(props) {
   const accessToken = localStorage.getItem("accesstoken");
   const messsageDelete = () => {
-    axios.delete("/message", {
+    axios.delete("/api/message", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

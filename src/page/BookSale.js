@@ -14,7 +14,7 @@ function BookSale() {
   const [reasonList, setReasonList] = useState([]);
   const searchBook = async () => {
     await axios
-      .get("/book/search", {
+      .get("/api/book/search", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

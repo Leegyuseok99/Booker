@@ -13,7 +13,7 @@ function SaleReason() {
   const [posUserList, setPosUserList] = useState([]);
   const salePosUser = async () => {
     await axios
-      .get("/book/saleState", {
+      .get("/api/book/saleState", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
