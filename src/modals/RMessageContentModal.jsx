@@ -73,7 +73,7 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
             <MessageSendModal
               isOpen={isOpen1}
               onCancle={sendModalClose}
-              recipientId={message.senderId}
+              profileId={message.senderId}
               profileImg={imageSrc}
               nickname={message.nickname}
             ></MessageSendModal>

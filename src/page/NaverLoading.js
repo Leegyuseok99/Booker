@@ -29,6 +29,7 @@ function NaverLoading() {
           navigate("/Main");
           localStorage.setItem("accesstoken", response.data.accessToken);
           localStorage.setItem("refreshtoken", response.data.refreshToken);
+          localStorage.setItem("nickname", response.data.nickname);
         }
         console.log(response.data);
       })

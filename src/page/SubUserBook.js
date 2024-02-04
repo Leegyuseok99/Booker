@@ -199,6 +199,7 @@ function SubUserBook() {
     }
   };
 
+  //개인 서재 api // 무한 스크롤 기능
   let [reads, setReads] = useState([]);
 
   let nowPage = 0;
@@ -288,15 +289,6 @@ function SubUserBook() {
     }
   };
 
-  const [saleStatus, setSaleStatus] = useState("POS");
-
-  const saleStatusChange = () => {
-    if (saleStatus === "POS") {
-      setSaleStatus("IMP");
-    } else {
-      setSaleStatus("POS");
-    }
-  };
   return (
     <div className="SubUserBookWrap">
       <div className="subProfile">
@@ -397,12 +389,12 @@ function SubUserBook() {
                   onClick={() => handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
                 <div className="sellIconWrap">
-                  {saleStatus === "POS" ? (
-                    <span onClick={saleStatusChange}>
+                  {read.saleStatus === "POS" ? (
+                    <span>
                       <ShoppingCartIcon></ShoppingCartIcon>
                     </span>
                   ) : (
-                    <span onClick={saleStatusChange}>
+                    <span>
                       <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
                     </span>
                   )}
