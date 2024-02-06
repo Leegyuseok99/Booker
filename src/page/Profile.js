@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import "../css/Profile.css";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function Profile() {
   const navigate = useNavigate();
@@ -128,7 +129,12 @@ function Profile() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
     console.log(Image, nickName, introduction);
   };

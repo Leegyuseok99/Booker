@@ -2,12 +2,11 @@ import { TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/App.css";
-import Modal from "@material-ui/core";
 import LogoutModal from "../modals/LogoutModal";
 import "../css/modal/LogoutModal.module.css";
 import axios from "axios";
 import { refreshTokenFunc } from "./Token/RefreshTokenFunc";
-
+import logo from "../assets/BOOKERLOGO.png";
 function Header() {
   const accessToken = localStorage.getItem("accesstoken");
   const navigator = useNavigate();
@@ -18,9 +17,9 @@ function Header() {
     } else setUser(false);
   }, [accessToken]);
 
-  useEffect(() => {
-    userData();
-  }, [accessToken]);
+  // useEffect(() => {
+  //   userData();
+  // }, [accessToken]);
   //로그아웃 모달
 
   const [isOpen, setOpen] = useState(false);
@@ -41,33 +40,33 @@ function Header() {
   };
 
   const [userInfo, setUserInfo] = useState(null);
-  const userData = async () => {
-    await axios
-      .get("/profileInfo", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(localStorage.getItem("accesstoken"));
-        setUserInfo(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigator("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc();
-        }
-      });
-  };
+  // const userData = async () => {
+  //   await axios
+  //     .get("/profileInfo", {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(localStorage.getItem("accesstoken"));
+  //       setUserInfo(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       const tokenErr = error.response.data.code;
+  //       if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+  //         navigator("/login");
+  //       } else if (tokenErr === "JwtTokenExpired") {
+  //         refreshTokenFunc();
+  //       }
+  //     });
+  // };
   return (
     <div>
       {user ? (
         <div className="header">
           <Link to="/main" className="logo">
-            로고
+            <img src={logo}></img>
           </Link>
           <div className="user_info">
             <Link to="/mybook" className="header_individual">
@@ -79,21 +78,11 @@ function Header() {
             <Link to="/booksale" className="header_place">
               <span>책 거래</span>
             </Link>
-            <TextField
-              className="search"
-              variant="outlined"
-              placeholder="책을 검색해 보세요"
-              type="text"
-              InputProps={{
-                style: {
-                  borderRadius: "30px",
-                  height: "70%",
-                  fontSize: "13px",
-                },
-              }}
-            ></TextField>
+            <Link to="/searchpage" className="search">
+              <span>책 검색</span>
+            </Link>
             <div className="user_profile">
-              <img src={userInfo.imgURL}></img>
+              <img></img>
             </div>
             <button className="headerLogout_bnt" onClick={modalOpenhandle}>
               로그아웃
@@ -108,7 +97,7 @@ function Header() {
       ) : (
         <div className="header">
           <Link to="/" className="logo">
-            로고
+            <img src={logo}></img>
           </Link>
           <Link to="/login">
             <button className="headerLogin_btn">로그인</button>

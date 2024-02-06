@@ -3,10 +3,12 @@ import { useEffect } from "react";
 
 const useBeforeUnload = (callback) => {
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const handleBeforeUnload = (event) => {
       if (callback) {
         callback();
       }
+      event.preventDefault();
+      event.returnValue = "";
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

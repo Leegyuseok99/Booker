@@ -4,6 +4,7 @@ import "../css/AddReport.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateIcon from "@mui/icons-material/Create";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function AddReport() {
   const { bookId } = useParams();
@@ -71,6 +72,14 @@ function AddReport() {
         navigate("/");
       })
       .catch((error) => {
+        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
+
         if (error.response && error.response.data) {
           console.log(error.response.data);
           const { title, content } = error.response.data;

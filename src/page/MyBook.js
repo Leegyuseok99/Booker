@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import MessageListModal from "../modals/MessageListModal";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function MyBook() {
   const navigate = useNavigate();
@@ -54,7 +55,12 @@ function MyBook() {
         setUserData(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   useEffect(() => {
@@ -75,6 +81,12 @@ function MyBook() {
         setFollowing(response.data.followingCount);
       })
       .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
         if (error.response.data.code === "INVALID_PROFILEID") {
           window.alert(error.response.data.message);
         }
@@ -101,7 +113,12 @@ function MyBook() {
         setFollowerList(followerList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const followerhandleModalCancel = () => {
@@ -124,7 +141,12 @@ function MyBook() {
         setFollowingList(followingList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const followinghandleModalCancel = () => {
@@ -184,7 +206,12 @@ function MyBook() {
         setHasNext(response.data.hasNext);
       })
       .catch((error) => {
-        console.error(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
 
@@ -237,7 +264,12 @@ function MyBook() {
       updatedReads[clickedBookIndex].saleState = newSaleStatus;
       setReads(updatedReads);
     } catch (error) {
-      console.error(error);
+      const tokenErr = error.response.data.code;
+      if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+        navigate("/login");
+      } else if (tokenErr === "JwtTokenExpired") {
+        refreshTokenFunc(navigate);
+      }
     }
   };
   return (

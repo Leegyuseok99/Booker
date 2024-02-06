@@ -6,6 +6,8 @@ import "../css/BookInfo.css";
 import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId } = useParams();
   const [bookId, setBookId] = useState(initialBookId);
@@ -26,6 +28,14 @@ function BookInfo({ selectedBook, onSubmit }) {
       })
       .then((response) => {
         setBookData(response.data);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   useEffect(() => {
@@ -50,6 +60,14 @@ function BookInfo({ selectedBook, onSubmit }) {
           setBookId(response.data.bookId);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            refreshTokenFunc(navigate);
+          }
         });
     }
   };
@@ -74,36 +92,61 @@ function BookInfo({ selectedBook, onSubmit }) {
       )
       .then((response) => {
         navigate("/mybook");
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
 
   const [selected, setSelected] = useState("");
-  const [selectedBooks, setSelectedBooks] = useState({});
 
   const onSubmithandle = () => {
     if (selected == "DELETE") {
-      axios.delete("/book", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          bookId: bookId,
-        },
-      });
-    } else {
-      console.log(selected.key);
-      axios.patch(
-        "/book/progress",
-        {
-          bookId: bookId,
-          progress: selected,
-        },
-        {
+      axios
+        .delete("/book", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
-      );
+          params: {
+            bookId: bookId,
+          },
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            refreshTokenFunc(navigate);
+          }
+        });
+    } else {
+      console.log(selected.key);
+      axios
+        .patch(
+          "/book/progress",
+          {
+            bookId: bookId,
+            progress: selected,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            refreshTokenFunc(navigate);
+          }
+        });
     }
     navigate("/main");
   };
@@ -140,6 +183,14 @@ function BookInfo({ selectedBook, onSubmit }) {
           setExist(response.data.exist);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            refreshTokenFunc(navigate);
+          }
         });
     }
   };
@@ -187,7 +238,12 @@ function BookInfo({ selectedBook, onSubmit }) {
             </div>
             <div className="leftUpLeft">
               <div className="infoTitle">{bookData.title}</div>
-              <div className="infoauthor">저자 글쓴이 책 발행 년도</div>
+              <div className="infoauthor">
+                <span>{bookData.author}</span>
+                <br />
+                <span>{bookData.publisher}</span>
+                <span>{bookData.pubDate}</span>
+              </div>
               <div>
                 {exist == false ? (
                   <button onClick={existhandle}>책 추가</button>

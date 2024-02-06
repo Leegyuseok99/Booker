@@ -4,13 +4,13 @@
   margin-top: 30px;
 }
 .infoTitle {
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: 600;
-  padding: 10px 0px;
+  padding: 10px 0px 0px;
 }
 .infoImgWrap {
-  width: 150px;
-  height: 200px;
+  width: 25vw;
+  height: 30vh;
 }
 .infoImg {
   width: 100%;
@@ -24,8 +24,8 @@
   border: 1px solid #f7f7f7;
   box-shadow: 2px 2px 2px 2px #999999;
   border-radius: 20px;
-  width: 35%;
-  height: 370px;
+  width: 35vw;
+  height: 70vh;
   padding: 20px 30px;
 }
 .leftUp {
@@ -48,22 +48,23 @@
   padding: 0px 20px;
 }
 .infoauthor {
-  padding: 20px 0px 0px 0px;
-  color: #262626;
-  font-size: 14px;
+  padding: 15px 0px 0px 0px;
+  color: #777777;
+  font-size: 0.8rem;
+  font-weight: 100;
 }
 .infoCategoryWrap {
-  font-size: 18px;
+  font-size: 1.1rem;
   font-weight: 600;
   padding-top: 20px;
 }
 .infoCategory {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   color: #666666;
 }
 .infoIntroWrap {
-  font-size: 18px;
+  font-size: 1.125px;
   font-weight: 600;
   padding-top: 20px;
 }
@@ -72,7 +73,7 @@
 }
 .infointro {
   width: 80%;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   color: #666666;
 }
@@ -111,7 +112,7 @@
 .report {
   padding: 15px;
   border-bottom: 1px solid #ccd0d5;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -126,7 +127,7 @@
   width: 140px;
   height: 40px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   background-color: #ebedf0;
   border: 1px solid #ebedf0;

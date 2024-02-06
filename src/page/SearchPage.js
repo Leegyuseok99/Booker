@@ -7,6 +7,7 @@ import BookSearchCard from "../component/BookSearchCard";
 import UserSearchCard from "../component/UserSearchCard";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -101,6 +102,14 @@ function SearchPage() {
       })
       .then((response) => {
         setReasonList(response.data.searchBooks);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const handleSearchOnchange = (e) => {
@@ -135,6 +144,14 @@ function SearchPage() {
           image: `data:${user.imgFileDto.mimeType};base64, ${user.imgFileDto.base64Image}`,
         }));
         setReasonUser(otherUser);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const handleSearchUser = () => {

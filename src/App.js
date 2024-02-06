@@ -23,13 +23,12 @@ import BookSale from "./page/BookSale";
 import SaleReason from "./page/SaleReason";
 
 function App() {
-  // 페이지를 떠날 때나 컴포넌트가 언마운트 될 때 localStorage에서 토큰 제거
-  // useBeforeUnload(() => {
-  //     // 페이지를 떠날 때만 토큰 삭제 로직 추가
-  //     localStorage.removeItem("accesstoken");
-  //     localStorage.removeItem("refreshtoken");
-  // });
-
+  useBeforeUnload(() => {
+    window.addEventListener("beforeunload", () => {
+      localStorage.removeItem("accesstoken");
+      localStorage.removeItem("refreshtoken");
+    });
+  });
   return (
     <Router>
       <Header />

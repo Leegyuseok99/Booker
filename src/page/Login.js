@@ -124,12 +124,6 @@ function Login() {
         </div>
         <ul className="findWrap">
           <li>
-            <a>비밀번호 찾기</a>
-          </li>
-          <li>
-            <a>아이디 찾기</a>
-          </li>
-          <li>
             <Link to="/SignUp" className="SignUp_li">
               회원가입
             </Link>

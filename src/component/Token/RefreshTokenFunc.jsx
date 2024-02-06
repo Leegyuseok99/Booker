@@ -1,20 +1,19 @@
 import axios from "axios";
 
-export const refreshTokenFunc = () => {
+const refreshTokenFunc = async (navigate) => {
   const refreshToken = localStorage.getItem("refreshtoken");
-  const result = axios
-    .post("/auth/refresh/token", {
+  try {
+    const response = await axios.post("/auth/refresh/token", {
       refreshToken: refreshToken,
-    })
-    .then((response) => {
-      localStorage.setItem("accesstoken", response.data.accessToken);
-      console.log(localStorage.getItem("accesstoken"));
-    })
-    .catch((error) => {
-      if (error.response.data.code === "INVALID_RefreshToken") {
-        window.alert(error.response.data.message);
-        navigator("/login");
-      }
     });
-  return result;
+    localStorage.setItem("accesstoken", response.data.accessToken);
+    console.log(localStorage.getItem("accesstoken"));
+  } catch (error) {
+    if (error.response && error.response.data.code === "INVALID_RefreshToken") {
+      window.alert(error.response.data.message);
+      navigate("/login");
+    }
+  }
 };
+
+export default refreshTokenFunc;

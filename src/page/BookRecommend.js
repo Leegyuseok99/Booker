@@ -5,7 +5,8 @@ import "../css/BookRecommend.css";
 import BestSellerCard from "../component/BestSellerCard";
 import SimilarUser from "../component/SimilarUser";
 import { useNavigate } from "react-router-dom";
-import BookInfo from "./BookInfo";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function BookRecommend() {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accesstoken");
@@ -36,7 +37,12 @@ function BookRecommend() {
         setBookList(newBook);
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
 
@@ -56,6 +62,14 @@ function BookRecommend() {
           interests: user.interests,
         }));
         setSimilarUserList(otherUser);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
 

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "../css/ReportView.css";
 import CreateIcon from "@mui/icons-material/Create";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function ReportView() {
   const { reportId } = useParams();
   const navigate = useNavigate();
@@ -27,7 +29,12 @@ function ReportView() {
         setImageSrc(`data:${mimeType};base64, ${image}`);
         setReport(response.data);
       } catch (error) {
-        console.error(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       }
     };
 
@@ -61,7 +68,12 @@ function ReportView() {
         navigate(-1);
       })
       .catch((error) => {
-        console.error(error.response.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   return (

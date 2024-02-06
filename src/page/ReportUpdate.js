@@ -4,6 +4,8 @@ import "../css/ReportUpdate.css";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import CreateIcon from "@mui/icons-material/Create";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function ReportUpdate() {
   const { reportId } = useParams();
   const accessToken = localStorage.getItem("accesstoken");
@@ -39,7 +41,12 @@ function ReportUpdate() {
           radioStatus: sharing || "PUBLIC",
         });
       } catch (error) {
-        console.error(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       }
     };
     fetchReportData();
@@ -127,6 +134,14 @@ function ReportUpdate() {
       .then((response) => {
         window.alert("독후감 수정 완료");
         navigate(`/reportview${reportId}`);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   return (

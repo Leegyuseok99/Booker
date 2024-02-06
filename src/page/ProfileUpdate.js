@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import styles from "../css/ProfileUpdate.module.css";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ProfileUpdate() {
   const navigate = useNavigate();
@@ -23,9 +24,11 @@ function ProfileUpdate() {
         localStorage.setItem("accesstoken", response.data.accessToken);
       })
       .catch((error) => {
-        if (error.response.data.code === "INVALID_RefreshToken") {
-          window.alert(error.response.data.message);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
         }
       });
   };
@@ -56,12 +59,11 @@ function ProfileUpdate() {
         setUserData({ ...userData, nickname, intro });
       })
       .catch((error) => {
-        console.log(error);
         const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken") {
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc();
+          refreshTokenFunc(navigate);
         }
       });
   };
@@ -200,7 +202,12 @@ function ProfileUpdate() {
         navigate("/main");
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   return (

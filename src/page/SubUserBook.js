@@ -13,6 +13,7 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import MessageSendModal from "../modals/MessageSendModal";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function SubUserBook() {
   const navigate = useNavigate();
@@ -57,7 +58,12 @@ function SubUserBook() {
         setSubUserInfo(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
 
@@ -85,6 +91,12 @@ function SubUserBook() {
         setFollowing(response.data.followingCount);
       })
       .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
         if (error.response.data.code === "INVALID_PROFILEID") {
           window.alert(error.response.data.message);
         }
@@ -114,7 +126,12 @@ function SubUserBook() {
         setFollowerList(followerList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const followerhandleModalCancel = () => {
@@ -140,7 +157,12 @@ function SubUserBook() {
         setFollowingList(followingList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   const followinghandleModalCancel = () => {
@@ -161,6 +183,14 @@ function SubUserBook() {
       })
       .then((response) => {
         setFollowingStatus(response.data.following);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       });
   };
   useEffect(() => {
@@ -180,7 +210,12 @@ function SubUserBook() {
         });
         setFollowingStatus(false);
       } catch (error) {
-        console.error("사용자 언팔로우 중 오류 발생:", error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       }
     } else {
       try {
@@ -197,7 +232,12 @@ function SubUserBook() {
         );
         setFollowingStatus(true);
       } catch (error) {
-        console.error("사용자 팔로우 중 오류 발생:", error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+        }
       }
     }
   };
