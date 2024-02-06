@@ -125,6 +125,7 @@ function Profile() {
         } else {
           localStorage.setItem("accesstoken", response.data.accessToken);
           localStorage.setItem("refreshtoken", response.data.refreshToken);
+          localStorage.setItem("nickname", response.data.nickname);
           navigate("/Main");
         }
       })

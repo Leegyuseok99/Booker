@@ -22,7 +22,7 @@ function SaleUser(props) {
   return (
     <div className={styles.posUserCard}>
       <div className={styles.imgWrap} onClick={props.onClick}>
-        <img></img>
+        <img src={props.image}></img>
       </div>
       <div className={styles.userInfoWrap} onClick={props.onClick}>
         <div className={styles.nicknameWrap}>{props.nickname}</div>

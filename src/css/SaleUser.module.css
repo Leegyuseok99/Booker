@@ -44,3 +44,8 @@
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
 }
+.imgWrap > img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}

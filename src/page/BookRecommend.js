@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "../css/BookRecommend.css";
 import BestSellerCard from "../component/BestSellerCard";
@@ -17,12 +17,13 @@ function BookRecommend() {
     getBook();
   }, []);
 
+  let start = 2;
   const getBook = async () => {
     await axios
       .get("/book/bestseller", {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: {
-          start: 1,
+          start: start,
         },
       })
       .then((response) => {
@@ -34,7 +35,8 @@ function BookRecommend() {
           author: item.author,
           description: item.description,
         }));
-        setBookList(newBook);
+        setBookList((prevBookList) => [...prevBookList, ...newBook]);
+        start = start + 1;
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;
@@ -46,13 +48,41 @@ function BookRecommend() {
       });
   };
 
+  const bookListRef = useRef(null);
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = bookListRef.current;
+
+    // 스크롤이 끝에 도달하면 fetchData 호출
+    if (scrollTop + clientHeight >= scrollHeight) {
+      getBook();
+    }
+  };
+  useEffect(() => {
+    const bookListElement = bookListRef.current;
+    if (bookListElement) {
+      // 스크롤 이벤트 리스너 등록
+      bookListElement.addEventListener("scroll", handleScroll);
+    }
+    // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 해제
+    return () => {
+      if (bookListElement) {
+        bookListElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [start]);
+
   //취향 비슷한 유저 정보 가져오기
   const [similarUserList, setSimilarUserList] = useState([]);
 
+  let nowPage = 0;
+  const [hasNext, setHasNext] = useState(true);
   const getOtherUser = async () => {
     await axios
       .get("/profile/Recommendation", {
         headers: { Authorization: `Bearer ${accessToken}` },
+        params: {
+          page: nowPage,
+        },
       })
       .then((response) => {
         const otherUser = response.data.recommends.map((user) => ({
@@ -61,7 +91,12 @@ function BookRecommend() {
           image: `data:${user.imgFileDto.mimeType};base64, ${user.imgFileDto.base64Image}`,
           interests: user.interests,
         }));
-        setSimilarUserList(otherUser);
+        const updatedUser =
+          nowPage === 0 ? otherUser : [...similarUserList, ...otherUser];
+
+        setSimilarUserList((prevUser) => [...prevUser, ...updatedUser]);
+        nowPage = nowPage + 1;
+        setHasNext(response.data.hasNext);
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;
@@ -77,6 +112,31 @@ function BookRecommend() {
     getOtherUser();
   }, []);
 
+  const handleScroll1 = () => {
+    const { scrollTop, scrollHeight, clientHeight } = userListRef.current;
+
+    // 스크롤이 끝에 도달하면 fetchData 호출
+    if (scrollTop + clientHeight >= scrollHeight) {
+      getOtherUser();
+    }
+  };
+
+  const userListRef = useRef(null);
+
+  useEffect(() => {
+    const userListElement = userListRef.current;
+    // 스크롤 이벤트 리스너 등록
+    if (userListElement) {
+      userListElement.addEventListener("scroll", handleScroll1);
+    }
+    // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 해제
+    return () => {
+      if (userListElement) {
+        userListElement.removeEventListener("scroll", handleScroll1);
+      }
+    };
+  }, [hasNext]);
+
   const handleBookClick = (isbn13, bookId) => {
     navigate(`/bookinfo/${isbn13}/${bookId}`);
   };
@@ -88,7 +148,7 @@ function BookRecommend() {
     <div className="recommendWrap">
       <div className="bestSellerListWrap">
         <span>베스트 셀러</span>
-        <div className="bsList">
+        <div className="bsList" ref={bookListRef}>
           {bookList.map((book) => (
             <BestSellerCard
               isbn13={book.isbn13}
@@ -103,7 +163,7 @@ function BookRecommend() {
       </div>
       <div className="similarUserWrap">
         <span>취향이 비슷한 유저</span>
-        <div className="suList">
+        <div className="suList" ref={userListRef}>
           {similarUserList.map((similar) => (
             <SimilarUser
               profileId={similar.profileId}

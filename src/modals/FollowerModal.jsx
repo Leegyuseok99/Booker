@@ -3,6 +3,7 @@ import styles from "../css/modal/FollowerModal.module.css";
 import { useNavigate } from "react-router-dom";
 
 function FollowerModal({ isOpen, onCancle, followerList }) {
+  const nickname = localStorage.getItem("nickname");
   const navigate = useNavigate();
   const onCanclehandle = () => {
     onCancle();
@@ -22,7 +23,12 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
             key={follower.nickname}
             className={styles.followerWrap}
             onClick={() => {
-              navigate(`/subuserbook/${follower.profileId}`);
+              if (nickname === follower.nickname) {
+                navigate("/mybook");
+              } else {
+                navigate(`/subuserbook/${follower.profileId}`);
+                onCancle();
+              }
             }}
           >
             <span>{follower.intro}</span>

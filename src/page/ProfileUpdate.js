@@ -199,7 +199,7 @@ function ProfileUpdate() {
       .then((response) => {
         console.log(response.data);
         window.alert("프로필 수정 완료");
-        navigate("/main");
+        window.location.replace("/main");
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;

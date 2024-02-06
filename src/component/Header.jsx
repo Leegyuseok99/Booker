@@ -5,22 +5,22 @@ import "../css/App.css";
 import LogoutModal from "../modals/LogoutModal";
 import "../css/modal/LogoutModal.module.css";
 import axios from "axios";
-import { refreshTokenFunc } from "./Token/RefreshTokenFunc";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import logo from "../assets/BOOKERLOGO.png";
 function Header() {
   const accessToken = localStorage.getItem("accesstoken");
   const navigator = useNavigate();
   const [user, setUser] = useState(false);
+
   useEffect(() => {
     if (accessToken !== null) {
       setUser(true);
     } else setUser(false);
   }, [accessToken]);
 
-  // useEffect(() => {
-  //   userData();
-  // }, [accessToken]);
-  //로그아웃 모달
+  useEffect(() => {
+    userData();
+  }, [accessToken]);
 
   const [isOpen, setOpen] = useState(false);
 
@@ -32,6 +32,7 @@ function Header() {
     setOpen(false);
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
+    localStorage.removeItem("nickname");
     navigator("/");
   };
   const handleModalCancel = () => {
@@ -39,28 +40,31 @@ function Header() {
     console.log("close");
   };
 
-  const [userInfo, setUserInfo] = useState(null);
-  // const userData = async () => {
-  //   await axios
-  //     .get("/profileInfo", {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log(localStorage.getItem("accesstoken"));
-  //       setUserInfo(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       const tokenErr = error.response.data.code;
-  //       if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-  //         navigator("/login");
-  //       } else if (tokenErr === "JwtTokenExpired") {
-  //         refreshTokenFunc();
-  //       }
-  //     });
-  // };
+  const [imageSrc, setImageSrc] = useState("");
+  const [userInfo, setUserInfo] = useState(false);
+  const userData = async () => {
+    await axios
+      .get("/profileInfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        const image = response.data.imgFile.base64Image;
+        const mimeType = response.data.imgFile.mimeType;
+        // Spring에서 받은 Base64 문자열
+        setImageSrc(`data:${mimeType};base64, ${image}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigator("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigator);
+        }
+      });
+  };
   return (
     <div>
       {user ? (
@@ -81,8 +85,13 @@ function Header() {
             <Link to="/searchpage" className="search">
               <span>책 검색</span>
             </Link>
-            <div className="user_profile">
-              <img></img>
+            <div
+              className="user_profile"
+              onClick={() => {
+                navigator("/profileupdate");
+              }}
+            >
+              <img src={imageSrc}></img>
             </div>
             <button className="headerLogout_bnt" onClick={modalOpenhandle}>
               로그아웃

@@ -24,6 +24,7 @@
   word-wrap: break-word;
   font-size: 17px;
   font-weight: 600;
+  overflow: hidden;
 }
 
 .bscAuthor {

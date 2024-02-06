@@ -205,7 +205,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           <div
             key={report.reportId}
             className="report"
-            onClick={() => handleReportClick(report.reportId)}
+            onClick={() => handleReportClick(report.reportId, isbn13, bookId)}
           >
             {report.title} - 작성일: {report.redate}
           </div>
@@ -216,8 +216,8 @@ function BookInfo({ selectedBook, onSubmit }) {
   useEffect(() => {
     getReport();
   }, []);
-  const handleReportClick = (reportId) => {
-    navigate(`/reportview/${reportId}`);
+  const handleReportClick = (reportId, isbn13, bookId) => {
+    navigate(`/reportview/${reportId}/${isbn13}/${bookId}`);
   };
   const addReporthandle = () => {
     console.log(bookId);

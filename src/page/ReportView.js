@@ -6,7 +6,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ReportView() {
-  const { reportId } = useParams();
+  const { reportId, bookId, isbn13 } = useParams();
   const navigate = useNavigate();
   const [report, setReport] = useState({});
   const [imageSrc, setImageSrc] = useState("");
@@ -50,7 +50,7 @@ function ReportView() {
   };
 
   const handleUpdateReport = () => {
-    navigate(`/reportupdate/${reportId}`);
+    navigate(`/reportupdate/${reportId}/${isbn13}/${bookId}`);
   };
 
   const handleDeleteReport = () => {
@@ -65,7 +65,7 @@ function ReportView() {
       })
       .then((response) => {
         window.alert("삭제 완료.");
-        navigate(-1);
+        navigate(`/bookinfo/${isbn13}/${bookId}`);
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;

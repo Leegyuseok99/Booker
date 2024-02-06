@@ -42,9 +42,15 @@ function App() {
         <Route path="/mybook" element={<MyBook />} />
         <Route path="/subuserbook/:profileId" element={<SubUserBook />} />
         <Route path="/bookinfo/:isbn13/:bookId" element={<BookInfo />} />
-        <Route path="/reportview/:reportId" element={<ReportView />} />
+        <Route
+          path="/reportview/:reportId/:isbn13/:bookId"
+          element={<ReportView />}
+        />
         <Route path="/addreport/:bookId" element={<AddReport />} />
-        <Route path="/reportupdate/:reportId" element={<ReportUpdate />} />
+        <Route
+          path="/reportupdate/:reportId/:isbn13/:bookId"
+          element={<ReportUpdate />}
+        />
         <Route path="/bookrecommend" element={<BookRecommend />} />
         <Route path="/Naver_Loading" element={<NaverLoading />}></Route>
         <Route path="/Google_Loading" element={<GoogleLoading />}></Route>

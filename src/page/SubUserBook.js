@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../css/SubUserBook.css";
@@ -242,8 +242,68 @@ function SubUserBook() {
     }
   };
 
-  const reads = [];
-  const chunkSize = 5;
+  let [reads, setReads] = useState([]);
+
+  let nowPage = 0;
+  const [hasNext, setHasNext] = useState(true);
+
+  const handleScroll = () => {
+    // 현재 스크롤 위치
+    const scrollY = window.scrollY;
+    // 뷰포트의 높이
+    const viewportHeight = window.innerHeight;
+    // 문서의 전체 높이
+    const fullHeight = document.body.scrollHeight;
+
+    // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
+    if (scrollY + viewportHeight >= fullHeight && hasNext) {
+      getUserBook();
+    }
+  };
+
+  useEffect(() => {
+    // 스크롤 이벤트 리스너
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasNext]);
+
+  const getUserBook = async () => {
+    if (!hasNext) return;
+    console.log(nowPage);
+    await axios
+      .get("/book/library/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          page: nowPage,
+          profileId: profileId,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const updatedReads =
+          nowPage === 0
+            ? response.data.bookLists
+            : [...reads, ...response.data.bookLists];
+
+        setReads((prevReads) => [...prevReads, ...updatedReads]);
+        nowPage = response.data.nowPage + 1;
+        setHasNext(response.data.hasNext);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  useEffect(() => {
+    getUserBook();
+  }, []);
+
+  const chunkSize = 4;
 
   // 배열을 지정된 크기의 청크로 나누는 함수
   const chunkArray = (arr, size) => {
@@ -271,15 +331,6 @@ function SubUserBook() {
     }
   };
 
-  const [saleStatus, setSaleStatus] = useState("POS");
-
-  const saleStatusChange = () => {
-    if (saleStatus === "POS") {
-      setSaleStatus("IMP");
-    } else {
-      setSaleStatus("POS");
-    }
-  };
   return (
     <div className="SubUserBookWrap">
       <div className="subProfile">
@@ -373,16 +424,16 @@ function SubUserBook() {
               <div className="bookListCard">
                 <BookListCard
                   key={i}
-                  cover={read.cover}
+                  cover={read.img}
                   onClick={handleBookClick}
                 ></BookListCard>
                 <div className="sellIconWrap">
-                  {saleStatus === "POS" ? (
-                    <span onClick={saleStatusChange}>
+                  {read.saleState === "POS" ? (
+                    <span>
                       <ShoppingCartIcon></ShoppingCartIcon>
                     </span>
                   ) : (
-                    <span onClick={saleStatusChange}>
+                    <span>
                       <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
                     </span>
                   )}

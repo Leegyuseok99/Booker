@@ -4,12 +4,9 @@ import styles from "../css/modal/RMessageContentModal.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import MessageSendModal from "./MessageSendModal";
-import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
-import { useNavigate } from "react-router-dom";
 
 function MessageContentModal({ isOpen, onCancle, messageId }) {
   const accessToken = localStorage.getItem("accesstoken");
-  const navigate = useNavigate();
   const [message, setMessage] = useState({});
   const [imageSrc, setImageSrc] = useState("");
   const messageContent = async () => {
@@ -28,14 +25,6 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
         // Spring에서 받은 Base64 문자열
         setImageSrc(`data:${mimeType};base64, ${image}`);
         setMessage(response.data);
-      })
-      .catch((error) => {
-        const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigate("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
-        }
       });
   };
   useEffect(() => {
@@ -45,6 +34,9 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
   }, [messageId]);
   const onCanclehandle = () => {
     onCancle();
+  };
+  const onSubmithandle = () => {
+    setIsOpen1(false);
   };
   const [isOpen1, setIsOpen1] = useState(false);
   const sendModalOpen = () => {
@@ -87,7 +79,8 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
             <MessageSendModal
               isOpen={isOpen1}
               onCancle={sendModalClose}
-              recipientId={message.senderId}
+              onSubmit={onSubmithandle}
+              profileId={message.senderId}
               profileImg={imageSrc}
               nickname={message.nickname}
             ></MessageSendModal>
