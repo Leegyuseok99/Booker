@@ -33,7 +33,7 @@ function AddReport() {
   const handleButtonClick = () => {
     fileInput.current.click();
   };
-  const [radioStatus, setRadioStatus] = useState("PUBLIC");
+  let [radioStatus, setRadioStatus] = useState("PUBLIC");
 
   const handleRadioChange = (e) => {
     setRadioStatus(e.target.value);
@@ -140,7 +140,7 @@ function AddReport() {
             <label>
               <input
                 type="radio"
-                value="public"
+                value="PUBLIC"
                 checked={radioStatus === "PUBLIC"}
                 onChange={handleRadioChange}
               />
@@ -149,7 +149,7 @@ function AddReport() {
             <label>
               <input
                 type="radio"
-                value="private"
+                value="PRIVATE"
                 checked={radioStatus === "PRIVATE"}
                 onChange={handleRadioChange}
               />

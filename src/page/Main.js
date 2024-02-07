@@ -75,7 +75,7 @@ function Main() {
             author={seller.author}
             description={seller.description}
             category={seller.category}
-            onClick={() => handleBookReasonClick(seller.isbn13)}
+            onClick={() => handleBookReasonClick(seller.isbn13, null)}
           />
         ))}
       </div>
