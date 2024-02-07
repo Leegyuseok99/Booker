@@ -11,9 +11,9 @@ import back from "../assets/bannerback.jpg";
 function Main() {
   const navigate = useNavigate();
   const [bestSeller, setBestSeller] = useState([]);
+  let accessToken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accesstoken");
     if (!accessToken) {
       navigate("/home");
       return;
@@ -21,6 +21,10 @@ function Main() {
     getBook();
   }, []);
 
+  async function fetchDataGetBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    getBook();
+  }
   async function getBook() {
     await axios
       .get("/book/bestseller")
@@ -41,7 +45,7 @@ function Main() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataGetBook();
         }
       });
   }

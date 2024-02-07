@@ -11,9 +11,13 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function BookSale() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [search, setSearch] = useState("");
   const [reasonList, setReasonList] = useState([]);
+  async function fetchDataSearchBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    searchBook();
+  }
   const searchBook = async () => {
     await axios
       .get("/book/search", {
@@ -34,7 +38,7 @@ function BookSale() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataSearchBook();
         }
       });
   };

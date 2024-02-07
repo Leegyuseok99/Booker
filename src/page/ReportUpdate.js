@@ -8,7 +8,7 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ReportUpdate() {
   const { reportId, isbn13, bookId } = useParams();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const navigate = useNavigate();
   const [reportData, setReportData] = useState({
     image: "",
@@ -18,7 +18,12 @@ function ReportUpdate() {
     defaultImg: false,
   });
   const [imageSrc, setImageSrc] = useState();
+
   useEffect(() => {
+    async function fetchDataFetchReportData() {
+      accessToken = await refreshTokenFunc(navigate);
+      fetchReportData();
+    }
     const fetchReportData = async () => {
       try {
         const response = await axios.get(`/report`, {
@@ -45,7 +50,7 @@ function ReportUpdate() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataFetchReportData();
         }
       }
     };
@@ -110,6 +115,19 @@ function ReportUpdate() {
     setPreviewImage(null);
   };
   const [isDefaultImage, setIsDefaultImage] = useState(false);
+  async function fetchDataHandleUpdateReport(e) {
+    accessToken = await refreshTokenFunc(navigate);
+    handleUpdateReport(e);
+  }
+
+  let [title_result, setTitle_result] = useState("");
+  let [content_result, setContent_result] = useState("");
+  useEffect(() => {
+    if (title_result != "" || content_result != "") {
+      let errorMessage = title_result + "\n" + content_result;
+      window.alert(errorMessage);
+    }
+  }, [title_result, content_result]);
 
   const handleUpdateReport = async (e) => {
     console.log("reportData=", reportData);
@@ -137,10 +155,30 @@ function ReportUpdate() {
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigate("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+        if (tokenErr != undefined) {
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataHandleUpdateReport(e);
+          }
+        } else {
+          setTitle_result("");
+          setContent_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "title":
+                setTitle_result(errorValues[index]);
+                break;
+              case "content":
+                setContent_result(errorValues[index]);
+                break;
+            }
+          });
         }
       });
   };

@@ -12,26 +12,8 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ProfileUpdate() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   //refreshtoken으로 accesstoken 재발급
-  const refreshTokenFunc = () => {
-    const refreshToken = localStorage.getItem("refreshtoken");
-    axios
-      .post("/auth/refresh/token", {
-        refreshToken: refreshToken,
-      })
-      .then((response) => {
-        localStorage.setItem("accesstoken", response.data.accessToken);
-      })
-      .catch((error) => {
-        const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigate("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
-        }
-      });
-  };
 
   //기존 프로필 정보 가져오기
   const [imageSrc, setImageSrc] = useState("");
@@ -42,6 +24,10 @@ function ProfileUpdate() {
     defaultImg: false,
   });
 
+  async function fetchDataGetProfile() {
+    accessToken = await refreshTokenFunc(navigate);
+    getProfile();
+  }
   const getProfile = async () => {
     axios
       .get("/profileInfo", {
@@ -63,7 +49,7 @@ function ProfileUpdate() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataGetProfile();
         }
       });
   };
@@ -172,6 +158,11 @@ function ProfileUpdate() {
     setPreviewImage(null);
   };
   const [isDefaultImage, setIsDefaultImage] = useState(false);
+  async function fetchDataOnProfilehandle(e) {
+    accessToken = await refreshTokenFunc(navigate);
+    onProfilehandle(e);
+  }
+  let [intro_result, setIntro_result] = useState("");
   const onProfilehandle = async (e) => {
     const formData = new FormData();
     console.log(userData.intro);
@@ -203,10 +194,28 @@ function ProfileUpdate() {
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigate("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+        if (tokenErr != undefined) {
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataOnProfilehandle(e);
+          }
+        } else {
+          if (error.response.data.code == null) {
+            setIntro_result("");
+            const errorKeys = Object.keys(error.response.data);
+            const errorValues = [];
+            for (const key of errorKeys) {
+              errorValues.push(error.response.data[key]);
+            }
+            errorKeys.forEach((key, index) => {
+              switch (key) {
+                case "intro":
+                  setIntro_result(errorValues[index]);
+                  break;
+              }
+            });
+          }
         }
       });
   };
@@ -291,6 +300,8 @@ function ProfileUpdate() {
                 disableUnderline: true,
               }}
               onChange={handleIntroduction}
+              error={Boolean(intro_result)}
+              helperText={intro_result}
             ></TextField>
           </div>
         </div>

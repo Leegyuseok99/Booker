@@ -23,12 +23,6 @@ import BookSale from "./page/BookSale";
 import SaleReason from "./page/SaleReason";
 
 function App() {
-  useBeforeUnload(() => {
-    window.addEventListener("beforeunload", () => {
-      localStorage.removeItem("accesstoken");
-      localStorage.removeItem("refreshtoken");
-    });
-  });
   return (
     <Router>
       <Header />

@@ -7,13 +7,19 @@ import ReceivedMessage from "../component/ReceivedMessage";
 import SentMessage from "../component/SentMessage";
 import RMessageContentModal from "./RMessageContentModal";
 import SMessageContentModal from "./SMessageContentModal";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function MessageListModal({ isOpen, onCancle, messages }) {
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [imageSrc, setImageSrc] = useState("");
   const [sentMessageList, setSentMessageList] = useState([]);
   const [receivedMessageList, setReceivedMessageList] = useState([]);
   const [selectedContent, setSelectedContent] = useState("received");
+  const navigate = useNavigate();
+  async function fetchDataReceivedMessage() {
+    accessToken = await refreshTokenFunc(navigate);
+    showReceivedContent();
+  }
 
   useEffect(() => {
     showReceivedContent();
@@ -37,11 +43,24 @@ function MessageListModal({ isOpen, onCancle, messages }) {
             image: `data:${message.imgFileDto.mimeType};base64, ${message.imgFileDto.base64Image}`,
           }));
           setReceivedMessageList(messages);
+        })
+        .catch((error) => {
+          console.log(error);
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataReceivedMessage();
+          }
         });
     };
     receivedMessage();
   };
 
+  async function fetchDataSentMessage() {
+    accessToken = await refreshTokenFunc(navigate);
+    showSentContent();
+  }
   const showSentContent = () => {
     setSelectedContent("sent");
     const sentMessage = () => {
@@ -61,6 +80,15 @@ function MessageListModal({ isOpen, onCancle, messages }) {
             image: `data:${message.imgFileDto.mimeType};base64, ${message.imgFileDto.base64Image}`,
           }));
           setSentMessageList(messages);
+        })
+        .catch((error) => {
+          console.log(error);
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataSentMessage();
+          }
         });
     };
     sentMessage();

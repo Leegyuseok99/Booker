@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef, useState } from "react";
 import "../css/AddReport.css";
 import axios from "axios";
@@ -9,7 +9,7 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 function AddReport() {
   const { bookId } = useParams();
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
 
   const [Image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -52,7 +52,20 @@ function AddReport() {
     navigate(-1);
   };
 
-  const handleAddReport = async (e) => {
+  let [title_result, setTitle_result] = useState("");
+  let [content_result, setContent_result] = useState("");
+  async function fetchDataHandleAddReport() {
+    accessToken = await refreshTokenFunc(navigate);
+    handleAddReport();
+  }
+
+  useEffect(() => {
+    if (title_result != "" || content_result != "") {
+      let errorMessage = title_result + "\n" + content_result;
+      window.alert(errorMessage);
+    }
+  }, [title_result, content_result]);
+  const handleAddReport = async () => {
     const formData = new FormData();
     formData.append("bookId", bookId);
     if (Image !== null) {
@@ -72,27 +85,33 @@ function AddReport() {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
         const tokenErr = error.response.data.code;
-        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigate("/login");
-        } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
-        }
-
-        if (error.response && error.response.data) {
-          console.log(error.response.data);
-          const { title, content } = error.response.data;
-
-          if (title) {
-            window.alert("제목은 30글자 이내로 작성해주세요.");
-          }
-
-          if (content) {
-            window.alert("내용을 작성해주세요.");
+        if (tokenErr != undefined) {
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataHandleAddReport();
           }
         } else {
-          window.alert("독후감 등록에 실패했습니다. 다시 시도해주세요.");
+          setTitle_result("");
+          setContent_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "title":
+                setTitle_result(errorValues[index]);
+                break;
+              case "content":
+                setContent_result(errorValues[index]);
+                break;
+            }
+          });
+
+          console.log(error.response.data);
         }
       });
   };

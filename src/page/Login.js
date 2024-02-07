@@ -84,7 +84,6 @@ function Login() {
               onChange={handleId}
             ></TextField>
           </div>
-          <div className="loginErr">올바른 아이디를 입력해주세요</div>
 
           <div className="inputWrap">
             <TextField

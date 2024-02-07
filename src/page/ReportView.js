@@ -10,9 +10,13 @@ function ReportView() {
   const navigate = useNavigate();
   const [report, setReport] = useState({});
   const [imageSrc, setImageSrc] = useState("");
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
+    async function fetchDataFetchReport() {
+      accessToken = await refreshTokenFunc(navigate);
+      fetchReport();
+    }
     const fetchReport = async () => {
       try {
         const response = await axios.get(`/report`, {
@@ -33,7 +37,7 @@ function ReportView() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataFetchReport();
         }
       }
     };
@@ -53,6 +57,10 @@ function ReportView() {
     navigate(`/reportupdate/${reportId}/${isbn13}/${bookId}`);
   };
 
+  async function fetchDataHandleDeleteReport() {
+    accessToken = await refreshTokenFunc(navigate);
+    handleDeleteReport();
+  }
   const handleDeleteReport = () => {
     axios
       .delete("/report", {
@@ -72,7 +80,7 @@ function ReportView() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataHandleDeleteReport();
         }
       });
   };

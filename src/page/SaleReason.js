@@ -10,9 +10,13 @@ function SaleReason() {
   const navigate = useNavigate();
   const location = useLocation();
   const search = location.state?.search;
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const { isbn13 } = useParams();
   const [posUserList, setPosUserList] = useState([]);
+  async function fetchDataSalePosUser() {
+    accessToken = await refreshTokenFunc(navigate);
+    salePosUser();
+  }
   const salePosUser = async () => {
     await axios
       .get("/book/saleState", {
@@ -37,7 +41,7 @@ function SaleReason() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataSalePosUser();
         }
       });
   };

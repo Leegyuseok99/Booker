@@ -8,8 +8,8 @@ import axios from "axios";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import logo from "../assets/BOOKERLOGO.png";
 function Header() {
-  const accessToken = localStorage.getItem("accesstoken");
-  const navigator = useNavigate();
+  let accessToken = localStorage.getItem("accesstoken");
+  const navigate = useNavigate();
   const [user, setUser] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function Header() {
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
     localStorage.removeItem("nickname");
-    navigator("/");
+    navigate("/");
   };
   const handleModalCancel = () => {
     setOpen(false);
@@ -42,6 +42,10 @@ function Header() {
 
   const [imageSrc, setImageSrc] = useState("");
   const [userInfo, setUserInfo] = useState(false);
+  async function fetchDataUserData() {
+    accessToken = await refreshTokenFunc(navigate);
+    userData();
+  }
   const userData = async () => {
     await axios
       .get("/profileInfo", {
@@ -59,9 +63,9 @@ function Header() {
         console.log(error);
         const tokenErr = error.response.data.code;
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
-          navigator("/login");
+          navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigator);
+          fetchDataUserData();
         }
       });
   };
@@ -88,7 +92,7 @@ function Header() {
             <div
               className="user_profile"
               onClick={() => {
-                navigator("/profileupdate");
+                navigate("/profileupdate");
               }}
             >
               <img src={imageSrc}></img>

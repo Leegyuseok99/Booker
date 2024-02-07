@@ -101,7 +101,8 @@ function Profile() {
       }
     }
   };
-
+  let [nickName_result, setNickname_result] = useState("");
+  let [intro_result, setIntro_result] = useState("");
   const onProfilehandle = async (e) => {
     const formData = new FormData();
     formData.append("memberId", memberId);
@@ -130,11 +131,35 @@ function Profile() {
         }
       })
       .catch((error) => {
+        if (error.response.data.code == null) {
+          setNickname_result("");
+          setIntro_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "nickname":
+                setNickname_result(errorValues[index]);
+                break;
+              case "intro":
+                setIntro_result(errorValues[index]);
+                break;
+            }
+          });
+        } else {
+          setNickname_result("");
+          setNickname_result("이미 사용 중인 닉네임입니다.");
+          setIntro_result("");
+        }
         const tokenErr = error.response.data.code;
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
           refreshTokenFunc(navigate);
+          onProfilehandle(e);
         }
       });
     console.log(Image, nickName, introduction);
@@ -184,6 +209,8 @@ function Profile() {
                 disableUnderline: true,
               }}
               onChange={habdleNickName}
+              error={Boolean(nickName_result)}
+              helperText={nickName_result}
             ></TextField>
           </div>
           <div className="introduction">
@@ -207,6 +234,8 @@ function Profile() {
                 disableUnderline: true,
               }}
               onChange={handleIntroduction}
+              error={Boolean(intro_result)}
+              helperText={intro_result}
             ></TextField>
           </div>
         </div>

@@ -5,9 +5,13 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import { useNavigate } from "react-router-dom";
 
 function ReceivedMessage(props) {
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const navigate = useNavigate();
-  const messsageDelete = () => {
+  async function fetchDataMessageDelete() {
+    accessToken = await refreshTokenFunc(navigate);
+    messageDelete();
+  }
+  const messageDelete = () => {
     axios
       .delete("/message", {
         headers: {
@@ -22,7 +26,7 @@ function ReceivedMessage(props) {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataMessageDelete();
         }
       });
   };
@@ -36,7 +40,7 @@ function ReceivedMessage(props) {
         <div className={styles.titleWrap}>{props.title}</div>
       </div>
       <div className={styles.otherWrap}>
-        <button onClick={messsageDelete}>삭제</button>
+        <button onClick={messageDelete}>삭제</button>
         <div className={styles.date}>{props.redate}</div>
       </div>
     </div>

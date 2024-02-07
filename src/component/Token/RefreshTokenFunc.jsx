@@ -14,6 +14,7 @@ const refreshTokenFunc = async (navigate) => {
       navigate("/login");
     }
   }
+  return localStorage.getItem("accesstoken");
 };
 
 export default refreshTokenFunc;

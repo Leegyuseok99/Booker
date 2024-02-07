@@ -12,10 +12,14 @@ function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId } = useParams();
   const [bookId, setBookId] = useState(initialBookId);
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [bookData, setBookData] = useState([]);
   const [reportList, setReportList] = useState([]);
   const [progress, setProgress] = useState();
+  async function fetchDataBookInfo() {
+    accessToken = await refreshTokenFunc(navigate);
+    bookInfo();
+  }
   const bookInfo = async () => {
     await axios
       .get(`/book`, {
@@ -34,7 +38,7 @@ function BookInfo({ selectedBook, onSubmit }) {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataBookInfo();
         }
       });
   };
@@ -42,6 +46,10 @@ function BookInfo({ selectedBook, onSubmit }) {
     bookInfo();
   }, []);
 
+  async function fetchDataBookExist() {
+    accessToken = await refreshTokenFunc(navigate);
+    bookExist();
+  }
   // 책 존재 여부 확인(셀렉트 박스, 책 추가 버튼)
   const [exist, setExist] = useState(false);
   const bookExist = async () => {
@@ -66,7 +74,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
             navigate("/login");
           } else if (tokenErr === "JwtTokenExpired") {
-            refreshTokenFunc(navigate);
+            fetchDataBookExist();
           }
         });
     }
@@ -75,6 +83,10 @@ function BookInfo({ selectedBook, onSubmit }) {
     bookExist();
   }, []);
 
+  async function fetchDataExisthandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    existhandle();
+  }
   //책 추가 버튼
   const existhandle = () => {
     axios
@@ -98,13 +110,16 @@ function BookInfo({ selectedBook, onSubmit }) {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataExisthandle();
         }
       });
   };
 
   const [selected, setSelected] = useState("");
-
+  async function fetchDataOnSubmithandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    onSubmithandle();
+  }
   const onSubmithandle = () => {
     if (selected == "DELETE") {
       axios
@@ -121,7 +136,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
             navigate("/login");
           } else if (tokenErr === "JwtTokenExpired") {
-            refreshTokenFunc(navigate);
+            fetchDataOnSubmithandle();
           }
         });
     } else {
@@ -144,7 +159,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
             navigate("/login");
           } else if (tokenErr === "JwtTokenExpired") {
-            refreshTokenFunc(navigate);
+            fetchDataOnSubmithandle();
           }
         });
     }
@@ -167,6 +182,10 @@ function BookInfo({ selectedBook, onSubmit }) {
     setIsIntroductionVisible(!isIntroductionVisible);
   };
 
+  async function fetchDataGetReport() {
+    accessToken = await refreshTokenFunc(navigate);
+    getReport();
+  }
   const getReport = async () => {
     if (bookId !== "null") {
       await axios
@@ -189,7 +208,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
             navigate("/login");
           } else if (tokenErr === "JwtTokenExpired") {
-            refreshTokenFunc(navigate);
+            fetchDataGetReport();
           }
         });
     }

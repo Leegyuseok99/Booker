@@ -14,9 +14,6 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
-
-  // const [idValid, setIdValid] = useState(false);
-  // const [pwValid, setPwValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const handleId = (e) => {
@@ -24,14 +21,12 @@ function SignUp() {
   };
   const handlePw = (e) => {
     setPw(e.target.value);
-    setPwTouched(true);
   };
   const handlePwCheck = (e) => {
     setPwCheck(e.target.value);
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    setEmailTouched(true);
   };
   const handleName = (e) => {
     setName(e.target.value);
@@ -52,44 +47,16 @@ function SignUp() {
     }
 
     setBirth(inputValue);
-    setBirthTouched(true);
   };
-  //비밀번호 길이 체크
-  const [pwLengthErr, setPwLengthErr] = useState(false);
-  const [pwTouched, setPwTouched] = useState(false);
-  const hasNotPwLength = (passwordEntered) => (pw.length < 8 ? true : false);
-  useEffect(() => {
-    if (pwTouched) {
-      setPwLengthErr(hasNotPwLength(pw));
-    }
-  }, [pw, pwTouched]);
 
   //비밀번호 확인
   const hasNotPwSame = (passwordEntered) => (pw != pwCheck ? true : false);
 
-  //이메일 형식
-  const isEmailValid = (email) => {
-    // 간단한 이메일 정규식을 사용하여 형식 검증
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-  const [emailFormErr, setEmailFormErr] = useState(false);
-  const [emailTouched, setEmailTouched] = useState(false);
-  useEffect(() => {
-    if (emailTouched) {
-      setEmailFormErr(isEmailValid(email));
-    }
-  }, [email, emailTouched]);
-
-  //생년월일 글자수
-  const [birthLengthErr, setBirthLengthErr] = useState(false);
-  const [birthTouched, setBirthTouched] = useState(false);
-  const BirthLength = (BirthEntered) => (birth.length != 10 ? true : false);
-  useEffect(() => {
-    if (birthTouched) {
-      setBirthLengthErr(BirthLength(birth));
-    }
-  }, [birth, birthTouched]);
+  let [id_result, setId_result] = useState("");
+  let [pw_result, setPw_result] = useState("");
+  let [name_result, setName_result] = useState("");
+  let [email_result, setEmail_result] = useState("");
+  let [birth_result, setBirth_result] = useState("");
 
   //확인 버튼 활성화
   useEffect(() => {
@@ -121,7 +88,45 @@ function SignUp() {
         setBirth("");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
+        if (error.response.data.code == null) {
+          setId_result("");
+          setPw_result("");
+          setName_result("");
+          setEmail_result("");
+          setBirth_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "id":
+                setId_result(errorValues[index]);
+                break;
+              case "pw":
+                setPw_result(errorValues[index]);
+                break;
+              case "name":
+                setName_result(errorValues[index]);
+                break;
+              case "email":
+                setEmail_result(errorValues[index]);
+                break;
+              default:
+                setBirth_result(errorValues[index]);
+                break;
+            }
+          });
+        } else {
+          setId("");
+          setId_result("이미 사용 중인 아이디입니다.");
+          setPw_result("");
+          setName_result("");
+          setEmail_result("");
+          setBirth_result("");
+        }
       });
   };
   return (
@@ -143,15 +148,15 @@ function SignUp() {
             }}
             autoComplete="currentID"
             onChange={handleId}
+            error={Boolean(id_result)}
+            helperText={id_result}
           ></TextField>
         </div>
 
         <div className="inputWrap">
           <TextField
-            error={pwTouched && pwLengthErr}
-            helperText={
-              pwTouched && pwLengthErr ? "비밀번호는 8자리 이상." : null
-            }
+            error={Boolean(pw_result)}
+            helperText={pw_result}
             className="input"
             label="PASSWORD"
             value={pw}
@@ -186,12 +191,8 @@ function SignUp() {
 
         <div className="inputWrap">
           <TextField
-            error={emailTouched && !emailFormErr}
-            helperText={
-              emailTouched && !emailFormErr
-                ? "이메일 형식으로 작성해주세요"
-                : null
-            }
+            error={Boolean(email_result)}
+            helperText={email_result}
             className="input"
             label="Email"
             value={email}
@@ -214,17 +215,15 @@ function SignUp() {
               disableUnderline: true,
             }}
             onChange={handleName}
+            error={Boolean(name_result)}
+            helperText={name_result}
           ></TextField>
         </div>
 
         <div className="inputWrap">
           <TextField
-            error={birthTouched && birthLengthErr}
-            helperText={
-              birthTouched && birthLengthErr
-                ? "생년월일 8자리 입력해 주세요."
-                : null
-            }
+            error={Boolean(birth_result)}
+            helperText={birth_result}
             className="input"
             label="Birth"
             value={birth}

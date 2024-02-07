@@ -9,7 +9,7 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function BookRecommend() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   //베스트 셀러 조회
   const [bookList, setBookList] = useState([]);
 
@@ -17,6 +17,10 @@ function BookRecommend() {
     getBook();
   }, []);
 
+  async function fetchDataGetBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    getBook();
+  }
   let start = 2;
   const getBook = async () => {
     await axios
@@ -29,7 +33,7 @@ function BookRecommend() {
       .then((response) => {
         console.log(response);
         const newBook = response.data.bestSellerList.map((item) => ({
-          isbn13: item.ISBN13,
+          isbn13: item.isbn13,
           title: item.title,
           cover: item.cover,
           author: item.author,
@@ -43,7 +47,7 @@ function BookRecommend() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          fetchDataGetBook();
         }
       });
   };
@@ -76,6 +80,10 @@ function BookRecommend() {
 
   let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
+  async function fetchDataGetOtherUser() {
+    accessToken = await refreshTokenFunc(navigate);
+    getOtherUser();
+  }
   const getOtherUser = async () => {
     await axios
       .get("/profile/Recommendation", {
@@ -103,7 +111,7 @@ function BookRecommend() {
         if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
           navigate("/login");
         } else if (tokenErr === "JwtTokenExpired") {
-          refreshTokenFunc(navigate);
+          getOtherUser();
         }
       });
   };
@@ -156,7 +164,7 @@ function BookRecommend() {
               title={book.title}
               author={book.author}
               description={book.description}
-              onClick={() => handleBookClick(book.isbn13)}
+              onClick={() => handleBookClick(book.isbn13, null)}
             ></BestSellerCard>
           ))}
         </div>
