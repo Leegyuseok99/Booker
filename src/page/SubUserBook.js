@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../css/SubUserBook.css";
@@ -13,6 +13,7 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import MessageSendModal from "../modals/MessageSendModal";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function SubUserBook() {
   const navigate = useNavigate();
@@ -38,6 +39,11 @@ function SubUserBook() {
   const [imageSrc, setImageSrc] = useState("");
   const [interests, setInterests] = useState([]);
 
+  async function fetchDataProfileInfo() {
+    accessToken = await refreshTokenFunc(navigate);
+    profileInfo();
+  }
+
   const profileInfo = async () => {
     await axios
       .get("/api/profileInfo", {
@@ -54,7 +60,12 @@ function SubUserBook() {
         setSubUserInfo(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataProfileInfo();
+        }
       });
   };
 
@@ -65,6 +76,11 @@ function SubUserBook() {
   const [follower, setFollower] = useState("");
   const [following, setFollowing] = useState("");
   const accessToken = localStorage.getItem("accesstoken");
+
+  async function fetchDataGetFollow() {
+    accessToken = await refreshTokenFunc(navigate);
+    getFollow();
+  }
 
   const getFollow = async () => {
     await axios
@@ -82,6 +98,12 @@ function SubUserBook() {
         setFollowing(response.data.followingCount);
       })
       .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataGetFollow();
+        }
         if (error.response.data.code === "INVALID_PROFILEID") {
           window.alert(error.response.data.message);
         }
@@ -95,6 +117,12 @@ function SubUserBook() {
   const [isOpen1, setOpen1] = useState(false);
 
   const [followerList, setFollowerList] = useState([]);
+
+  async function fetchDataFollowerModalOpenhandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    followerModalOpenhandle();
+  }
+
   const followerModalOpenhandle = () => {
     setOpen1(true);
     axios
@@ -111,7 +139,12 @@ function SubUserBook() {
         setFollowerList(followerList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataFollowerModalOpenhandle();
+        }
       });
   };
   const followerhandleModalCancel = () => {
@@ -121,6 +154,11 @@ function SubUserBook() {
 
   const [isOpen2, setOpen2] = useState(false);
   const [followingList, setFollowingList] = useState([]);
+
+  async function fetchDataFollowingModalOpenhandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    followingModalOpenhandle();
+  }
   const followingModalOpenhandle = () => {
     setOpen2(true);
     axios
@@ -137,7 +175,12 @@ function SubUserBook() {
         setFollowingList(followingList);
       })
       .catch((error) => {
-        console.log(error.data);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataFollowingModalOpenhandle();
+        }
       });
   };
   const followinghandleModalCancel = () => {
@@ -146,6 +189,12 @@ function SubUserBook() {
   };
 
   const [followingStatus, setFollowingStatus] = useState("");
+
+  async function fetchDataIsFollowing() {
+    accessToken = await refreshTokenFunc(navigate);
+    isFollowing();
+  }
+
   const isFollowing = async () => {
     await axios
       .get(`/api/follow/isFollowing`, {
@@ -158,11 +207,24 @@ function SubUserBook() {
       })
       .then((response) => {
         setFollowingStatus(response.data.following);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataIsFollowing();
+        }
       });
   };
   useEffect(() => {
     isFollowing();
   }, []);
+
+  async function fetchDatahandleFollowToggle() {
+    accessToken = await refreshTokenFunc(navigate);
+    handleFollowToggle();
+  }
 
   const handleFollowToggle = async () => {
     if (followingStatus) {
@@ -177,7 +239,12 @@ function SubUserBook() {
         });
         setFollowingStatus(false);
       } catch (error) {
-        console.error("사용자 언팔로우 중 오류 발생:", error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDatahandleFollowToggle();
+        }
       }
     } else {
       try {
@@ -194,7 +261,12 @@ function SubUserBook() {
         );
         setFollowingStatus(true);
       } catch (error) {
-        console.error("사용자 팔로우 중 오류 발생:", error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDatahandleFollowToggle();
+        }
       }
     }
   };
@@ -229,6 +301,11 @@ function SubUserBook() {
     };
   }, [hasNext]);
 
+  async function fetchDataGetUserBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    getUserBook();
+  }
+
   const getUserBook = async () => {
     if (!hasNext) return;
     console.log(nowPage);
@@ -254,14 +331,19 @@ function SubUserBook() {
         setHasNext(response.data.hasNext);
       })
       .catch((error) => {
-        console.error(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataGetUserBook();
+        }
       });
   };
 
   useEffect(() => {
     getUserBook();
   }, []);
-  const chunkSize = 5;
+  const chunkSize = 4;
 
   // 배열을 지정된 크기의 청크로 나누는 함수
   const chunkArray = (arr, size) => {
@@ -275,8 +357,12 @@ function SubUserBook() {
 
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const handleBookClick = async (isbn13, bookId) => {
-    navigate(`/bookinfo/${isbn13}/${bookId}`);
+  async function fetchDataHandleBookClick(isbn13) {
+    accessToken = await refreshTokenFunc(navigate);
+    handleBookClick(isbn13);
+  }
+  const handleBookClick = async (isbn13) => {
+    navigate(`/bookinfo/${isbn13}`);
     try {
       const response = await axios.get(`/api/book/${isbn13}`, {
         headers: {
@@ -285,7 +371,12 @@ function SubUserBook() {
       });
       setSelectedBook(response.data);
     } catch (error) {
-      console.error("Error fetching book details:", error);
+      const tokenErr = error.response.data.code;
+      if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+        navigate("/login");
+      } else if (tokenErr === "JwtTokenExpired") {
+        fetchDataHandleBookClick(isbn13);
+      }
     }
   };
 
@@ -382,11 +473,8 @@ function SubUserBook() {
               <div className="bookListCard">
                 <BookListCard
                   key={i}
-                  bookId={read.bookId}
-                  progress={read.progress}
-                  isbn13={read.isbn13}
                   cover={read.img}
-                  onClick={() => handleBookClick(read.isbn13, read.bookId)}
+                  onClick={handleBookClick}
                 ></BookListCard>
                 <div className="sellIconWrap">
                   {read.saleStatus === "POS" ? (

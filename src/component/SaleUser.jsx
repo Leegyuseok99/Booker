@@ -11,7 +11,6 @@ function SaleUser(props) {
     setOpen(true);
   };
   const handleModalSubmit = () => {
-    // 모달1 비지니스 로직
     setOpen(false);
   };
 

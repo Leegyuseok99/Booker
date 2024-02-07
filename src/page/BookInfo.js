@@ -6,14 +6,22 @@ import "../css/BookInfo.css";
 import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId, otherbookstate } = useParams();
   const [bookId, setBookId] = useState(initialBookId);
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [bookData, setBookData] = useState([]);
   const [reportList, setReportList] = useState([]);
   const [progress, setProgress] = useState();
+
+  async function fetchDataBookInfo() {
+    accessToken = await refreshTokenFunc(navigate);
+    bookInfo();
+  }
+
   const bookInfo = async () => {
     await axios
       .get(`/api/book`, {
@@ -26,6 +34,14 @@ function BookInfo({ selectedBook, onSubmit }) {
       })
       .then((response) => {
         setBookData(response.data);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataBookInfo();
+        }
       });
   };
   useEffect(() => {
@@ -34,6 +50,12 @@ function BookInfo({ selectedBook, onSubmit }) {
 
   // 책 존재 여부 확인(셀렉트 박스, 책 추가 버튼)
   const [exist, setExist] = useState(false);
+
+  async function fetchDataBookExist() {
+    accessToken = await refreshTokenFunc(navigate);
+    bookExist();
+  }
+
   const bookExist = async () => {
     if (bookId === "null") {
       await axios
@@ -50,12 +72,25 @@ function BookInfo({ selectedBook, onSubmit }) {
           setBookId(response.data.bookId);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataBookExist();
+          }
         });
     }
   };
   useEffect(() => {
     bookExist();
   }, []);
+
+  async function fetchDataExisthandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    existhandle();
+  }
 
   //책 추가 버튼
   const existhandle = () => {
@@ -74,36 +109,66 @@ function BookInfo({ selectedBook, onSubmit }) {
       )
       .then((response) => {
         navigate("/mybook");
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataExisthandle();
+        }
       });
   };
 
   const [selected, setSelected] = useState("");
-  const [selectedBooks, setSelectedBooks] = useState({});
+
+  async function fetchDataOnSubmithandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    onSubmithandle();
+  }
 
   const onSubmithandle = () => {
     if (selected == "DELETE") {
-      axios.delete("/api/book", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          bookId: bookId,
-        },
-      });
-    } else {
-      console.log(selected.key);
-      axios.patch(
-        "/api/book/progress",
-        {
-          bookId: bookId,
-          progress: selected,
-        },
-        {
+      axios
+        .delete("/api/book", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
-      );
+          params: {
+            bookId: bookId,
+          },
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataOnSubmithandle();
+          }
+        });
+    } else {
+      console.log(selected.key);
+      axios
+        .patch(
+          "/api/book/progress",
+          {
+            bookId: bookId,
+            progress: selected,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataOnSubmithandle();
+          }
+        });
     }
     navigate("/main");
   };
@@ -124,6 +189,10 @@ function BookInfo({ selectedBook, onSubmit }) {
     setIsIntroductionVisible(!isIntroductionVisible);
   };
   const [user, setUser] = useState("");
+  async function fetchDataGetReport() {
+    accessToken = await refreshTokenFunc(navigate);
+    getReport();
+  }
   const getReport = async () => {
     if (bookId !== "null") {
       await axios
@@ -141,6 +210,14 @@ function BookInfo({ selectedBook, onSubmit }) {
           setExist(response.data.exist);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
+        })
+        .catch((error) => {
+          const tokenErr = error.response.data.code;
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataGetReport();
+          }
         });
     }
   };
@@ -155,7 +232,9 @@ function BookInfo({ selectedBook, onSubmit }) {
           <div
             key={report.reportId}
             className="report"
-            onClick={() => handleReportClick(report.reportId, user)}
+            onClick={() =>
+              handleReportClick(report.reportId, user, isbn13, bookId)
+            }
           >
             {report.title} - 작성일: {report.redate}
           </div>
@@ -167,7 +246,7 @@ function BookInfo({ selectedBook, onSubmit }) {
     getReport();
   }, []);
   const handleReportClick = (reportId, user) => {
-    navigate(`/reportview/${reportId}/${user}`);
+    navigate(`/reportview/${reportId}/${user}/${isbn13}/${bookId}`);
   };
   const addReporthandle = () => {
     console.log(bookId);

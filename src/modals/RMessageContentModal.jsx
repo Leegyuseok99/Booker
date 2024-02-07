@@ -4,11 +4,18 @@ import styles from "../css/modal/RMessageContentModal.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import MessageSendModal from "./MessageSendModal";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+import { useNavigate } from "react-router-dom";
 
 function MessageContentModal({ isOpen, onCancle, messageId }) {
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [message, setMessage] = useState();
   const [imageSrc, setImageSrc] = useState("");
+  const navigate = useNavigate();
+  async function fetchDataMessageContent() {
+    accessToken = await refreshTokenFunc(navigate);
+    messageContent();
+  }
   const messageContent = async () => {
     await axios
       .get("/api/received/message/content", {
@@ -22,6 +29,15 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
       .then((response) => {
         setImageSrc(response.data.imgURL);
         setMessage(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataMessageContent();
+        }
       });
   };
   useEffect(() => {

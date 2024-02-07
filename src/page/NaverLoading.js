@@ -33,9 +33,7 @@ function NaverLoading() {
         }
         console.log(response.data);
       })
-      .catch((error) => {
-        // 에러 처리
-      });
+      .catch((error) => {});
   }, []);
   return (
     <div>

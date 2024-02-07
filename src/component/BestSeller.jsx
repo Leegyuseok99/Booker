@@ -4,7 +4,6 @@ import "../css/BestSeller.css";
 function BestSeller(props) {
   return (
     <div className="bsCard">
-      <div className="bsRank">{props.Rank}</div>
       <div className="bsCardContent">
         <div className="bsImgWrap">
           <img src={props.cover} onClick={props.onClick}></img>

@@ -5,15 +5,21 @@ import "../css/BookRecommend.css";
 import BestSellerCard from "../component/BestSellerCard";
 import SimilarUser from "../component/SimilarUser";
 import { useNavigate } from "react-router-dom";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function BookRecommend() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   //베스트 셀러 조회
   let [bookList, setBookList] = useState([]);
 
   useEffect(() => {
     getBook();
   }, []);
+  async function fetchDataGetBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    getBook();
+  }
   let start = 2;
   const getBook = async () => {
     await axios
@@ -36,7 +42,12 @@ function BookRecommend() {
         start = start + 1;
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataGetBook();
+        }
       });
   };
   const bookListRef = useRef(null);
@@ -65,6 +76,10 @@ function BookRecommend() {
   const [similarUserList, setSimilarUserList] = useState([]);
   let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
+  async function fetchDataGetOtherUser() {
+    accessToken = await refreshTokenFunc(navigate);
+    getOtherUser();
+  }
   const getOtherUser = async () => {
     if (!hasNext) return;
     await axios
@@ -87,12 +102,21 @@ function BookRecommend() {
         setSimilarUserList((prevUser) => [...prevUser, ...updatedUser]);
         nowPage = nowPage + 1;
         setHasNext(response.data.hasNext);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          getOtherUser();
+        }
       });
   };
 
   useEffect(() => {
     getOtherUser();
   }, []);
+
   const handleScroll1 = () => {
     const { scrollTop, scrollHeight, clientHeight } = userListRef.current;
 
@@ -118,8 +142,8 @@ function BookRecommend() {
     };
   }, [hasNext]);
 
-  const handleBookClick = (isbn13) => {
-    navigate(`/bookinfo/${isbn13}/null`);
+  const handleBookClick = (isbn13, bookId) => {
+    navigate(`/bookinfo/${isbn13}/${bookId}`);
   };
 
   const handleUserClick = (profileId) => {
@@ -137,7 +161,7 @@ function BookRecommend() {
               title={book.title}
               author={book.author}
               description={book.description}
-              onClick={() => handleBookClick(book.isbn13)}
+              onClick={() => handleBookClick(book.isbn13, null)}
             ></BestSellerCard>
           ))}
         </div>

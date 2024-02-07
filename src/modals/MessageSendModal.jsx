@@ -3,6 +3,7 @@ import styles from "../css/modal/MessageSendModal.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function MessageSendModal({
   isOpen,
@@ -12,7 +13,12 @@ function MessageSendModal({
   profileImg,
   nickname,
 }) {
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
+  const navigate = useNavigate();
+  async function fetchDataOnSubmithandle() {
+    accessToken = await refreshTokenFunc(navigate);
+    onSubmithandle();
+  }
   const onSubmithandle = () => {
     axios
       .post(
@@ -30,6 +36,15 @@ function MessageSendModal({
       )
       .then((response) => {
         window.alert("발신 완료");
+      })
+      .catch((error) => {
+        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataOnSubmithandle();
+        }
       });
     onSubmit();
   };

@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import "../css/Profile.css";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function Profile() {
   const navigate = useNavigate();
@@ -32,14 +33,6 @@ function Profile() {
       setPreviewImage(null);
       return;
     }
-    //화면에 프로필 사진 표시
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //     if (reader.readyState === 2) {
-    //         setImage(reader.result);
-    //     }
-    // };
-    // reader.readAsDataURL(e.target.files[0]);
   };
   const habdleNickName = (e) => {
     setNickName(e.target.value);
@@ -101,6 +94,8 @@ function Profile() {
     }
   };
 
+  let [nickName_result, setNickname_result] = useState("");
+  let [intro_result, setIntro_result] = useState("");
   const onProfilehandle = async (e) => {
     const formData = new FormData();
     formData.append("memberId", memberId);
@@ -124,13 +119,42 @@ function Profile() {
         } else {
           localStorage.setItem("accesstoken", response.data.accessToken);
           localStorage.setItem("refreshtoken", response.data.refreshToken);
+          localStorage.setItem("nickname", response.data.nickname);
           navigate("/Main");
         }
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.data.code == null) {
+          setNickname_result("");
+          setIntro_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "nickname":
+                setNickname_result(errorValues[index]);
+                break;
+              case "intro":
+                setIntro_result(errorValues[index]);
+                break;
+            }
+          });
+        } else {
+          setNickname_result("");
+          setNickname_result("이미 사용 중인 닉네임입니다.");
+          setIntro_result("");
+        }
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          refreshTokenFunc(navigate);
+          onProfilehandle(e);
+        }
       });
-    console.log(Image, nickName, introduction);
   };
   return (
     <div>
@@ -177,6 +201,8 @@ function Profile() {
                 disableUnderline: true,
               }}
               onChange={habdleNickName}
+              error={Boolean(nickName_result)}
+              helperText={nickName_result}
             ></TextField>
           </div>
           <div className="introduction">
@@ -200,6 +226,8 @@ function Profile() {
                 disableUnderline: true,
               }}
               onChange={handleIntroduction}
+              error={Boolean(intro_result)}
+              helperText={intro_result}
             ></TextField>
           </div>
         </div>

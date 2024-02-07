@@ -1,6 +1,6 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
-import { lazy, Suspense, createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
@@ -11,8 +11,6 @@ function Login() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
-  // const [idValid, setIdValid] = useState(false);
-  // const [pwValid, setPwValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const handleId = (e) => {
@@ -31,9 +29,6 @@ function Login() {
   }, [id, pw]);
   const loginhandle = async (e) => {
     e.preventDefault();
-    localStorage.setItem("accesstoken", "1");
-    localStorage.setItem("refreshtoken", "2");
-    localStorage.setItem("nickname", "테스트");
     navigate("/Main");
     await axios
       .post("/api/login", {
@@ -77,14 +72,13 @@ function Login() {
               className="input"
               label="ID"
               value={id}
-              placeholder="ex) lgs2260@naver.com"
+              placeholder="ex) booker@naver.com"
               InputProps={{
                 disableUnderline: true,
               }}
               onChange={handleId}
             ></TextField>
           </div>
-          <div className="loginErr">올바른 아이디를 입력해주세요</div>
 
           <div className="inputWrap">
             <TextField
@@ -109,7 +103,7 @@ function Login() {
             로그인
           </button>
           <button className="login_btn Naver">
-            <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ecsL5MvzOYbAIc1P0ibw&redirect_uri=http://localhost:3000/Naver_Loading&state=abc123def456gh">
+            <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ecsL5MvzOYbAIc1P0ibw&redirect_uri=https://booker.kro.kr/Naver_Loading&state=abc123def456gh">
               네이버
             </a>
           </button>
@@ -123,12 +117,6 @@ function Login() {
           </button>
         </div>
         <ul className="findWrap">
-          <li>
-            <a>비밀번호 찾기</a>
-          </li>
-          <li>
-            <a>아이디 찾기</a>
-          </li>
           <li>
             <Link to="/SignUp" className="SignUp_li">
               회원가입

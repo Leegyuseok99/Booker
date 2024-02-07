@@ -1,7 +1,6 @@
 import "./css/App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import useBeforeUnload from "./component/UseBeforeUnload";
 import Login from "./page/Login";
 import SignUp from "./page/SignUp";
 import Home from "./page/Home";
@@ -23,13 +22,6 @@ import BookSale from "./page/BookSale";
 import SaleReason from "./page/SaleReason";
 
 function App() {
-  // 페이지를 떠날 때나 컴포넌트가 언마운트 될 때 localStorage에서 토큰 제거
-  // useBeforeUnload(() => {
-  //     // 페이지를 떠날 때만 토큰 삭제 로직 추가
-  //     localStorage.removeItem("accesstoken");
-  //     localStorage.removeItem("refreshtoken");
-  // });
-
   return (
     <Router>
       <Header />
@@ -43,9 +35,15 @@ function App() {
         <Route path="/mybook" element={<MyBook />} />
         <Route path="/subuserbook/:profileId" element={<SubUserBook />} />
         <Route path="/bookinfo/:isbn13/:bookId" element={<BookInfo />} />
-        <Route path="/reportview/:reportId/:user" element={<ReportView />} />
+        <Route
+          path="/reportview/:reportId/:user/:isbn13/:bookId"
+          element={<ReportView />}
+        />
         <Route path="/addreport/:bookId" element={<AddReport />} />
-        <Route path="/reportupdate/:reportId" element={<ReportUpdate />} />
+        <Route
+          path="/reportupdate/:reportId/:isbn13/:bookId"
+          element={<ReportUpdate />}
+        />
         <Route path="/bookrecommend" element={<BookRecommend />} />
         <Route path="/Naver_Loading" element={<NaverLoading />}></Route>
         <Route path="/Google_Loading" element={<GoogleLoading />}></Route>

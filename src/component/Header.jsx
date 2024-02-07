@@ -1,22 +1,25 @@
-import { TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/App.css";
-import Modal from "@material-ui/core";
 import LogoutModal from "../modals/LogoutModal";
 import "../css/modal/LogoutModal.module.css";
 import axios from "axios";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+import logo from "../assets/BOOKERLOGO.png";
 
 function Header() {
-  const accessToken = localStorage.getItem("accesstoken");
-  const navigator = useNavigate();
+  let accessToken = localStorage.getItem("accesstoken");
+  const navigate = useNavigate();
   const [user, setUser] = useState(false);
+
   useEffect(() => {
-    if (localStorage.getItem("accesstoken") !== null) {
+    if (accessToken !== null) {
       setUser(true);
     } else setUser(false);
-  }, [localStorage.getItem("accesstoken")]);
-
+  }, [accessToken]);
+  useEffect(() => {
+    userData();
+  }, [accessToken]);
   //로그아웃 모달
 
   const [isOpen, setOpen] = useState(false);
@@ -29,6 +32,7 @@ function Header() {
     setOpen(false);
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
+    localStorage.removeItem("nickname");
     navigator("/");
   };
   const handleModalCancel = () => {
@@ -37,7 +41,11 @@ function Header() {
   };
   const [imageSrc, setImageSrc] = useState("");
   const [userInfo, setUserInfo] = useState(false);
-  const getUser = async () => {
+  async function fetchDataUserData() {
+    accessToken = await refreshTokenFunc(navigate);
+    userData();
+  }
+  const userData = async () => {
     await axios
       .get("/api/profileInfo", {
         headers: {
@@ -50,22 +58,20 @@ function Header() {
       })
       .catch((error) => {
         console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataUserData();
+        }
       });
-  };
-  useEffect(() => {
-    if (user) {
-      getUser();
-    }
-  }, [user]);
-  const profilenavigate = () => {
-    navigator("/profileupdate");
   };
   return (
     <div>
       {user ? (
         <div className="header">
           <Link to="/main" className="logo">
-            로고
+            <img src={logo} alt="로고"></img>
           </Link>
           <div className="user_info">
             <Link to="/mybook" className="header_individual">
@@ -77,23 +83,14 @@ function Header() {
             <Link to="/booksale" className="header_place">
               <span>책 거래</span>
             </Link>
-            <TextField
-              className="search"
-              variant="outlined"
-              placeholder="책을 검색해 보세요"
-              type="text"
-              InputProps={{
-                style: {
-                  borderRadius: "30px",
-                  height: "70%",
-                  fontSize: "13px",
-                },
-              }}
-            ></TextField>
+            <Link to="/searchpage" className="search">
+              <span>책 검색</span>
+            </Link>
             <div
               className="user_profile"
-              onClick={profilenavigate}
-              style={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate("/profileupdate");
+              }}
             >
               <img src={imageSrc} alt="프로필(클릭 시 프로필 수정)"></img>
             </div>
@@ -110,7 +107,7 @@ function Header() {
       ) : (
         <div className="header">
           <Link to="/" className="logo">
-            로고
+            <img src={logo} alt="로고"></img>
           </Link>
           <Link to="/login">
             <button className="headerLogin_btn">로그인</button>

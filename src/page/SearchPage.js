@@ -7,10 +7,11 @@ import BookSearchCard from "../component/BookSearchCard";
 import UserSearchCard from "../component/UserSearchCard";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function SearchPage() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [search, setSearch] = useState("");
   const [reasonList, setReasonList] = useState([]);
   const [reasonUser, setReasonUser] = useState([]);
@@ -25,6 +26,10 @@ function SearchPage() {
   const handleuser = () => {
     setSelectedContent("user");
   };
+  async function fetchDataSearchBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    searchBook();
+  }
   const searchBook = async () => {
     await axios
       .get("/api/book/search", {
@@ -39,6 +44,14 @@ function SearchPage() {
       })
       .then((response) => {
         setReasonList(response.data.searchBooks);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataSearchBook();
+        }
       });
   };
   const handleSearchOnchange = (e) => {
@@ -55,6 +68,10 @@ function SearchPage() {
   const handleBookReasonClick = (isbn13) => {
     navigate(`/bookinfo/${isbn13}/null`);
   };
+  async function fetchDataSearchUser() {
+    accessToken = await refreshTokenFunc(navigate);
+    searchUser();
+  }
   const searchUser = async () => {
     await axios
       .get("/api/profile/search", {
@@ -73,6 +90,14 @@ function SearchPage() {
           image: user.imgURL,
         }));
         setReasonUser(otherUser);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataSearchUser();
+        }
       });
   };
   const handleSearchUser = () => {

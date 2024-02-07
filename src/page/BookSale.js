@@ -7,11 +7,17 @@ import BookSearchCard from "../component/BookSearchCard";
 import UserSearchCard from "../component/UserSearchCard";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function BookSale() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
   const [search, setSearch] = useState("");
   const [reasonList, setReasonList] = useState([]);
+  async function fetchDataSearchBook() {
+    accessToken = await refreshTokenFunc(navigate);
+    searchBook();
+  }
   const searchBook = async () => {
     await axios
       .get("/api/book/search", {
@@ -26,6 +32,14 @@ function BookSale() {
       })
       .then((response) => {
         setReasonList(response.data.searchBooks);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataSearchBook();
+        }
       });
   };
   const handleSearchOnchange = (e) => {

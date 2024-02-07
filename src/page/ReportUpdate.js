@@ -4,9 +4,11 @@ import "../css/ReportUpdate.css";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import CreateIcon from "@mui/icons-material/Create";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+
 function ReportUpdate() {
-  const { reportId } = useParams();
-  const accessToken = localStorage.getItem("accesstoken");
+  const { reportId, isbn13, bookId } = useParams();
+  let accessToken = localStorage.getItem("accesstoken");
   const navigate = useNavigate();
   const [reportData, setReportData] = useState({
     image: "",
@@ -17,6 +19,10 @@ function ReportUpdate() {
   });
   const [imageSrc, setImageSrc] = useState();
   useEffect(() => {
+    async function fetchDataFetchReportData() {
+      accessToken = await refreshTokenFunc(navigate);
+      fetchReportData();
+    }
     const fetchReportData = async () => {
       try {
         const response = await axios.get(`/api/report`, {
@@ -36,7 +42,12 @@ function ReportUpdate() {
           radioStatus: sharing || "PUBLIC",
         });
       } catch (error) {
-        console.error(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataFetchReportData();
+        }
       }
     };
     fetchReportData();
@@ -99,6 +110,19 @@ function ReportUpdate() {
     setPreviewImage(null);
   };
   const [isDefaultImage, setIsDefaultImage] = useState(false);
+  async function fetchDataHandleUpdateReport(e) {
+    accessToken = await refreshTokenFunc(navigate);
+    handleUpdateReport(e);
+  }
+
+  let [title_result, setTitle_result] = useState("");
+  let [content_result, setContent_result] = useState("");
+  useEffect(() => {
+    if (title_result != "" || content_result != "") {
+      let errorMessage = title_result + "\n" + content_result;
+      window.alert(errorMessage);
+    }
+  }, [title_result, content_result]);
 
   const handleUpdateReport = async (e) => {
     console.log("reportData=", reportData);
@@ -122,7 +146,35 @@ function ReportUpdate() {
       })
       .then((response) => {
         window.alert("독후감 수정 완료");
-        navigate(`/reportview${reportId}`);
+        navigate(`/reportview/${reportId}/${isbn13}/${bookId}`);
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr != undefined) {
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataHandleUpdateReport(e);
+          }
+        } else {
+          setTitle_result("");
+          setContent_result("");
+          const errorKeys = Object.keys(error.response.data);
+          const errorValues = [];
+          for (const key of errorKeys) {
+            errorValues.push(error.response.data[key]);
+          }
+          errorKeys.forEach((key, index) => {
+            switch (key) {
+              case "title":
+                setTitle_result(errorValues[index]);
+                break;
+              case "content":
+                setContent_result(errorValues[index]);
+                break;
+            }
+          });
+        }
       });
   };
   return (

@@ -8,10 +8,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import styles from "../css/ProfileUpdate.module.css";
+import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ProfileUpdate() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accesstoken");
+  let accessToken = localStorage.getItem("accesstoken");
 
   //기존 프로필 정보 가져오기
   const [imageSrc, setImageSrc] = useState("");
@@ -21,7 +22,10 @@ function ProfileUpdate() {
     intro: "",
     defaultImg: false,
   });
-
+  async function fetchDataGetProfile() {
+    accessToken = await refreshTokenFunc(navigate);
+    getProfile();
+  }
   const getProfile = async () => {
     axios
       .get("/api/profileInfo", {
@@ -39,7 +43,12 @@ function ProfileUpdate() {
         setUserData({ ...userData, nickname, intro });
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataGetProfile();
+        }
       });
   };
   useEffect(() => {
@@ -147,6 +156,11 @@ function ProfileUpdate() {
     setPreviewImage(null);
   };
   const [isDefaultImage, setIsDefaultImage] = useState(false);
+  async function fetchDataOnProfilehandle(e) {
+    accessToken = await refreshTokenFunc(navigate);
+    onProfilehandle(e);
+  }
+  let [intro_result, setIntro_result] = useState("");
   const onProfilehandle = async (e) => {
     const formData = new FormData();
     console.log(userData.intro);
@@ -174,10 +188,33 @@ function ProfileUpdate() {
       .then((response) => {
         console.log(response.data);
         window.alert("프로필 수정 완료");
-        navigate("/main");
+        window.location.replace("/main");
       })
       .catch((error) => {
-        console.log(error);
+        const tokenErr = error.response.data.code;
+        if (tokenErr != undefined) {
+          if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+            navigate("/login");
+          } else if (tokenErr === "JwtTokenExpired") {
+            fetchDataOnProfilehandle(e);
+          }
+        } else {
+          if (error.response.data.code == null) {
+            setIntro_result("");
+            const errorKeys = Object.keys(error.response.data);
+            const errorValues = [];
+            for (const key of errorKeys) {
+              errorValues.push(error.response.data[key]);
+            }
+            errorKeys.forEach((key, index) => {
+              switch (key) {
+                case "intro":
+                  setIntro_result(errorValues[index]);
+                  break;
+              }
+            });
+          }
+        }
       });
   };
   return (
@@ -261,6 +298,8 @@ function ProfileUpdate() {
                 disableUnderline: true,
               }}
               onChange={handleIntroduction}
+              error={Boolean(intro_result)}
+              helperText={intro_result}
             ></TextField>
           </div>
         </div>
