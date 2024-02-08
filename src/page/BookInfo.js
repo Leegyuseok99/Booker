@@ -54,13 +54,13 @@ function BookInfo({ selectedBook, onSubmit }) {
   }, []);
 
   // 책 존재 여부 확인(셀렉트 박스, 책 추가 버튼)
-  const [exist, setExist] = useState(true);
+  const [exist, setExist] = useState(false);
 
   async function fetchDataBookExist() {
     accessToken = await refreshTokenFunc(navigate);
     bookExist();
   }
-  const [user, setUser] = useState("me");
+  const [user, setUser] = useState("");
   const bookExist = async () => {
     if (bookId === "null") {
       await axios
@@ -284,7 +284,9 @@ function BookInfo({ selectedBook, onSubmit }) {
               <div className="infoauthor">저자 글쓴이 책 발행 년도</div>
               <div>
                 {exist == false ? (
-                  <button onClick={existhandle}>책 추가</button>
+                  <button className="bookAdd_btn" onClick={existhandle}>
+                    책 추가
+                  </button>
                 ) : (
                   <select
                     onChange={selecthandle}

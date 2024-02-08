@@ -6,11 +6,16 @@
   border-bottom: 1px solid #777777;
 }
 .profileImgWrap {
-  width: 7vw;
+  width: 5vw;
   height: 10vh;
   border-radius: 50%;
   border: 1px solid black;
   margin-right: 15px;
+}
+.profileImgWrap > img {
+  width: 5vw;
+  height: 10vh;
+  border-radius: 50%;
 }
 .messageWrap {
   width: 40vw;

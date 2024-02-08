@@ -97,14 +97,14 @@ function ReportView() {
         </span>
         <div className="rvcommentWrap">{report.content}</div>
         <div className="rvbtnWrap">
-          <button onClick={handleCancel}>뒤로가기</button>
           {user === "me" ? (
             <div>
+              <button onClick={handleCancel}>뒤로가기</button>
               <button onClick={handleUpdateReport}>수정 하기</button>
               <button onClick={handleDeleteReport}>삭제</button>
             </div>
           ) : (
-            <div></div>
+            <button onClick={handleCancel}>뒤로가기</button>
           )}
         </div>
       </div>

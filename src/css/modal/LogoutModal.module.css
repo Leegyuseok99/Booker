@@ -27,25 +27,35 @@
 }
 .contentText {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60%;
 }
 .contentText > span {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
 }
 .btnWrap {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding-right: 20px;
+  height: 40%;
+  border-top: 1px solid #888888;
 }
 .ok_btn {
-  width: 70px;
-  height: 30px;
-  border-radius: 30px;
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  font-size: 0.9rem;
+  color: rgb(250, 84, 84);
+  border: none;
+  border-right: 1px solid #888888;
 }
 .cancle_btn {
-  margin-left: 10px;
-  width: 70px;
-  height: 30px;
-  border-radius: 30px;
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  font-size: 0.9rem;
+  border: none;
 }

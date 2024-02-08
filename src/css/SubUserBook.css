@@ -36,13 +36,17 @@
   display: flex;
   flex-direction: row;
   padding-top: 20px;
+  width: 45vw;
 }
 .subFavorite {
-  width: 80px;
-  height: 25px;
+  width: 17%;
+  height: 1.8rem;
   border: 1px solid #888888;
   border-radius: 20px;
   margin-right: 10px;
+  text-align: center;
+  line-height: 1.8rem;
+  font-size: 0.85rem;
 }
 .submessage {
   width: 10%;
@@ -136,4 +140,9 @@
 .bookListCard {
   display: flex;
   flex-direction: row;
+}
+.iconWrap {
+  display: flex;
+  flex-direction: column;
+  margin-top: 7px;
 }

@@ -103,7 +103,7 @@ function SMessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
                 <div className={styles.titleWrap}>{message.title}</div>
                 <div className={styles.contentWrap}>{message.content}</div>
               </div>
-              <div>
+              <div className={styles.deletebtnWrap}>
                 <button onClick={messageDelete}>삭제</button>
               </div>
             </div>

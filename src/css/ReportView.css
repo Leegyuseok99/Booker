@@ -24,7 +24,7 @@
   padding-top: 10px;
 }
 .rvReportWrap > span {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 .rvtitleWrap {
@@ -49,4 +49,48 @@
   margin-bottom: 10px;
   padding: 10px 0px 0px 10px;
   font-weight: 300;
+}
+.rvbtnWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 45vw;
+  height: 3rem;
+}
+.rvbtnWrap > button {
+  width: 25%;
+  height: 80%;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 15px;
+  background-color: #ebedf0;
+  border: 1px solid #ebedf0;
+  box-shadow: 1px 1px 1px 1px gray;
+}
+.rvbtnWrap > button:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
+}
+.rvbtnWrap > div {
+  width: 45vw;
+  display: flex;
+  justify-content: flex-end;
+}
+.rvbtnWrap > div > button {
+  width: 20%;
+  height: 80%;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 15px;
+  background-color: #ebedf0;
+  border: 1px solid #ebedf0;
+  box-shadow: 1px 1px 1px 1px gray;
+}
+.rvbtnWrap > div > button:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
 }

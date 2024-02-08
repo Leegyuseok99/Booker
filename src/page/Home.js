@@ -26,7 +26,14 @@ function Home() {
               <br />
               <span>BOOKER</span>
               <div className="bannerBtnWrap">
-                <Button id="bannerLoginbtn">LOGIN</Button>
+                <Button
+                  id="bannerLoginbtn"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  LOGIN
+                </Button>
                 <span>아래 기능들은 로그인 후 이용 가능한 서비스 입니다.</span>
               </div>
             </div>

@@ -28,10 +28,12 @@
   height: 400px;
 }
 .rufile_btn {
+  width: 30%;
+  height: 40px;
   width: 150px;
   height: 40px;
   border-radius: 20px;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
@@ -76,4 +78,27 @@
 .updateReportWrap > span {
   font-size: 16px;
   font-weight: 600;
+}
+.rubtnWrap {
+  width: 45vw;
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.rubtnWrap > button {
+  width: 25%;
+  height: 80%;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 15px;
+  background-color: #ebedf0;
+  border: 1px solid #ebedf0;
+  box-shadow: 1px 1px 1px 1px gray;
+}
+.rubtnWrap > button:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
 }
