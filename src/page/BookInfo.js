@@ -300,7 +300,7 @@ function BookInfo({ selectedBook, onSubmit }) {
                     )}
                     {restOfSelectList.map((item) => (
                       <option value={item.key} key={item.key}>
-                        {item.value}
+                        {item.icon} {item.value}
                       </option>
                     ))}
                   </select>

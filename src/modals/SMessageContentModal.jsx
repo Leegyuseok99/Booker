@@ -71,7 +71,7 @@ function SMessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
     if (messageId) {
       messageContent();
     }
-  }, [message]);
+  }, [messageId]);
   const onCanclehandle = () => {
     onCancle();
   };
