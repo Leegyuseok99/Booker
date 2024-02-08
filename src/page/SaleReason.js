@@ -62,6 +62,7 @@ function SaleReason() {
             image={posuser.image}
             nickname={posuser.nickname}
             intro={posuser.intro}
+            profileId={posuser.profileId}
             onClick={() => handleUserClick(posuser.profileId)}
           ></SaleUser>
         ))}

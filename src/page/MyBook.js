@@ -298,14 +298,13 @@ function MyBook() {
   function iconSelect(pro) {
     switch (pro) {
       case "READING":
-        <LocalLibraryIcon></LocalLibraryIcon>;
-        break;
+        return <LocalLibraryIcon></LocalLibraryIcon>;
+
       case "BEFORE":
-        <BookIcon></BookIcon>;
-        break;
+        return <BookIcon></BookIcon>;
+
       default:
-        <BeenhereIcon></BeenhereIcon>;
-        break;
+        return <BeenhereIcon></BeenhereIcon>;
     }
   }
   return (

@@ -385,14 +385,13 @@ function SubUserBook() {
   function iconSelect(pro) {
     switch (pro) {
       case "READING":
-        <LocalLibraryIcon></LocalLibraryIcon>;
-        break;
+        return <LocalLibraryIcon></LocalLibraryIcon>;
+
       case "BEFORE":
-        <BookIcon></BookIcon>;
-        break;
+        return <BookIcon></BookIcon>;
+
       default:
-        <BeenhereIcon></BeenhereIcon>;
-        break;
+        return <BeenhereIcon></BeenhereIcon>;
     }
   }
   return (
@@ -489,7 +488,7 @@ function SubUserBook() {
                 <BookListCard
                   key={i}
                   cover={read.img}
-                  onClick={handleBookClick(read.isbn13, read.bookId)}
+                  onClick={() => handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
                 <div className="iconWrap">
                   <div className="sellIconWrap">

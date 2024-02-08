@@ -41,7 +41,7 @@ function App() {
         />
         <Route path="/addreport/:bookId" element={<AddReport />} />
         <Route
-          path="/reportupdate/:reportId/:isbn13/:bookId"
+          path="/reportupdate/:reportId/:user/:isbn13/:bookId"
           element={<ReportUpdate />}
         />
         <Route path="/bookrecommend" element={<BookRecommend />} />

@@ -178,15 +178,17 @@ function BookInfo({ selectedBook, onSubmit }) {
     navigate("/main");
   };
   const selectList = [
-    { key: "BEFORE", value: `${(<BookIcon></BookIcon>)}읽기 전` },
+    { key: "BEFORE", value: "읽기 전", icon: <BookIcon></BookIcon> },
     {
       key: "READING",
-      value: `${(<LocalLibraryIcon></LocalLibraryIcon>)}읽는 중`,
+      value: `읽는 중`,
+      icon: <LocalLibraryIcon></LocalLibraryIcon>,
     },
-    { key: "COMP", value: `${(<BeenhereIcon></BeenhereIcon>)}독서 완료` },
+    { key: "COMP", value: `독서 완료`, icon: <BeenhereIcon></BeenhereIcon> },
     {
       key: "DELETE",
-      value: `${(<BookmarkRemoveIcon></BookmarkRemoveIcon>)}책 삭제하기`,
+      value: `책 삭제하기`,
+      icon: <BookmarkRemoveIcon></BookmarkRemoveIcon>,
     },
   ];
   const selecthandle = (e) => {
