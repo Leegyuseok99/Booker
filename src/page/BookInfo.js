@@ -11,6 +11,7 @@ import BookIcon from "@mui/icons-material/Book";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
+import { Select } from "react-select";
 
 function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId, otherbookstate } = useParams();
@@ -53,13 +54,13 @@ function BookInfo({ selectedBook, onSubmit }) {
   }, []);
 
   // 책 존재 여부 확인(셀렉트 박스, 책 추가 버튼)
-  const [exist, setExist] = useState(false);
+  const [exist, setExist] = useState(true);
 
   async function fetchDataBookExist() {
     accessToken = await refreshTokenFunc(navigate);
     bookExist();
   }
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("me");
   const bookExist = async () => {
     if (bookId === "null") {
       await axios
@@ -178,17 +179,18 @@ function BookInfo({ selectedBook, onSubmit }) {
     navigate("/main");
   };
   const selectList = [
-    { key: "BEFORE", value: "읽기 전", icon: <BookIcon></BookIcon> },
+    {
+      key: "BEFORE",
+      value: "읽기 전",
+    },
     {
       key: "READING",
-      value: `읽는 중`,
-      icon: <LocalLibraryIcon></LocalLibraryIcon>,
+      value: "읽는 중",
     },
-    { key: "COMP", value: `독서 완료`, icon: <BeenhereIcon></BeenhereIcon> },
+    { key: "COMP", value: "독서 완료" },
     {
       key: "DELETE",
-      value: `책 삭제하기`,
-      icon: <BookmarkRemoveIcon></BookmarkRemoveIcon>,
+      value: "책 삭제하기",
     },
   ];
   const selecthandle = (e) => {
@@ -288,7 +290,7 @@ function BookInfo({ selectedBook, onSubmit }) {
                     onChange={selecthandle}
                     value={selected}
                     className="select"
-                    disabled={user === "me" ? false : true}
+                    disabled={user === "me" && exist === true ? false : true}
                   >
                     {selectedOption && (
                       <option
@@ -300,7 +302,7 @@ function BookInfo({ selectedBook, onSubmit }) {
                     )}
                     {restOfSelectList.map((item) => (
                       <option value={item.key} key={item.key}>
-                        {item.icon} {item.value}
+                        {item.value}
                       </option>
                     ))}
                   </select>
