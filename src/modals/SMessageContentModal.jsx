@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
-function SMessageContentModal({ isOpen, onCancle, messageId }) {
+function SMessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
   let accessToken = localStorage.getItem("accesstoken");
   const [message, setMessage] = useState([]);
   const [imageSrc, setImageSrc] = useState("");
@@ -39,11 +39,39 @@ function SMessageContentModal({ isOpen, onCancle, messageId }) {
         }
       });
   };
+  async function fetchDataMessageDelete() {
+    accessToken = await refreshTokenFunc(navigate);
+    messageDelete();
+  }
+  const messageDelete = () => {
+    axios
+      .delete("/api/message", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          messageId: messageId,
+        },
+      })
+      .then(() => {
+        window.alert("삭제 완료");
+        onCancle();
+        onCancle3();
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataMessageDelete();
+        }
+      });
+  };
   useEffect(() => {
     if (messageId) {
       messageContent();
     }
-  }, [messageId]);
+  }, [message]);
   const onCanclehandle = () => {
     onCancle();
   };
@@ -74,6 +102,9 @@ function SMessageContentModal({ isOpen, onCancle, messageId }) {
               <div className={styles.showWrap}>
                 <div className={styles.titleWrap}>{message.title}</div>
                 <div className={styles.contentWrap}>{message.content}</div>
+              </div>
+              <div>
+                <button onClick={messageDelete}>삭제</button>
               </div>
             </div>
           </div>

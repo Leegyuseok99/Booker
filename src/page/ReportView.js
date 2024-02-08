@@ -6,7 +6,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ReportView() {
-  const { reportId, bookId, isbn13 } = useParams();
+  const { reportId, bookId, isbn13, user } = useParams();
   const navigate = useNavigate();
   const [report, setReport] = useState({});
   const [imageSrc, setImageSrc] = useState("");
@@ -51,7 +51,7 @@ function ReportView() {
   };
 
   const handleUpdateReport = () => {
-    navigate(`/reportupdate/${reportId}/${isbn13}/${bookId}`);
+    navigate(`/reportupdate/${reportId}/${user}/${isbn13}/${bookId}`);
   };
 
   async function fetchDataHandleDeleteReport() {
@@ -98,8 +98,14 @@ function ReportView() {
         <div className="rvcommentWrap">{report.content}</div>
         <div className="rvbtnWrap">
           <button onClick={handleCancel}>뒤로가기</button>
-          <button onClick={handleUpdateReport}>수정 하기</button>
-          <button onClick={handleDeleteReport}>삭제</button>
+          {user === "me" ? (
+            <div>
+              <button onClick={handleUpdateReport}>수정 하기</button>
+              <button onClick={handleDeleteReport}>삭제</button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>

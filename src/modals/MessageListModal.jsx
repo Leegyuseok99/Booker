@@ -163,6 +163,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
             ))}
             <RMessageContentModal
               isOpen={isOpen1}
+              onCancle3={onCanclehandle}
               onCancle={handleModalCancel}
               messageId={selectedMessage ? selectedMessage.messageId : null}
             ></RMessageContentModal>
@@ -191,6 +192,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
               <SMessageContentModal
                 isOpen={isOpen2}
                 onCancle={handleModalCancel2}
+                onCancle3={onCanclehandle}
                 messageId={selectedMessage ? selectedMessage.messageId : null}
               ></SMessageContentModal>
             </div>

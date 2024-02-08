@@ -7,7 +7,7 @@ import MessageSendModal from "./MessageSendModal";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import { useNavigate } from "react-router-dom";
 
-function MessageContentModal({ isOpen, onCancle, messageId }) {
+function MessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
   let accessToken = localStorage.getItem("accesstoken");
   const [message, setMessage] = useState();
   const [imageSrc, setImageSrc] = useState("");
@@ -45,6 +45,34 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
       messageContent();
     }
   }, [messageId]);
+  async function fetchDataMessageDelete() {
+    accessToken = await refreshTokenFunc(navigate);
+    messageDelete();
+  }
+  const messageDelete = () => {
+    axios
+      .delete("/api/message", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          messageId: messageId,
+        },
+      })
+      .then(() => {
+        window.alert("삭제 완료");
+        onCancle();
+        onCancle3();
+      })
+      .catch((error) => {
+        const tokenErr = error.response.data.code;
+        if (tokenErr === "NotContationToken" || tokenErr === "JwtException") {
+          navigate("/login");
+        } else if (tokenErr === "JwtTokenExpired") {
+          fetchDataMessageDelete();
+        }
+      });
+  };
   const onCanclehandle = () => {
     onCancle();
   };
@@ -53,6 +81,9 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
     setIsOpen1(true);
   };
   const sendModalClose = () => {
+    setIsOpen1(false);
+  };
+  const handleSubmit = () => {
     setIsOpen1(false);
   };
   return (
@@ -85,10 +116,12 @@ function MessageContentModal({ isOpen, onCancle, messageId }) {
             </div>
             <div className={styles.sent_btn}>
               <button onClick={sendModalOpen}>답장 보내기</button>
+              <button onClick={messageDelete}>삭제</button>
             </div>
             <MessageSendModal
               isOpen={isOpen1}
               onCancle={sendModalClose}
+              onSubmit={handleSubmit}
               profileId={message.senderId}
               profileImg={imageSrc}
               nickname={message.nickname}

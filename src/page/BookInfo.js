@@ -7,6 +7,10 @@ import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+import BookIcon from "@mui/icons-material/Book";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import BeenhereIcon from "@mui/icons-material/Beenhere";
+import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 
 function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId, otherbookstate } = useParams();
@@ -55,7 +59,7 @@ function BookInfo({ selectedBook, onSubmit }) {
     accessToken = await refreshTokenFunc(navigate);
     bookExist();
   }
-
+  const [user, setUser] = useState("");
   const bookExist = async () => {
     if (bookId === "null") {
       await axios
@@ -72,6 +76,7 @@ function BookInfo({ selectedBook, onSubmit }) {
           setBookId(response.data.bookId);
           setProgress(response.data.progress);
           setReportList(response.data.simpleReports);
+          setUser(response.data.user);
         })
         .catch((error) => {
           const tokenErr = error.response.data.code;
@@ -173,10 +178,16 @@ function BookInfo({ selectedBook, onSubmit }) {
     navigate("/main");
   };
   const selectList = [
-    { key: "BEFORE", value: "읽기 전" },
-    { key: "READING", value: "읽는 중" },
-    { key: "COMP", value: "독서 완료" },
-    { key: "DELETE", value: "책 삭제하기" },
+    { key: "BEFORE", value: `${(<BookIcon></BookIcon>)}읽기 전` },
+    {
+      key: "READING",
+      value: `${(<LocalLibraryIcon></LocalLibraryIcon>)}읽는 중`,
+    },
+    { key: "COMP", value: `${(<BeenhereIcon></BeenhereIcon>)}독서 완료` },
+    {
+      key: "DELETE",
+      value: `${(<BookmarkRemoveIcon></BookmarkRemoveIcon>)}책 삭제하기`,
+    },
   ];
   const selecthandle = (e) => {
     setSelected(e.target.value);
@@ -188,7 +199,6 @@ function BookInfo({ selectedBook, onSubmit }) {
   const toggleIntroduction = () => {
     setIsIntroductionVisible(!isIntroductionVisible);
   };
-  const [user, setUser] = useState("");
   async function fetchDataGetReport() {
     accessToken = await refreshTokenFunc(navigate);
     getReport();

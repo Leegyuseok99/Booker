@@ -7,7 +7,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 
 function ReportUpdate() {
-  const { reportId, isbn13, bookId } = useParams();
+  const { reportId, isbn13, bookId, user } = useParams();
   let accessToken = localStorage.getItem("accesstoken");
   const navigate = useNavigate();
   const [reportData, setReportData] = useState({
@@ -146,7 +146,7 @@ function ReportUpdate() {
       })
       .then((response) => {
         window.alert("독후감 수정 완료");
-        navigate(`/reportview/${reportId}/${isbn13}/${bookId}`);
+        navigate(`/reportview/${reportId}/${user}/${isbn13}/${bookId}`);
       })
       .catch((error) => {
         const tokenErr = error.response.data.code;

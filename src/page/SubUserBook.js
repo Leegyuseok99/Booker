@@ -14,6 +14,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import MessageSendModal from "../modals/MessageSendModal";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+import BookIcon from "@mui/icons-material/Book";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import BeenhereIcon from "@mui/icons-material/Beenhere";
 
 function SubUserBook() {
   const navigate = useNavigate();
@@ -361,8 +364,8 @@ function SubUserBook() {
     accessToken = await refreshTokenFunc(navigate);
     handleBookClick(isbn13);
   }
-  const handleBookClick = async (isbn13) => {
-    navigate(`/bookinfo/${isbn13}`);
+  const handleBookClick = async (isbn13, bookId) => {
+    navigate(`/bookinfo/${isbn13}/${bookId}`);
     try {
       const response = await axios.get(`/api/book/${isbn13}`, {
         headers: {
@@ -379,7 +382,19 @@ function SubUserBook() {
       }
     }
   };
-
+  function iconSelect(pro) {
+    switch (pro) {
+      case "READING":
+        <LocalLibraryIcon></LocalLibraryIcon>;
+        break;
+      case "BEFORE":
+        <BookIcon></BookIcon>;
+        break;
+      default:
+        <BeenhereIcon></BeenhereIcon>;
+        break;
+    }
+  }
   return (
     <div className="SubUserBookWrap">
       <div className="subProfile">
@@ -474,18 +489,23 @@ function SubUserBook() {
                 <BookListCard
                   key={i}
                   cover={read.img}
-                  onClick={handleBookClick}
+                  onClick={handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
-                <div className="sellIconWrap">
-                  {read.saleStatus === "POS" ? (
-                    <span>
-                      <ShoppingCartIcon></ShoppingCartIcon>
-                    </span>
-                  ) : (
-                    <span>
-                      <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
-                    </span>
-                  )}
+                <div className="iconWrap">
+                  <div className="sellIconWrap">
+                    {read.saleState === "POS" ? (
+                      <span>
+                        <ShoppingCartIcon></ShoppingCartIcon>
+                      </span>
+                    ) : (
+                      <span>
+                        <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
+                      </span>
+                    )}
+                  </div>
+                  <div className="progressWrap">
+                    {iconSelect(read.progress)}
+                  </div>
                 </div>
               </div>
             ))}

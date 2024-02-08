@@ -14,6 +14,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import MessageListModal from "../modals/MessageListModal";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
+import BookIcon from "@mui/icons-material/Book";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import BeenhereIcon from "@mui/icons-material/Beenhere";
 
 function MyBook() {
   const navigate = useNavigate();
@@ -292,6 +295,19 @@ function MyBook() {
       }
     }
   };
+  function iconSelect(pro) {
+    switch (pro) {
+      case "READING":
+        <LocalLibraryIcon></LocalLibraryIcon>;
+        break;
+      case "BEFORE":
+        <BookIcon></BookIcon>;
+        break;
+      default:
+        <BeenhereIcon></BeenhereIcon>;
+        break;
+    }
+  }
   return (
     <div className={styles.myBookWrap}>
       <div className={styles.mbProfile}>
@@ -382,16 +398,21 @@ function MyBook() {
                   cover={read.img}
                   onClick={() => handleBookClick(read.isbn13, read.bookId)}
                 ></BookListCard>
-                <div className={styles.sellIconWrap}>
-                  {read.saleState === "POS" ? (
-                    <span onClick={() => saleStatusChange(read.bookId)}>
-                      <ShoppingCartIcon></ShoppingCartIcon>
-                    </span>
-                  ) : (
-                    <span onClick={() => saleStatusChange(read.bookId)}>
-                      <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
-                    </span>
-                  )}
+                <div className={styles.iconWrap}>
+                  <div className={styles.sellIconWrap}>
+                    {read.saleState === "POS" ? (
+                      <span onClick={() => saleStatusChange(read.bookId)}>
+                        <ShoppingCartIcon></ShoppingCartIcon>
+                      </span>
+                    ) : (
+                      <span onClick={() => saleStatusChange(read.bookId)}>
+                        <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.progressWrap}>
+                    {iconSelect(read.progress)}
+                  </div>
                 </div>
               </div>
             ))}
