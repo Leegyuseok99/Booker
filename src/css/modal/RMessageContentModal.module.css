@@ -90,6 +90,7 @@
   border: 1px solid #ebedf0;
   box-shadow: 1px 1px 1px 1px gray;
   margin-left: 10px;
+  margin-top: 15px;
 }
 .sent_btn > button:hover {
   border: 1px solid #ccd0d5;

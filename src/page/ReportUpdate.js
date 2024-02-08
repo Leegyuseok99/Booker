@@ -187,6 +187,9 @@ function ReportUpdate() {
             src={previewImage ? previewImage : imageSrc}
             alt="img"
             onClick={handleButtonClick}
+            style={
+              previewImage === null ? { display: "none" } : { display: "block" }
+            }
           />
         )}
         <input

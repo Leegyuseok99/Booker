@@ -5,23 +5,26 @@
   margin: 30px auto 0px;
 }
 .imgWrap {
-  width: 45%;
+  width: 40vw;
   height: 400px;
   margin-right: 5%;
   border: 1px solid #e2e0e0;
   border-radius: 20px;
   box-shadow: 2px 2px 2px 2px #e2e0e0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
 }
+
 .imgWrap > span {
   text-align: center;
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 300;
 }
 .imgWrap > img {
-  width: 100%;
+  width: 90%;
+  height: 90%;
 }
 .addReportWrap {
   width: 50%;

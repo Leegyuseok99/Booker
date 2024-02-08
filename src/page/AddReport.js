@@ -120,6 +120,9 @@ function AddReport() {
           src={previewImage || Image}
           img="img"
           onClick={handleButtonClick}
+          style={
+            previewImage === null ? { display: "none" } : { display: "block" }
+          }
         />
         {!previewImage && !Image && <span>이미지 등록해주세요</span>}
         <input

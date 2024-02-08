@@ -91,6 +91,7 @@
   background-color: #ebedf0;
   border: 1px solid #ebedf0;
   box-shadow: 1px 1px 1px 1px gray;
+  margin-top: 15px;
 }
 .deletebtnWrap > button:hover {
   border: 1px solid #ccd0d5;
