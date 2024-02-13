@@ -138,7 +138,7 @@ function SignUp() {
         정보를 입력해 주세요
       </div>
       <div className="SingUp">
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             className="input"
             label="ID"
@@ -154,7 +154,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             error={Boolean(pw_result)}
             helperText={pw_result}
@@ -170,7 +170,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             error={hasNotPwSame("pwCheck")}
             helperText={
@@ -190,7 +190,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             error={Boolean(email_result)}
             helperText={email_result}
@@ -205,7 +205,7 @@ function SignUp() {
             onChange={handleEmail}
           ></TextField>
         </div>
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             className="input"
             label="Name"
@@ -221,7 +221,7 @@ function SignUp() {
           ></TextField>
         </div>
 
-        <div className="inputWrap">
+        <div className="sinputWrap">
           <TextField
             error={Boolean(birth_result)}
             helperText={birth_result}

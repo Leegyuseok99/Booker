@@ -73,35 +73,47 @@ function Header() {
           <Link to="/main" className="logo">
             <img src={logo} alt="로고"></img>
           </Link>
-          <div className="user_info">
-            <Link to="/mybook" className="header_individual">
-              <span>개인 서재</span>
-            </Link>
-            <Link to="/bookrecommend" className="header_recomend">
-              <span>책 추천</span>
-            </Link>
-            <Link to="/booksale" className="header_place">
-              <span>책 거래</span>
-            </Link>
-            <Link to="/searchpage" className="search">
-              <span>책 검색</span>
-            </Link>
-            <div
-              className="user_profile"
-              onClick={() => {
-                navigate("/profileupdate");
-              }}
-            >
-              <img src={imageSrc} alt="프로필(클릭 시 프로필 수정)"></img>
-            </div>
-            <button className="headerLogout_bnt" onClick={modalOpenhandle}>
-              로그아웃
-            </button>
-            <LogoutModal
-              isOpen={isOpen}
-              onSubmit={handleModalSubmit}
-              onCancle={handleModalCancel}
-            ></LogoutModal>
+          <div className="headerNav">
+            <ul>
+              <li>
+                <Link to="/mybook" className="header_individual">
+                  <span>개인 서재</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/bookrecommend" className="header_recomend">
+                  <span>책 추천</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/booksale" className="header_place">
+                  <span>책 거래</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/searchpage" className="search">
+                  <span>책 검색</span>
+                </Link>
+              </li>
+              <li>
+                <div
+                  className="user_profile"
+                  onClick={() => {
+                    navigate("/profileupdate");
+                  }}
+                >
+                  <img src={imageSrc}></img>
+                </div>
+              </li>
+              <button className="headerLogout_bnt" onClick={modalOpenhandle}>
+                로그아웃
+              </button>
+              <LogoutModal
+                isOpen={isOpen}
+                onSubmit={handleModalSubmit}
+                onCancle={handleModalCancel}
+              ></LogoutModal>
+            </ul>
           </div>
         </div>
       ) : (

@@ -30,8 +30,13 @@ function FollowingModal({ isOpen, onCancle, followingList, myProfileId }) {
               }
             }}
           >
-            <span>{following.intro}</span>
-            <span>{following.nickname}</span>
+            <div className={styles.imgWrap}>
+              <img src={following.imageURL}></img>
+            </div>
+            <div className={styles.infoWrap}>
+              <span>{following.nickname}</span>
+              <span>{following.intro}</span>
+            </div>
           </div>
         ))}
       </div>

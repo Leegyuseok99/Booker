@@ -30,9 +30,16 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
               }
             }}
           >
-            <span>{follower.intro}</span>
-            <span>{follower.nickname}</span>
-            <button>삭제</button>
+            <div className={styles.imgWrap}>
+              <img src={follower.imageURL}></img>
+            </div>
+            <div className={styles.infoWrap}>
+              <span>{follower.nickname}</span>
+              <span>{follower.intro}</span>
+            </div>
+            <div className={styles.deleteWrap}>
+              <button>삭제</button>
+            </div>
           </div>
         ))}
       </div>

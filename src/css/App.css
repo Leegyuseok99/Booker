@@ -5,22 +5,26 @@ body {
   text-align: center;
 }
 .header {
-  padding: 20px 80px;
+  height: 11%;
   display: flex;
-  background-color: white;
   flex-direction: row;
+  padding: 20px 80px;
   justify-content: space-between;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
+.logo {
+  width: clamp(65px, 5vw, 160px);
+  height: clamp(55px, 4vh, 160px);
+}
 .logo > img {
-  width: 6vw;
-  height: 8vh;
+  width: 100%;
+  height: 100%;
 }
 .headerLogin_btn {
-  width: 10vw;
-  font-size: 1.1rem;
+  width: clamp(8.5vw, 10vw, 15vw);
+  font-size: 1rem;
   font-weight: 900;
-  height: 8vh;
+  height: clamp(40px, 4vh, 10vh);
   border-radius: 30px;
   border: 1px solid gray;
   background-color: white;
@@ -32,22 +36,34 @@ body {
   color: #5e3fa7;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-.user_info {
-  width: 60%;
+.headerNav ul {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
+  margin: 0px;
+  padding: 0px;
 }
-.user_profile > img {
-  width: 50px;
-  height: 50px;
+.headerNav li {
+  list-style-type: none;
+  padding: 8px 18px;
+}
+.user_profile {
+  width: clamp(50px, 5vw, 50px);
   border-radius: 50%;
 }
+.user_profile > img {
+  width: 100%;
+  height: clamp(50px, 9vh, 50px);
+  border-radius: 50%;
+  border: 1px solid black;
+  margin-top: -10px;
+}
 .headerLogout_bnt {
-  width: 10vw;
+  width: clamp(8.5vw, 10vw, 15vw);
   font-size: 1rem;
   font-weight: 900;
-  height: 8vh;
+  height: clamp(40px, 4vh, 10vh);
   border-radius: 30px;
   border: 1px solid gray;
   background-color: white;
@@ -64,8 +80,7 @@ body {
 .header_individual,
 .search {
   text-decoration: none;
-  line-height: 40px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 .header_recomend,
@@ -211,49 +226,119 @@ body {
   font-size: 0.8rem;
   color: gray;
 }
-@media screen and (max-width: 1024px) {
+@media all and (min-width: 768px) and (max-width: 1023px) {
   .header {
-    padding: 20px 30px 25px 30px;
+    padding: 20px 40px;
+    height: 7%;
   }
-
-  .logo,
+  .logo {
+    width: clamp(55px, 5vw, 100px);
+    height: clamp(45px, 4vh, 100px);
+  }
   .headerLogin_btn {
-    width: 100px;
-    height: 45px;
-    font-size: 18px;
-    font-weight: 700;
+    width: clamp(70px, 10vw, 10vw);
+    height: clamp(40px, 3vh, 15vw);
+    font-size: 0.8rem;
   }
-  .banner {
-    height: 200px;
+  .headerLogout_bnt {
+    width: clamp(70px, 10vw, 10vw);
+    height: clamp(40px, 3vh, 15vw);
+    font-size: 0.8rem;
   }
-  .bsContainerTitle {
-    font-size: 25px;
-    font-weight: 700;
-    padding-left: 4%;
+  .header_recomend,
+  .header_place,
+  .header_individual,
+  .search {
+    font-size: 0.8rem;
   }
-  .bsContainer {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .headerNav li {
+    list-style-type: none;
+    padding: 8px 12px;
   }
 }
-@media screen and (max-width: 768px) {
+@media all and (min-width: 480px) and (max-width: 767px) {
   .header {
-    padding: 20px 15px 20px 15px;
+    padding: 20px 30px;
+    height: 5%;
   }
-
-  .logo,
+  .logo {
+    width: clamp(45px, 5vw, 100px);
+    height: clamp(45px, 4vh, 100px);
+  }
   .headerLogin_btn {
-    width: 85px;
-    height: 40px;
-    font-size: 17px;
-    font-weight: 900;
+    width: clamp(60px, 10vw, 10vw);
+    height: clamp(30px, 3vh, 10vw);
+    font-size: 0.7rem;
   }
-  .banner {
-    height: 270px;
+  .headerNav {
+    width: 80vw;
   }
-  .bsContainer {
-    margin-left: 0px;
-    padding-left: 8%;
-    flex-direction: column;
+  .headerNav li {
+    list-style-type: none;
+    padding: 8px 8px;
+  }
+  .headerLogout_bnt {
+    width: clamp(60px, 10vw, 10vw);
+    height: clamp(30px, 3vh, 10vw);
+    font-size: 0.7rem;
+  }
+  .header_recomend,
+  .header_place,
+  .header_individual,
+  .search {
+    font-size: 0.7rem;
+  }
+  .user_profile {
+    width: clamp(40px, 5vw, 40px);
+    border-radius: 50%;
+  }
+  .user_profile > img {
+    width: 100%;
+    height: clamp(40px, 9vh, 40px);
+    border-radius: 50%;
+    border: 1px solid black;
+  }
+}
+@media all and (max-width: 479px) {
+  .header {
+    padding: 10px 5px;
+    height: 100%;
+  }
+  .logo {
+    width: clamp(45px, 5vw, 100px);
+    height: clamp(45px, 4vh, 100px);
+  }
+  .headerLogin_btn {
+    width: clamp(60px, 10vw, 10vw);
+    height: clamp(30px, 3vh, 10vw);
+    font-size: 0.7rem;
+    margin-top: 5px;
+  }
+  .headerNav li {
+    list-style-type: none;
+    padding: 8px 6px;
+  }
+  .headerLogout_bnt {
+    width: clamp(60px, 10vw, 10vw);
+    height: clamp(30px, 3vh, 10vw);
+    font-size: 0.7rem;
+    margin-top: 5px;
+  }
+  .header_recomend,
+  .header_place,
+  .header_individual,
+  .search {
+    font-size: 0.7rem;
+  }
+  .user_profile {
+    width: clamp(40px, 5vw, 40px);
+    border-radius: 50%;
+  }
+  .user_profile > img {
+    width: 100%;
+    height: clamp(40px, 3vh, 40px);
+    border-radius: 50%;
+    border: 1px solid black;
+    margin-top: -5px;
   }
 }

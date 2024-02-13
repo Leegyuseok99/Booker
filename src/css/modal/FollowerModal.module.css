@@ -40,4 +40,47 @@
   width: 100%;
   height: 60px;
   border-bottom: 1px solid #e2e0e0;
+  display: flex;
+  flex-direction: row;
+}
+.imgWrap {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imgWrap > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+.infoWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+}
+.infoWrap > span:first-of-type {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.infoWrap > span:last-of-type {
+  font-size: 0.9rem;
+  color: #555555;
+}
+.deleteWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.deleteWrap > button {
+  font-size: 0.8rem;
+  font-weight: 300;
+  background-color: #ebedf0;
+  border: 1px solid #ebedf0;
+}
+.deleteWrap > button:hover {
+  border: 1px solid #ccd0d5;
+  background-color: #ccd0d5;
 }

@@ -1,4 +1,5 @@
 .banner {
+  width: 100vw;
   height: 45vh;
   display: flex;
   flex-direction: row;
@@ -19,7 +20,13 @@
   font-weight: 600;
 }
 .bannerLeft > div:first-of-type {
-  font-size: 4.3rem;
+  font-size: clamp(2.5rem, 5vw, 4.3rem);
+}
+.bannerLeft > div:nth-of-type(2) {
+  font-size: clamp(1rem, 1.5vw, 2rem);
+}
+.bannerLeft > div:last-of-type {
+  font-size: clamp(1rem, 1.5vw, 2rem);
 }
 .bnImgWrap {
   width: 60vw;
@@ -30,10 +37,10 @@
   height: 45vh;
 }
 .bsContainerTitle {
-  font-size: 22px;
-  font-weight: 900;
-  padding-top: 2%;
-  padding-left: 3%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-top: 20px;
+  padding-left: 40px;
 }
 .bsContainer {
   margin-top: 20px;
@@ -44,9 +51,21 @@
   padding: 2% 0 2% 2%;
   margin-left: 3%;
 }
-@media screen and (max-width: 1024px) {
+@media all and (min-width: 768px) and (max-width: 1023px) {
   .banner {
-    height: 200px;
+    height: 40vh;
+  }
+  .bannerLeft {
+    width: 40vw;
+    height: 40vh;
+  }
+  .bnImgWrap {
+    width: 60vw;
+    height: 40vh;
+  }
+  .bnImgWrap > img {
+    width: 60vw;
+    height: 40vh;
   }
   .bsContainerTitle {
     font-size: 25px;
@@ -58,13 +77,57 @@
     flex-wrap: wrap;
   }
 }
-@media screen and (max-width: 768px) {
+@media all and (min-width: 480px) and (max-width: 767px) {
   .banner {
-    height: 270px;
+    height: 35vh;
+  }
+  .bannerLeft {
+    width: 50vw;
+    height: 35vh;
+  }
+  .bnImgWrap {
+    width: 50vw;
+    height: 35vh;
+  }
+  .bnImgWrap > img {
+    width: 50vw;
+    height: 35vh;
   }
   .bsContainer {
     margin-left: 0px;
     padding-left: 8%;
     flex-direction: column;
+  }
+  .bannerLeft > div:first-of-type {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+  }
+  .bannerLeft > div:nth-of-type(2) {
+    font-size: clamp(0.8rem, 1vw, 1.8rem);
+  }
+  .bannerLeft > div:last-of-type {
+    font-size: clamp(0.8rem, 1vw, 1.8rem);
+  }
+}
+@media all and (max-width: 479px) {
+  .banner {
+    height: 30vh;
+  }
+  .bannerLeft {
+    width: 100vw;
+    height: 30vh;
+  }
+  .bnImgWrap {
+    display: none;
+  }
+  .bsContainer {
+  }
+  .bannerLeft > div:first-of-type {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+  }
+  .bannerLeft > div:nth-of-type(2) {
+    font-size: clamp(0.7rem, 2vw, 1.5rem);
+  }
+  .bannerLeft > div:last-of-type {
+    font-size: clamp(0.7rem, 2vw, 1.5rem);
   }
 }
