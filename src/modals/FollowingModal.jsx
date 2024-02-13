@@ -31,7 +31,7 @@ function FollowingModal({ isOpen, onCancle, followingList, myProfileId }) {
             }}
           >
             <div className={styles.imgWrap}>
-              <img src={following.imageURL}></img>
+              <img src={following.imgURL}></img>
             </div>
             <div className={styles.infoWrap}>
               <span>{following.nickname}</span>

@@ -311,7 +311,7 @@ body {
   .headerLogin_btn {
     width: clamp(60px, 10vw, 10vw);
     height: clamp(30px, 3vh, 10vw);
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     margin-top: 5px;
   }
   .headerNav li {
@@ -321,7 +321,7 @@ body {
   .headerLogout_bnt {
     width: clamp(60px, 10vw, 10vw);
     height: clamp(30px, 3vh, 10vw);
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     margin-top: 5px;
   }
   .header_recomend,

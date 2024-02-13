@@ -32,7 +32,7 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
             }}
           >
             <div className={styles.imgWrap}>
-              <img src={follower.imageURL}></img>
+              <img src={follower.imgURL}></img>
             </div>
             <div className={styles.infoWrap}>
               <span>{follower.nickname}</span>
