@@ -48,12 +48,12 @@
 }
 .msmTitleInputWrap > input {
   width: 80%;
-  height: 5vh;
+  height: clamp(35px, 5vh, 60px);
   border-radius: 5px;
   border: 1px solid #888888;
 }
 .msmTitleInputWrap > span {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   margin-right: 20px;
 }
@@ -70,7 +70,7 @@
   border: 1px solid #888888;
 }
 .msmContentInputWrap > span {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 600;
   margin-right: 20px;
 }
@@ -95,4 +95,71 @@
 .btnWrap > button:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
+}
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .Send-content {
+    width: 65vw;
+  }
+  .msmUser {
+    margin-bottom: 15px;
+  }
+  .msmTitleInputWrap {
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  .msmTitleInputWrap span {
+    margin-bottom: 10px;
+    margin-right: 0px;
+  }
+  .msmTitleInputWrap > input {
+    width: 90%;
+  }
+  .msmContentInputWrap {
+    flex-direction: column;
+  }
+  .msmContentInputWrap span {
+    margin-bottom: 10px;
+  }
+  .msmContentInputWrap > textarea {
+    width: 90%;
+  }
+}
+@media all and (max-width: 479px) {
+  .Send-content {
+    width: 65vw;
+    padding: 30px 40px 30px 40px;
+  }
+  .msmUser {
+    margin-bottom: 15px;
+  }
+  .msmTitleInputWrap {
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  .msmTitleInputWrap span {
+    margin-bottom: 10px;
+    margin-right: 0px;
+  }
+  .msmTitleInputWrap > input {
+    width: 100%;
+  }
+  .msmContentInputWrap {
+    flex-direction: column;
+  }
+  .msmContentInputWrap span {
+    margin-bottom: 10px;
+  }
+  .msmContentInputWrap > textarea {
+    width: 100%;
+  }
+  .btnWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btnWrap > button {
+    width: 100%;
+    margin: 0px auto 10px;
+  }
 }

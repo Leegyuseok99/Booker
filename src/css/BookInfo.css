@@ -6,12 +6,13 @@
 .infoTitle {
   font-size: 1.1rem;
   width: 15.5vw;
+  word-wrap: break-word;
   font-weight: 600;
   padding: 10px 0px 0px;
 }
 .infoImgWrap {
-  width: 15.5vw;
-  height: 30vh;
+  width: clamp(14.5vw, 17.5vw, 200px);
+  height: clamp(200px, 30vh, 220px);
 }
 .infoImg {
   width: 100%;
@@ -27,23 +28,25 @@
   border-radius: 20px;
   width: 35vw;
   height: 70vh;
+  max-height: 500px;
   padding: 20px 30px;
 }
 .leftUp {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
 }
 .select {
   margin-top: 20px;
   font-weight: 600;
   text-align: center;
-  width: 13vw;
+  width: clamp(90px, 13vw, 150px);
   height: 7vh;
   border: 1px solid #777777;
   border-radius: 10px;
 }
 
-.leftUpLeft {
+.leftUpRight {
   display: flex;
   flex-direction: column;
   padding: 0px 20px;
@@ -55,8 +58,8 @@
   font-weight: 100;
 }
 .bookAdd_btn {
-  width: 11vw;
-  height: 6.5vh;
+  width: clamp(11vw, 13vw, 150px);
+  height: clamp(40px, 6.5vh, 55px);
   font-size: 0.8rem;
   font-weight: 600;
   border-radius: 8px;
@@ -87,16 +90,17 @@
   font-size: 1.5rem;
 }
 .infointro {
-  width: 80%;
-  height: 25vh;
+  width: 90%;
+  height: auto;
   font-size: 0.875rem;
-  padding: 10px;
+  padding: 15px;
   color: #666666;
 }
 .rightWrap {
   display: flex;
   flex-direction: column;
   width: 35vw;
+  max-height: 540px;
   margin-left: 5%;
 }
 .right {
@@ -111,7 +115,7 @@
   padding: 25px 0px 0px 50px;
 }
 .reportTitle {
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 .reportWrap {
@@ -140,8 +144,8 @@
 }
 .reportAdd_btn {
   margin-left: 20px;
-  width: 13vw;
-  height: 7vh;
+  width: clamp(130px, 13vw, 150px);
+  height: clamp(50px, 7vh, 60px);
   border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -153,4 +157,169 @@
 .reportAdd_btn:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
+}
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  .bookInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+  }
+  .left {
+    margin-left: 0px;
+    width: 60vw;
+    height: auto;
+    padding: 20px 30px;
+  }
+  .leftUpRight {
+    width: 60%;
+  }
+  .infoTitle {
+    width: 100%;
+  }
+  .rightWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw;
+    height: 70vh;
+    margin: 15px 0px 20px 0px;
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+  .right {
+    padding: 25px 30px 10px 30px;
+  }
+}
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .bookInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+  }
+  .left {
+    margin-left: 0px;
+    width: 60vw;
+    height: auto;
+    padding: 20px 30px;
+  }
+  .leftUp {
+    justify-content: space-between;
+  }
+  .leftUpRight {
+    width: 60%;
+    padding: 0px;
+  }
+  .infoTitle {
+    width: 100%;
+  }
+  .infoImgWrap {
+    width: clamp(110px, 17.5vw, 200px);
+    height: clamp(160px, 20vh, 200px);
+  }
+  .bookAdd_btn {
+    width: clamp(12vw, 14vw, 150px);
+    height: clamp(40px, 6.5vh, 55px);
+  }
+  .infoCategoryWrap {
+    font-size: 1rem;
+  }
+  .rightWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw;
+    height: 70vh;
+    margin: 15px 0px 20px 0px;
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+  .right {
+    padding: 25px 30px 10px 30px;
+  }
+  .reportTitle {
+    font-size: 1.2rem;
+  }
+  .noreportWrap {
+    font-size: 0.9rem;
+  }
+}
+
+@media all and (max-width: 479px) {
+  .bookInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+  }
+  .left {
+    margin-left: 0px;
+    width: 60vw;
+    height: auto;
+    padding: 20px 30px;
+  }
+  .leftUp {
+    justify-content: space-between;
+  }
+  .leftUpRight {
+    width: 55%;
+    padding: 0px;
+  }
+  .infoTitle {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 0px;
+  }
+  .infoauthor {
+    padding: 8px 0px 0px 0px;
+    color: #777777;
+    font-size: 0.7rem;
+    font-weight: 100;
+  }
+  .infoImgWrap {
+    width: clamp(90px, 9.5vw, 200px);
+    height: clamp(120px, 10vh, 200px);
+  }
+  .bookAdd_btn {
+    width: clamp(60px, 9vw, 150px);
+    height: clamp(35px, 3vh, 45px);
+    font-size: 0.7rem;
+  }
+  .select {
+    width: clamp(60px, 9vw, 150px);
+    height: clamp(35px, 3vh, 45px);
+    font-size: 0.6rem;
+  }
+  .infoCategoryWrap {
+    font-size: 0.9rem;
+  }
+  .rightWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw;
+    height: 70vh;
+    margin: 15px 0px 20px 0px;
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+  .right {
+    padding: 25px 30px 10px 30px;
+  }
+  .reportTitle {
+    font-size: 1.1rem;
+  }
+  .noreportWrap {
+    font-size: 0.85rem;
+  }
+  .reportAdd_btn {
+    margin-left: 15px;
+    width: clamp(90px, 13vw, 150px);
+    height: clamp(40px, 5vh, 45px);
+    font-size: 0.775rem;
+  }
+  .reportBtnWrap {
+    padding: 10px 0px 0px 0px;
+  }
 }

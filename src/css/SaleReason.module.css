@@ -15,3 +15,15 @@
   background-color: white;
   border-top: 1px solid #999999;
 }
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .reasonWrap {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+@media all and (max-width: 479px) {
+  .reasonWrap {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}

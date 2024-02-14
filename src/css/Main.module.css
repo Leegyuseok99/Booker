@@ -1,9 +1,9 @@
 .banner {
-  width: 100vw;
+  width: 98vw;
   height: 45vh;
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
+  margin: 5px auto;
   background-color: white;
 }
 .bannerLeft {
@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  padding: 2% 0 2% 2%;
+  padding: 2% 0% 2% 2%;
   margin-left: 3%;
 }
 @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -119,8 +119,7 @@
   .bnImgWrap {
     display: none;
   }
-  .bsContainer {
-  }
+
   .bannerLeft > div:first-of-type {
     font-size: clamp(1.5rem, 3vw, 3rem);
   }
@@ -129,5 +128,8 @@
   }
   .bannerLeft > div:last-of-type {
     font-size: clamp(0.7rem, 2vw, 1.5rem);
+  }
+  .bsContainer {
+    flex-direction: column;
   }
 }

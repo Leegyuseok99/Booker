@@ -36,7 +36,7 @@
 
 #searchinput {
   width: 45vw;
-  height: 9vh;
+  height: clamp(50px, 5vh, 100px);
   padding: 0px 15px;
 }
 .reasonListWrap {
@@ -47,4 +47,16 @@
   border-radius: 20px;
   border: 1px solid #f7f7f7;
   box-shadow: 2px 2px 2px 2px #999999;
+}
+@media all and (max-width: 479px) {
+  .selecteContent_btn {
+    padding-left: 10vw;
+  }
+  #searchinput {
+    width: 60vw;
+  }
+  .reasonListWrap {
+    margin: 25px auto 0px;
+    width: 80vw;
+  }
 }

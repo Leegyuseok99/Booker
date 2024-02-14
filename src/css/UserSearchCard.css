@@ -12,8 +12,9 @@
 }
 
 .uscImgWrap > img {
-  width: 75px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
 }
 
 .uscInfoWrap {
@@ -25,12 +26,19 @@
 .uscNickname {
   width: 65%;
   word-wrap: break-word;
-  font-size: 17px;
+  font-size: 1.1rem;
   font-weight: 600;
   line-height: 50px;
 }
 .uscIntro {
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 300;
   color: #333333;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  height: auto;
 }

@@ -7,18 +7,26 @@ import { useParams } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
-import BookIcon from "@mui/icons-material/Book";
-import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
-import BeenhereIcon from "@mui/icons-material/Beenhere";
-import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
-import { Select } from "react-select";
 
 function BookInfo({ selectedBook, onSubmit }) {
   const { isbn13, bookId: initialBookId, otherbookstate } = useParams();
   const [bookId, setBookId] = useState(initialBookId);
   const navigate = useNavigate();
   let accessToken = localStorage.getItem("accesstoken");
-  const [bookData, setBookData] = useState([]);
+  const [bookData, setBookData] = useState([
+    {
+      title:
+        "나는 메트로폴리탄 미술관의 경비원입니다 - 경이로운 세계 속으로 숨어버린 한 남자의 이야기",
+      author: "패트릭 브링리 (지은이), 김희정, 조현주 (옮긴이)",
+      publisher: "웅진지식하우스",
+      pubDate: "2023-11-24",
+      cover:
+        "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
+      category: "국내도서>에세이>외국에세이",
+      description:
+        "뉴욕 메트로폴리탄 미술관에서 경비원으로 근무했던 패트릭 브링리의 독특하면서도 지적인 회고를 담은 에세이다. 가족의 죽음으로 고통 속에 웅크리고 있던 한 남자가 미술관에서 10년이라는 시간을 보내며 상실감을 극복하고 마침내 세상으로 나아갈 힘을 얻는 여정을 섬세하게 그려냈다.",
+    },
+  ]);
   const [reportList, setReportList] = useState([]);
   const [progress, setProgress] = useState();
 
@@ -279,7 +287,7 @@ function BookInfo({ selectedBook, onSubmit }) {
             <div className="infoImgWrap">
               <img className="infoImg" src={bookData.cover} />
             </div>
-            <div className="leftUpLeft">
+            <div className="leftUpRight">
               <div className="infoTitle">{bookData.title}</div>
               <div className="infoauthor">저자 글쓴이 책 발행 년도</div>
               <div>

@@ -3,7 +3,7 @@
   flex-direction: row;
   padding: 15px 0px;
   border-bottom: 1px solid #dcdcdc;
-  height: 110px;
+  height: clamp(110px, 10vh, 150px);
 }
 
 .bscImgWrap {
@@ -23,11 +23,16 @@
 }
 
 .bscTitle {
-  width: 65%;
+  width: 60%;
   word-wrap: break-word;
-  font-size: 17px;
+  font-size: 1.1rem;
   font-weight: 600;
-  line-height: 50px;
+  padding-top: 20px;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  height: 60px;
 }
 .bscplus {
   width: 35%;
@@ -35,16 +40,37 @@
   flex-direction: column;
 }
 .bscAuthor {
-  font-size: 12px;
+  font-size: 0.7rem;
   font-weight: 300;
   color: #333333;
   padding-top: 20px;
+  width: 100%;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  height: auto;
 }
 
 .bscPublisher {
   margin-top: 7px;
-  font-size: 12px;
+  font-size: 0.7rem;
   font-weight: 300;
   color: #777777;
   text-align: left;
+}
+@media all and (max-width: 479px) {
+  .bscAuthor {
+    width: 100%;
+    padding-top: 10px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    height: auto;
+  }
 }

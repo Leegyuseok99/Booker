@@ -1,6 +1,6 @@
 .bgWrap {
-  padding: 4vh 0vw 4vh 15vw;
-  font-size: 35px;
+  padding: 4vh 0vw 2vh 15vw;
+  font-size: 2.3rem;
   font-weight: 300;
 }
 .bgWrap > span > span {
@@ -14,8 +14,9 @@
 
 #searchinput {
   width: 45vw;
-  height: 9vh;
+  height: clamp(50px, 5vh, 100px);
   padding: 0px 15px;
+  font-size: 0.8rem;
 }
 .reasonListWrap {
   margin: 40px auto 0px;
@@ -25,4 +26,13 @@
   border-radius: 20px;
   border: 1px solid #f7f7f7;
   box-shadow: 2px 2px 2px 2px #999999;
+}
+@media all and (max-width: 479px) {
+  #searchinput {
+    width: 60vw;
+  }
+  .reasonListWrap {
+    margin: 25px auto 0px;
+    width: 80vw;
+  }
 }
