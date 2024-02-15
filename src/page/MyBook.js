@@ -183,50 +183,21 @@ function MyBook() {
   const handleBookplus = () => {
     navigate("/searchpage");
   };
-  let [reads, setReads] = useState([
-    {
-      bookId: "3zx3SoJbytMSDrMNPatet",
-      isbn13: "9788901276533",
-      progress: "READING",
-      saleState: "IMP",
-      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
-    },
-    {
-      bookId: "BKVl2gBsviqimxTWGFgrV",
-      isbn13: "9788917239508",
-      progress: "READING",
-      saleState: "IMP",
-      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-    {
-      bookId: "3zx3SoJbytMSDrMNPatet",
-      isbn13: "9788901276533",
-      progress: "READING",
-      saleState: "IMP",
-      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
-    },
-    {
-      bookId: "BKVl2gBsviqimxTWGFgrV",
-      isbn13: "9788917239508",
-      progress: "READING",
-      saleState: "IMP",
-      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
-    },
-  ]);
+  let [reads, setReads] = useState([]);
 
   let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
 
   const handleScroll = () => {
     // 현재 스크롤 위치
-    const scrollY = window.scrollY;
+    const scrollY = document.documentElement.scrollTop;
     // 뷰포트의 높이
-    const viewportHeight = window.innerHeight;
+    const viewportHeight = document.documentElement.clientHeight;
     // 문서의 전체 높이
-    const fullHeight = document.body.offsetHeight;
+    const fullHeight = document.documentElement.scrollHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
-    if (scrollY + viewportHeight >= fullHeight && hasNext) {
+    if (scrollY + viewportHeight >= fullHeight - 10 && hasNext) {
       getMyBook();
     }
   };
