@@ -4,9 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../css/ReportView.css";
 import CreateIcon from "@mui/icons-material/Create";
 import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
-import testjpg from "../assets/test.jpg";
-import testjpg2 from "../assets/test2.jpg";
-import testjpg3 from "../assets/KakaoTalk_20240208_214243015.png";
 
 function ReportView() {
   const { reportId, bookId, isbn13, user } = useParams();

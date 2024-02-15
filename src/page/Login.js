@@ -29,10 +29,6 @@ function Login() {
   }, [id, pw]);
   const loginhandle = async (e) => {
     e.preventDefault();
-    localStorage.setItem("accesstoken", "1");
-    localStorage.setItem("refreshtoken", "2");
-    localStorage.setItem("nickname", "3");
-    navigate("/Main");
     await axios
       .post("/api/login", {
         id: id,
