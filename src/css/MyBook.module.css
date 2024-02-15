@@ -153,6 +153,13 @@
     border: none;
   }
 }
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .mbBookList {
+    flex-wrap: wrap;
+    height: 100%;
+    border: none;
+  }
+}
 @media all and (max-width: 479px) {
   .mbBookList {
     flex-direction: column;

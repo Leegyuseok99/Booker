@@ -29,3 +29,16 @@
     border: 1px solid #999999;
   }
 }
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .blcImg {
+    width: clamp(90px, 20vw, 130px);
+    height: 200px;
+    padding: 10px;
+  }
+  .img {
+    width: clamp(90px, 20vw, 130px);
+    height: 200px;
+    border-radius: 20px;
+    border: 1px solid #999999;
+  }
+}

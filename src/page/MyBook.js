@@ -183,7 +183,43 @@ function MyBook() {
   const handleBookplus = () => {
     navigate("/searchpage");
   };
-  let [reads, setReads] = useState([]);
+  let [reads, setReads] = useState([
+    {
+      bookId: "3zx3SoJbytMSDrMNPatet",
+      isbn13: "9788901276533",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
+    },
+    {
+      bookId: "BKVl2gBsviqimxTWGFgrV",
+      isbn13: "9788917239508",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
+    },
+    {
+      bookId: "Oyc1vJwLOtTiQF6x9aYuf",
+      isbn13: "9788917239492",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
+    },
+    {
+      bookId: "sqjvt4itHz20EzqECB_vu",
+      isbn13: "9791192300818",
+      progress: "BEFORE",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/32361/59/coversum/k592935565_2.jpg",
+    },
+    {
+      bookId: "8ofbzmNDY95mYS5qaNRG2",
+      isbn13: "9791168473690",
+      progress: "BEFORE",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/30929/51/coversum/s302832892_3.jpg",
+    },
+  ]);
 
   let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
@@ -215,8 +251,11 @@ function MyBook() {
     accessToken = await refreshTokenFunc(navigate);
     getMyBook();
   }
+  const [loading, setLoading] = useState(false);
+
   const getMyBook = async () => {
-    if (!hasNext) return;
+    if (!hasNext || loading) return;
+    setLoading(true);
     console.log(nowPage);
     await axios
       .get("/api/book/library/list", {
@@ -245,6 +284,9 @@ function MyBook() {
         } else if (tokenErr === "JwtTokenExpired") {
           fetchDataGetMyBook();
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
