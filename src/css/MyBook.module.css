@@ -122,13 +122,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 
 .mbBookList {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  overflow: hidden;
   width: 95%;
   margin: 0 auto;
   height: 200px;
@@ -144,4 +145,19 @@
   display: flex;
   flex-direction: column;
   margin-top: 7px;
+}
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  .mbBookList {
+    flex-wrap: wrap;
+    height: 100%;
+    border: none;
+  }
+}
+@media all and (max-width: 479px) {
+  .mbBookList {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100%;
+    border: none;
+  }
 }

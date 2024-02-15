@@ -39,9 +39,18 @@ function MyBook() {
   let accessToken = localStorage.getItem("accesstoken");
 
   const [imageSrc, setImageSrc] = useState("");
-  const [interests, setInterests] = useState([]);
+  const [interests, setInterests] = useState([
+    "정치",
+    "수필집1",
+    "정치1",
+    "수학1",
+    "천문학1",
+  ]);
 
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    nickname: "naver",
+    intro: "naver",
+  });
   async function fetchDataGetUser() {
     accessToken = await refreshTokenFunc(navigate);
     getUser();
@@ -174,7 +183,36 @@ function MyBook() {
   const handleBookplus = () => {
     navigate("/searchpage");
   };
-  let [reads, setReads] = useState([]);
+  let [reads, setReads] = useState([
+    {
+      bookId: "3zx3SoJbytMSDrMNPatet",
+      isbn13: "9788901276533",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
+    },
+    {
+      bookId: "BKVl2gBsviqimxTWGFgrV",
+      isbn13: "9788917239508",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
+    },
+    {
+      bookId: "3zx3SoJbytMSDrMNPatet",
+      isbn13: "9788901276533",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/32892/38/coversum/8901276534_2.jpg",
+    },
+    {
+      bookId: "BKVl2gBsviqimxTWGFgrV",
+      isbn13: "9788917239508",
+      progress: "READING",
+      saleState: "IMP",
+      img: "https://image.aladin.co.kr/product/33010/94/coversum/8917239501_1.jpg",
+    },
+  ]);
 
   let nowPage = 0;
   const [hasNext, setHasNext] = useState(true);
@@ -185,7 +223,7 @@ function MyBook() {
     // 뷰포트의 높이
     const viewportHeight = window.innerHeight;
     // 문서의 전체 높이
-    const fullHeight = document.body.scrollHeight;
+    const fullHeight = document.body.offsetHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
     if (scrollY + viewportHeight >= fullHeight && hasNext) {

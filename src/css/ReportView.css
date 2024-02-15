@@ -6,7 +6,8 @@
 }
 .rvimgWrap {
   width: 40vw;
-  height: 400px;
+  min-height: 400px;
+  max-height: 80vh;
   margin-right: 5%;
   border: 1px solid #e2e0e0;
   border-radius: 20px;
@@ -18,8 +19,8 @@
 }
 
 .rvimgWrap > img {
-  width: 90%;
-  height: 90%;
+  width: 70%;
+  height: 100%;
 }
 .rvReportWrap {
   width: 50%;

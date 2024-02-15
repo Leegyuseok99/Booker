@@ -18,7 +18,9 @@ function Header() {
     } else setUser(false);
   }, [accessToken]);
   useEffect(() => {
-    userData();
+    if (accessToken !== null) {
+      userData();
+    }
   }, [accessToken]);
   //로그아웃 모달
 
