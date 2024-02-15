@@ -209,6 +209,7 @@ function MyBook() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [hasNext, loading]);
+
   async function fetchDataGetMyBook() {
     accessToken = await refreshTokenFunc(navigate);
     getMyBook();
@@ -234,7 +235,7 @@ function MyBook() {
             ? response.data.bookLists
             : [...reads, ...response.data.bookLists];
 
-        setReads((prevReads) => [...prevReads, ...updatedReads]);
+        setReads(updatedReads);
         setNowPage(response.data.nowPage + 1);
         setHasNext(response.data.hasNext);
       })
