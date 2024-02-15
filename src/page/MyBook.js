@@ -198,28 +198,27 @@ function MyBook() {
     const fullHeight = document.documentElement.scrollHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
-    if (scrollY + viewportHeight >= fullHeight - 10 && hasNext && !loading) {
-      setLoading(true);
+    if (scrollY + viewportHeight >= fullHeight && hasNext && !loading) {
       getMyBook();
     }
   };
 
   useEffect(() => {
-    // 스크롤 이벤트 리스너
     window.addEventListener("scroll", handleScroll);
 
-    // 컴포넌트가 언마운트되면 이벤트 리스너 제거
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [hasNext]);
+  }, [hasNext, loading]);
   async function fetchDataGetMyBook() {
     accessToken = await refreshTokenFunc(navigate);
     getMyBook();
   }
 
   const getMyBook = async () => {
-    if (!hasNext) return;
+    if (!hasNext || loading) return;
+
+    setLoading(true);
     console.log(nowPage);
     await axios
       .get("/api/book/library/list", {
