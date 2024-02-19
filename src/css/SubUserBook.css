@@ -12,9 +12,6 @@
   display: flex;
   flex-direction: row;
 }
-.subProfileImg {
-  width: 15%;
-}
 .subImg {
   margin-left: 7%;
   width: 100px;
@@ -25,11 +22,12 @@
 .subInfo {
   display: flex;
   flex-direction: column;
+  padding-left: 15px;
   width: 65%;
 }
 .subNickname {
   padding-top: 10px;
-  font-size: 22px;
+  font-size: 1.4rem;
   font-weight: 400;
 }
 .subFavoriteWrap {
@@ -54,13 +52,29 @@
   flex-direction: column;
   justify-content: center;
 }
+.subInfoFollowWrap {
+  display: none;
+}
+.subInfoFollowWrap > span {
+  font-size: 0.6rem;
+  margin: 2px 10px;
+}
+.subInfoFollowWrap > span {
+  font-weight: 600;
+}
+.subInfoFollowWrap > span {
+  font-weight: 600;
+}
+.infoIntro {
+  display: none;
+}
 #submessage_btn {
   width: 170px;
   height: 40px;
   border: 1px solid #ebedf0;
   border-radius: 20px;
   background-color: #ebedf0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   color: black;
@@ -72,13 +86,13 @@
 .followWrap {
   display: flex;
   flex-direction: row;
-  font-size: 15px;
+  font-size: 1rem;
   width: 200px;
   font-weight: 300;
   padding: 20px 3%;
 }
 .followWrap > span {
-  font-size: 10px;
+  font-size: 0.6rem;
   margin: 2px 10px;
 }
 .follower > span {
@@ -92,6 +106,12 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.favoriteBtnWrap {
+  display: none;
+}
+.FavoritePlusWrap {
+  display: none;
+}
 .subIntro {
   padding: 0px 3%;
   font-size: 14px;
@@ -104,7 +124,7 @@
   border-radius: 20px;
   background-color: #ebedf0;
   color: black;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -134,7 +154,7 @@
   height: 200px;
   border: 1px solid #dadada;
   border-radius: 20px;
-  margin-top: 10px; /* 적절한 간격 설정 */
+  margin-top: 10px;
 }
 
 .bookListCard {
@@ -145,4 +165,197 @@
   display: flex;
   flex-direction: column;
   margin-top: 7px;
+}
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  .subBookList {
+    flex-wrap: wrap;
+    height: 100%;
+    border: none;
+  }
+  .subNickname {
+    padding: 0px;
+  }
+  .subInfo {
+    justify-content: space-evenly;
+    width: 50%;
+  }
+  .subInfoFollowWrap {
+    display: flex;
+    flex-direction: row;
+  }
+  .infoIntro {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .subFavoriteWrap {
+    display: none;
+  }
+  .followWrap {
+    display: none;
+  }
+  .subIntro {
+    display: none;
+  }
+  .FavoritePlusWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .fpFavorite {
+    width: 8vw;
+    height: 1.8rem;
+    border: 1px solid #888888;
+    border-radius: 20px;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 1.8rem;
+    font-size: 0.85rem;
+  }
+}
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .subBookList {
+    flex-wrap: wrap;
+    height: 100%;
+    border: none;
+  }
+  .subImg {
+    margin-left: 7%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid black;
+  }
+  .subNickname {
+    padding: 0px;
+    font-size: 1.2rem;
+  }
+  .subInfo {
+    justify-content: space-evenly;
+    width: 50%;
+    margin-top: -10px;
+  }
+  .subInfoFollowWrap {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.9rem;
+  }
+  .infoIntro {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .subFavoriteWrap {
+    display: none;
+  }
+  .followWrap {
+    display: none;
+  }
+  .subIntro {
+    display: none;
+  }
+  #submessage_btn {
+    width: clamp(100px, 17vw, 130px);
+    height: 35px;
+    font-size: 0.7rem;
+  }
+  .FavoritePlusWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .fpFavorite {
+    width: 8vw;
+    height: 1.8rem;
+    border: 1px solid #888888;
+    border-radius: 20px;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 1.8rem;
+    font-size: 0.85rem;
+    overflow: hidden;
+  }
+  #following_btn {
+    width: clamp(85px, 15vw, 120px);
+    height: 35px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+}
+@media all and (max-width: 479px) {
+  .subBookList {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100%;
+    border: none;
+  }
+  .subImg {
+    margin-left: 7%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid black;
+  }
+  .subNickname {
+    padding: 0px;
+    font-size: 1.2rem;
+  }
+  .subInfo {
+    justify-content: space-evenly;
+    width: 50%;
+    margin-top: -10px;
+  }
+  .subInfoFollowWrap {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.9rem;
+  }
+  .infoIntro {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .subFavoriteWrap {
+    display: none;
+  }
+  .followWrap {
+    display: none;
+  }
+  .subIntro {
+    display: none;
+  }
+  #submessage_btn {
+    width: 20px;
+    height: 30px;
+    background-color: white;
+    border: none;
+  }
+  #submessage_btn span {
+    display: none;
+  }
+  .FavoritePlusWrap {
+    display: none;
+  }
+
+  #following_btn {
+    width: 20px;
+    height: 30px;
+    background-color: white;
+    border: none;
+  }
+  #following_btn > .MuiButton-startIcon {
+    display: block;
+    margin-bottom: -15px;
+  }
+  #following_btn > span {
+    display: none;
+  }
+  .favoriteBtnWrap {
+    display: block;
+  }
+  .sellIconWrap span {
+    font-size: 0.7rem;
+  }
 }

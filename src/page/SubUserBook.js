@@ -17,6 +17,9 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import BookIcon from "@mui/icons-material/Book";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function SubUserBook() {
   const navigate = useNavigate();
@@ -38,9 +41,26 @@ function SubUserBook() {
     console.log("close");
   };
 
-  const [subUserInfo, setSubUserInfo] = useState([]);
+  const [subUserInfo, setSubUserInfo] = useState({
+    nickname: "naver",
+    intro: "naver",
+  });
   const [imageSrc, setImageSrc] = useState("");
-  const [interests, setInterests] = useState([]);
+  const [interests, setInterests] = useState([
+    "정치",
+    "수필집1",
+    "정치1",
+    "수학1",
+    "천문학1",
+  ]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   async function fetchDataProfileInfo() {
     accessToken = await refreshTokenFunc(navigate);
@@ -76,8 +96,8 @@ function SubUserBook() {
     profileInfo();
   }, []);
 
-  const [follower, setFollower] = useState("");
-  const [following, setFollowing] = useState("");
+  const [follower, setFollower] = useState("2");
+  const [following, setFollowing] = useState("3");
   const accessToken = localStorage.getItem("accesstoken");
 
   async function fetchDataGetFollow() {
@@ -277,19 +297,20 @@ function SubUserBook() {
   //개인 서재 api // 무한 스크롤 기능
   let [reads, setReads] = useState([]);
 
-  let nowPage = 0;
+  const [nowPage, setNowPage] = useState(0);
   const [hasNext, setHasNext] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleScroll = () => {
     // 현재 스크롤 위치
-    const scrollY = window.scrollY;
+    const scrollY = document.documentElement.scrollTop;
     // 뷰포트의 높이
-    const viewportHeight = window.innerHeight;
+    const viewportHeight = document.documentElement.clientHeight;
     // 문서의 전체 높이
-    const fullHeight = document.body.scrollHeight;
+    const fullHeight = document.documentElement.scrollHeight;
 
     // 스크롤이 문서 맨 하단에 도달하면 추가 데이터 로드
-    if (scrollY + viewportHeight >= fullHeight && hasNext) {
+    if (scrollY + viewportHeight >= fullHeight - 10 && hasNext && !loading) {
       getUserBook();
     }
   };
@@ -302,7 +323,7 @@ function SubUserBook() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [hasNext]);
+  }, [hasNext, loading]);
 
   async function fetchDataGetUserBook() {
     accessToken = await refreshTokenFunc(navigate);
@@ -310,7 +331,8 @@ function SubUserBook() {
   }
 
   const getUserBook = async () => {
-    if (!hasNext) return;
+    if (!hasNext || loading) return;
+    setLoading(true);
     console.log(nowPage);
     await axios
       .get("/api/book/library/list", {
@@ -329,8 +351,8 @@ function SubUserBook() {
             ? response.data.bookLists
             : [...reads, ...response.data.bookLists];
 
-        setReads((prevReads) => [...prevReads, ...updatedReads]);
-        nowPage = response.data.nowPage + 1;
+        setReads(updatedReads);
+        setNowPage(response.data.nowPage + 1);
         setHasNext(response.data.hasNext);
       })
       .catch((error) => {
@@ -340,6 +362,9 @@ function SubUserBook() {
         } else if (tokenErr === "JwtTokenExpired") {
           fetchDataGetUserBook();
         }
+      })
+      .finally(() => {
+        setLoading(false); // 데이터를 모두 받아온 후에 로딩 상태 변경
       });
   };
 
@@ -409,11 +434,43 @@ function SubUserBook() {
               </div>
             ))}
           </div>
+          <div className="subInfoFollowWrap">
+            <div className="follower">
+              팔라워{" "}
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={followerModalOpenhandle}
+              >
+                {follower}
+              </span>
+              <SubUserFollowerModal
+                isOpen={isOpen1}
+                onCancle={followerhandleModalCancel}
+                followerList={followerList}
+              ></SubUserFollowerModal>
+            </div>
+            <span> ● </span>
+            <div className="following">
+              팔로잉{" "}
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={followingModalOpenhandle}
+              >
+                {following}
+              </span>
+              <FollowingModal
+                isOpen={isOpen2}
+                onCancle={followinghandleModalCancel}
+                followingList={followingList}
+              ></FollowingModal>
+            </div>
+          </div>
+          <div className="infoIntro">{subUserInfo.intro}</div>
         </div>
         <div className="submessage">
           <Button id="submessage_btn" onClick={modalOpenhandle}>
             <TelegramIcon style={{ margin: "0px 5px -5px 0px" }}></TelegramIcon>{" "}
-            쪽지 보내기
+            <span>쪽지 보내기</span>
           </Button>
           <MessageSendModal
             isOpen={isOpen}
@@ -455,6 +512,44 @@ function SubUserBook() {
       </div>
       <div className="subplusWrap">
         <div className="subIntro">{subUserInfo.intro}</div>
+        <div className="favoriteBtnWrap">
+          <Button
+            id="favorite_btn"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <span style={{ color: "black" }}>
+              <FavoriteBorderIcon
+                style={{ marginBottom: "-4px" }}
+              ></FavoriteBorderIcon>
+              Favorite
+            </span>
+          </Button>
+          <Menu
+            id="favoriteMenu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {interests.map((interest, idx) => (
+              <MenuItem key={idx} onClick={handleClose}>
+                {interest}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
+        <div className="FavoritePlusWrap">
+          {interests.map((interest, idx) => (
+            <div key={idx} className="fpFavorite">
+              {interest}
+            </div>
+          ))}
+        </div>
         <div>
           <Button
             id="following_btn"
@@ -463,7 +558,7 @@ function SubUserBook() {
               followingStatus ? <PersonRemoveIcon /> : <PersonAddAlt1Icon />
             }
           >
-            {followingStatus ? " 팔로잉" : " 팔로우"}
+            <span>{followingStatus ? " 팔로잉" : " 팔로우"}</span>
           </Button>
         </div>
       </div>

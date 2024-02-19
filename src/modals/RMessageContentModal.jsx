@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function MessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
   let accessToken = localStorage.getItem("accesstoken");
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState([]);
   const [imageSrc, setImageSrc] = useState("");
   const navigate = useNavigate();
   async function fetchDataMessageContent() {
@@ -91,7 +91,7 @@ function MessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
       className={styles["MC-content"]}
       overlayClassName={styles["MC-overlay"]}
       isOpen={isOpen}
-      onClose={onCanclehandle}
+      onRequestClose={onCanclehandle}
     >
       <div>
         {message ? (
@@ -114,6 +114,7 @@ function MessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
                 <div className={styles.contentWrap}>{message.content}</div>
               </div>
             </div>
+            <div className={styles.empty}></div>
             <div className={styles.sent_btn}>
               <button onClick={sendModalOpen}>답장 보내기</button>
               <button onClick={messageDelete}>삭제</button>

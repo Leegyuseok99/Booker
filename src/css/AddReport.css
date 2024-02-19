@@ -5,8 +5,10 @@
   margin: 30px auto 0px;
 }
 .imgWrap {
-  width: 40vw;
-  height: 400px;
+  max-width: 40vw;
+  min-width: 40vw;
+  min-height: 400px;
+  max-height: 70vh;
   margin-right: 5%;
   border: 1px solid #e2e0e0;
   border-radius: 20px;
@@ -23,8 +25,10 @@
   font-weight: 300;
 }
 .imgWrap > img {
-  width: 90%;
-  height: 90%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 .addReportWrap {
   width: 50%;
@@ -102,4 +106,77 @@
 .rpbtnWrap > button:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
+}
+
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .addReport {
+    flex-direction: column;
+    width: 90%;
+    margin: 30px auto 0px;
+  }
+  .imgWrap {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 250px;
+    max-height: 70vh;
+  }
+  .imgWrap > img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  .addReportWrap {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+  }
+  .InputImg {
+    padding: 0px 10px;
+  }
+  .rpcommentWrap > textarea {
+    width: 100%;
+    height: 180px;
+    margin: 10px auto;
+  }
+  .rpbtnWrap {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+@media all and (max-width: 479px) {
+  .addReport {
+    flex-direction: column;
+    width: 90%;
+    margin: 30px auto 0px;
+  }
+  .imgWrap {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 250px;
+    max-height: 70vh;
+  }
+  .imgWrap > img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  .addReportWrap {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+  }
+  .InputImg {
+    padding: 0px 10px;
+  }
+  .rpcommentWrap > textarea {
+    width: 100%;
+    height: 180px;
+    margin: 10px auto;
+  }
+  .rpbtnWrap {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }

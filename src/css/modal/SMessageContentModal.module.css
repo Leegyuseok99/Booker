@@ -1,5 +1,5 @@
 .MC-content {
-  width: 48vw;
+  width: clamp(360px, 48vw, 650px);
   height: 70vh;
   z-index: 150;
   position: absolute;
@@ -42,36 +42,36 @@
   flex-direction: row;
 }
 .profileWrap {
-  width: 5vw;
-  height: 10vh;
+  width: 65px;
+  height: 65px;
   border: 1px solid black;
   border-radius: 50%;
   margin-right: 15px;
 }
 .profileWrap > img {
-  width: 5vw;
-  height: 10vh;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
 }
 .nicknameWrap {
   line-height: 9vh;
-  font-size: 18px;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #5e3fa7;
 }
 .showWrap {
   margin-top: 20px;
-  width: 44vw;
+  width: clamp(300px, 44vw, 600px);
   height: 35vh;
 }
 .titleWrap {
-  width: 44vw;
-  font-size: 20px;
+  width: clamp(300px, 44vw, 600px);
+  font-size: 1.3rem;
   font-weight: 600;
   padding: 3px;
 }
 .contentWrap {
-  width: 44vw;
+  width: clamp(300px, 44vw, 600px);
   height: 30vh;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -96,4 +96,28 @@
 .deletebtnWrap > button:hover {
   border: 1px solid #ccd0d5;
   background-color: #ccd0d5;
+}
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .deletebtnWrap {
+    padding-top: 30px;
+  }
+  .deletebtnWrap > button {
+    width: 30%;
+  }
+}
+
+@media all and (max-width: 479px) {
+  .MC-content {
+    width: clamp(330px, 48vw, 650px);
+    padding: 20px 0px 20px 30px;
+  }
+  .contentWrap {
+    padding: 7px;
+  }
+  .deletebtnWrap {
+    padding-top: 40px;
+  }
+  .deletebtnWrap > button {
+    width: 30%;
+  }
 }

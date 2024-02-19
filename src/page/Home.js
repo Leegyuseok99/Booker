@@ -73,31 +73,37 @@ function Home() {
       <div className="exSecond">
         <h1>BOOKER 이용방법</h1>
         <div className="exSection">
-          <div>
-            <img src={Mybook}></img>
-            <h3>개인 서재 책관리</h3>
+          <div class="ex1" onclick="#">
             <div>
-              본인의 개인 서재에 읽고 싶었거나 읽고 있는 중인, 읽었던 책들을
-              추가하여 관리하고 팔로잉을 통해서 다른 사람들에게 내 서재를
-              공유해보세요
+              <img src={Mybook}></img>
+              <h3>개인 서재 책관리</h3>
+              <div>
+                본인의 개인 서재에 읽고 싶었거나 읽고 있는 중인, 읽었던 책들을
+                추가하여 관리하고 팔로잉을 통해서 다른 사람들에게 내 서재를
+                공유해보세요
+              </div>
             </div>
           </div>
-          <div>
-            <img src={Write}></img>
-            <h3>독서록 추가</h3>
+          <div class="ex2" onclick="#">
             <div>
-              본인이 읽었던 책 중 인상 깊었던 내용들을 사진과 함께 코멘트를 남겨
-              다른 사용자들에게 공유해보세요
+              <img src={Write}></img>
+              <h3>독서록 추가</h3>
+              <div>
+                본인이 읽었던 책 중 인상 깊었던 내용들을 사진과 함께 코멘트를
+                남겨 다른 사용자들에게 공유해보세요
+              </div>
             </div>
           </div>
-          <div>
-            <img src={Message}></img>
-            <h3>쪽지</h3>
+          <div class="ex3" onclick="#">
             <div>
-              사용자들은 쪽지를 이용하여 자유롭게 소통하며 책거래도 원할하게
-              이루어 질 수 있을 것입니다.
+              <img src={Message}></img>
+              <h3>쪽지</h3>
+              <div>
+                사용자들은 쪽지를 이용하여 자유롭게 소통하며 책거래도 원할하게
+                이루어 질 수 있을 것입니다.
+              </div>
+              <div></div>
             </div>
-            <div></div>
           </div>
         </div>
       </div>

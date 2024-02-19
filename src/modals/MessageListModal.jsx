@@ -129,7 +129,7 @@ function MessageListModal({ isOpen, onCancle, messages }) {
       className={styles["MList-content"]}
       overlayClassName={styles["MList-overlay"]}
       isOpen={isOpen}
-      onClose={onCancle}
+      onRequestClose={onCanclehandle}
     >
       <div>
         <div className={styles.clickWrap}>

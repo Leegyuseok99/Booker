@@ -81,7 +81,7 @@ function SMessageContentModal({ isOpen, onCancle, onCancle3, messageId }) {
       className={styles["MC-content"]}
       overlayClassName={styles["MC-overlay"]}
       isOpen={isOpen}
-      onClose={onCanclehandle}
+      onRequestClose={onCanclehandle}
     >
       <div>
         {message ? (

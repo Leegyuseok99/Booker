@@ -1,5 +1,5 @@
 .MList-content {
-  width: 48vw;
+  width: clamp(360px, 48vw, 650px);
   height: 67vh;
   z-index: 150;
   position: absolute;
@@ -35,7 +35,7 @@
 .btnWrap > button {
   border: none;
   border-bottom: 1px solid black;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 600;
   margin-right: 10px;
   background-color: white;
@@ -45,4 +45,14 @@
   margin-right: 45px;
   margin-top: -15px;
   cursor: pointer;
+}
+
+@media all and (max-width: 479px) {
+  .MList-content {
+    width: clamp(330px, 48vw, 650px);
+    padding: 20px 0px 0px 30px;
+  }
+  .close {
+    display: none;
+  }
 }

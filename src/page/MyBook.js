@@ -17,6 +17,9 @@ import refreshTokenFunc from "../component/Token/RefreshTokenFunc";
 import BookIcon from "@mui/icons-material/Book";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function MyBook() {
   const navigate = useNavigate();
@@ -39,18 +42,17 @@ function MyBook() {
   let accessToken = localStorage.getItem("accesstoken");
 
   const [imageSrc, setImageSrc] = useState("");
-  const [interests, setInterests] = useState([
-    "정치",
-    "수필집1",
-    "정치1",
-    "수학1",
-    "천문학1",
-  ]);
+  const [interests, setInterests] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  const [userData, setUserData] = useState({
-    nickname: "naver",
-    intro: "naver",
-  });
+  const [userData, setUserData] = useState([]);
   async function fetchDataGetUser() {
     accessToken = await refreshTokenFunc(navigate);
     getUser();
@@ -335,11 +337,40 @@ function MyBook() {
               </div>
             ))}
           </div>
+          <div className={styles.mbInfoFollowWrap}>
+            <div
+              className={styles.follower}
+              style={{ cursor: "pointer" }}
+              onClick={followerModalOpenhandle}
+            >
+              팔라워 <span>{follower}</span>
+              <FollowerModal
+                isOpen={isOpen1}
+                onCancle={followerhandleModalCancel}
+                followerList={followerList}
+              ></FollowerModal>
+            </div>
+            <span> ● </span>
+            <div
+              className={styles.following}
+              style={{ cursor: "pointer" }}
+              onClick={followingModalOpenhandle}
+            >
+              팔로잉 <span>{following}</span>
+              <FollowingModal
+                isOpen={isOpen2}
+                onCancle={followinghandleModalCancel}
+                followingList={followingList}
+                myProfileId={userData.profileId}
+              ></FollowingModal>
+            </div>
+          </div>
+          <div className={styles.infoIntro}>{userData.intro}</div>
         </div>
         <div className={styles.message}>
           <Button id={styles.message_btn} onClick={modalOpenhandle}>
-            <TelegramIcon style={{ marginBottom: "-5px" }}></TelegramIcon> 쪽지
-            목록
+            <TelegramIcon style={{ marginBottom: "-5px" }}></TelegramIcon>{" "}
+            <span>쪽지 목록</span>
           </Button>
           <MessageListModal
             isOpen={isOpen}
@@ -348,11 +379,12 @@ function MyBook() {
         </div>
       </div>
       <div className={styles.followWrap}>
-        <div className={styles.follower}>
-          팔라워{" "}
-          <span style={{ cursor: "pointer" }} onClick={followerModalOpenhandle}>
-            {follower}
-          </span>
+        <div
+          className={styles.follower}
+          style={{ cursor: "pointer" }}
+          onClick={followerModalOpenhandle}
+        >
+          팔라워 <span>{follower}</span>
           <FollowerModal
             isOpen={isOpen1}
             onCancle={followerhandleModalCancel}
@@ -360,14 +392,12 @@ function MyBook() {
           ></FollowerModal>
         </div>
         <span> ● </span>
-        <div className={styles.following}>
-          팔로잉{" "}
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={followingModalOpenhandle}
-          >
-            {following}
-          </span>
+        <div
+          className={styles.following}
+          style={{ cursor: "pointer" }}
+          onClick={followingModalOpenhandle}
+        >
+          팔로잉 <span>{following}</span>
           <FollowingModal
             isOpen={isOpen2}
             onCancle={followinghandleModalCancel}
@@ -378,9 +408,51 @@ function MyBook() {
       </div>
       <div className={styles.plusWrap}>
         <div className={styles.mbIntro}>{userData.intro}</div>
+        <div className={styles.favoriteBtnWrap}>
+          <Button
+            id={styles.favorite_btn}
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <span style={{ color: "black" }}>
+              <FavoriteBorderIcon
+                style={{ marginBottom: "-4px" }}
+              ></FavoriteBorderIcon>
+              Favorite
+            </span>
+          </Button>
+          <Menu
+            id={styles.favoriteMenu}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {interests.map((interest, idx) => (
+              <MenuItem key={idx} onClick={handleClose}>
+                {interest}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
+        <div className={styles.FavoritePlusWrap}>
+          {interests.map((interest, idx) => (
+            <div key={idx} className={styles.fpFavorite}>
+              {interest}
+            </div>
+          ))}
+        </div>
         <div>
           <Button id={styles.bookPlus_btn} onClick={handleBookplus}>
-            <AddIcon style={{ marginBottom: "-5px" }}></AddIcon> 책 추가
+            <AddIcon
+              id={styles.bookPlus_btnIcon}
+              style={{ marginBottom: "-5px" }}
+            ></AddIcon>{" "}
+            책 추가
           </Button>
         </div>
       </div>
