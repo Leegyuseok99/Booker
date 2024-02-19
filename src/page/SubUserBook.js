@@ -43,13 +43,7 @@ function SubUserBook() {
 
   const [subUserInfo, setSubUserInfo] = useState([]);
   const [imageSrc, setImageSrc] = useState("");
-  const [interests, setInterests] = useState([
-    "정치",
-    "수필집1",
-    "정치1",
-    "수학1",
-    "천문학1",
-  ]);
+  const [interests, setInterests] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

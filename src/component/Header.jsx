@@ -35,7 +35,7 @@ function Header() {
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
     localStorage.removeItem("nickname");
-    navigator("/");
+    navigate("/");
   };
   const handleModalCancel = () => {
     setOpen(false);
