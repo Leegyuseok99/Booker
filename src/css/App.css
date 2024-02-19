@@ -420,7 +420,6 @@ body {
     height: clamp(250px, 40vh, 300px);
     box-shadow: 2px 2px 2px 2px #272626;
   }
-
   .ex1,
   .ex2,
   .ex3 {
