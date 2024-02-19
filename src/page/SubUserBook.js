@@ -41,10 +41,7 @@ function SubUserBook() {
     console.log("close");
   };
 
-  const [subUserInfo, setSubUserInfo] = useState({
-    nickname: "naver",
-    intro: "naver",
-  });
+  const [subUserInfo, setSubUserInfo] = useState([]);
   const [imageSrc, setImageSrc] = useState("");
   const [interests, setInterests] = useState([
     "정치",
@@ -96,8 +93,8 @@ function SubUserBook() {
     profileInfo();
   }, []);
 
-  const [follower, setFollower] = useState("2");
-  const [following, setFollowing] = useState("3");
+  const [follower, setFollower] = useState("");
+  const [following, setFollowing] = useState("");
   const accessToken = localStorage.getItem("accesstoken");
 
   async function fetchDataGetFollow() {
