@@ -7,6 +7,9 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
   const onCanclehandle = () => {
     onCancle();
   };
+  const stopPropagation = (e) => {
+    e.stopPropagation();
+  };
   const nickname = localStorage.getItem("nickname");
 
   return (
@@ -14,7 +17,10 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
       className={styles["Follower-content"]}
       overlayClassName={styles["Follower-overlay"]}
       isOpen={isOpen}
-      onRequestClose={onCanclehandle}
+      onRequestClose={(e) => {
+        onCanclehandle();
+        stopPropagation(e);
+      }}
     >
       <div className={styles.ListTitle}>팔로워</div>
       <div className={styles.followerListWrap}>

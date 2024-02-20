@@ -3,14 +3,14 @@ import "../css/BestSellerCard.css";
 
 function BestSellerCaed(props) {
   return (
-    <div className="bsc" onClick={props.onClick}>
-      <div className="bscImgWrap">
+    <div className="bestsc" onClick={props.onClick}>
+      <div className="bestscImgWrap">
         <img src={props.cover}></img>
       </div>
-      <div className="bscInfoWrap">
-        <div className="bscTitle">{props.title}</div>
-        <div className="bscAuthor">{props.author}</div>
-        <div className="bdcDiscriprion">{props.description}</div>
+      <div className="bestscInfoWrap">
+        <div className="bestscTitle">{props.title}</div>
+        <div className="bestscAuthor">{props.author}</div>
+        <div className="bestdcDiscriprion">{props.description}</div>
       </div>
     </div>
   );

@@ -350,6 +350,7 @@ function MyBook() {
                 followerList={followerList}
               ></FollowerModal>
             </div>
+            {console.log(isOpen1)}
             <span> ● </span>
             <div
               className={styles.following}
@@ -364,6 +365,7 @@ function MyBook() {
                 myProfileId={userData.profileId}
               ></FollowingModal>
             </div>
+            {console.log(isOpen2)}
           </div>
           <div className={styles.infoIntro}>{userData.intro}</div>
         </div>

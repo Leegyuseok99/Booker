@@ -1,5 +1,5 @@
 .Follower-content {
-  width: 400px;
+  width: clamp(350px, 40vw, 440px);
   height: 370px;
   z-index: 150;
   position: absolute;

@@ -426,14 +426,12 @@ function SubUserBook() {
             ))}
           </div>
           <div className="subInfoFollowWrap">
-            <div className="follower">
-              팔라워{" "}
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={followerModalOpenhandle}
-              >
-                {follower}
-              </span>
+            <div
+              className="follower"
+              style={{ cursor: "pointer" }}
+              onClick={followerModalOpenhandle}
+            >
+              팔라워 <span>{follower}</span>
               <SubUserFollowerModal
                 isOpen={isOpen1}
                 onCancle={followerhandleModalCancel}
@@ -441,17 +439,15 @@ function SubUserBook() {
               ></SubUserFollowerModal>
             </div>
             <span> ● </span>
-            <div className="following">
-              팔로잉{" "}
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={followingModalOpenhandle}
-              >
-                {following}
-              </span>
+            <div
+              className="following"
+              style={{ cursor: "pointer" }}
+              onClick={followingModalOpenhandle}
+            >
+              팔로잉 <span>{following}</span>
               <FollowingModal
                 isOpen={isOpen2}
-                onCancle={followinghandleModalCancel}
+                onClose={followinghandleModalCancel}
                 followingList={followingList}
               ></FollowingModal>
             </div>
@@ -474,11 +470,12 @@ function SubUserBook() {
         </div>
       </div>
       <div className="followWrap">
-        <div className="follower">
-          팔라워{" "}
-          <span style={{ cursor: "pointer" }} onClick={followerModalOpenhandle}>
-            {follower}
-          </span>
+        <div
+          className="follower"
+          style={{ cursor: "pointer" }}
+          onClick={followerModalOpenhandle}
+        >
+          팔라워 <span>{follower}</span>
           <SubUserFollowerModal
             isOpen={isOpen1}
             onCancle={followerhandleModalCancel}
@@ -486,14 +483,12 @@ function SubUserBook() {
           ></SubUserFollowerModal>
         </div>
         <span> ● </span>
-        <div className="following">
-          팔로잉{" "}
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={followingModalOpenhandle}
-          >
-            {following}
-          </span>
+        <div
+          className="following"
+          style={{ cursor: "pointer" }}
+          onClick={followingModalOpenhandle}
+        >
+          팔로잉 <span>{following}</span>
           <FollowingModal
             isOpen={isOpen2}
             onCancle={followinghandleModalCancel}

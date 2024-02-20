@@ -7,13 +7,20 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
   const onCanclehandle = () => {
     onCancle();
   };
+  const stopPropagation = (e) => {
+    e.stopPropagation();
+  };
   const nickname = localStorage.getItem("nickname");
   return (
     <Modal
       className={styles["Follower-content"]}
       overlayClassName={styles["Follower-overlay"]}
       isOpen={isOpen}
-      onRequestClose={onCanclehandle}
+      onRequestClose={(e) => {
+        onCanclehandle();
+        stopPropagation(e);
+      }}
+      shouldCloseOnOverlayClick={true}
     >
       <div className={styles.ListTitle}>팔로워</div>
       <div className={styles.followerListWrap}>
@@ -36,9 +43,6 @@ function FollowerModal({ isOpen, onCancle, followerList }) {
             <div className={styles.infoWrap}>
               <span>{follower.nickname}</span>
               <span>{follower.intro}</span>
-            </div>
-            <div className={styles.deleteWrap}>
-              <button>삭제</button>
             </div>
           </div>
         ))}

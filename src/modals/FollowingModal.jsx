@@ -7,13 +7,19 @@ function FollowingModal({ isOpen, onCancle, followingList, myProfileId }) {
   const onCanclehandle = () => {
     onCancle();
   };
+  const stopPropagation = (e) => {
+    e.stopPropagation();
+  };
   const nickname = localStorage.getItem("nickname");
   return (
     <Modal
       className={styles["Following-content"]}
       overlayClassName={styles["Following-overlay"]}
       isOpen={isOpen}
-      onRequestClose={onCanclehandle}
+      onRequestClose={(e) => {
+        onCanclehandle();
+        stopPropagation(e);
+      }}
     >
       <div className={styles.ListTitle}>팔로잉</div>
       <div className={styles.followingListWrap}>

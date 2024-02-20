@@ -69,18 +69,3 @@
   font-size: 0.9rem;
   color: #555555;
 }
-.deleteWrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.deleteWrap > button {
-  font-size: 0.8rem;
-  font-weight: 300;
-  background-color: #ebedf0;
-  border: 1px solid #ebedf0;
-}
-.deleteWrap > button:hover {
-  border: 1px solid #ccd0d5;
-  background-color: #ccd0d5;
-}
