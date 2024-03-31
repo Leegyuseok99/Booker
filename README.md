@@ -26,4 +26,21 @@
 + 팔로우 기능 구현
 + 추천 페이지 [베스트 셀러, 취향이 비슷한 유저](알라딘 API(베스트 셀러) 사용)
 + 쪽지 기능 구현(사용자들은 쪽지를 통해 책 거래 가능)
-+ 
++ 책, 유저 검색 페이지 구현
+
+
+----
+
+🗔
+**메인 페이지**
+
+
+<img width="860" alt="메인 페이지" src="https://github.com/Leegyuseok99/Booker/assets/115774339/1fd959b9-1907-4fa3-bd64-82333ec472c9">
+
+**개인 서재**
+
+
+![bandicam2024-03-1918-49-46-414-ezgif com-video-to-gif-converter (1)](https://github.com/Leegyuseok99/Booker/assets/115774339/482a242d-c098-4133-b966-8bf35a9c9a48)
+
+
+그 외의 추가 기능은 https://booker.kro.kr/ 에서 확인 가능 합니다.
