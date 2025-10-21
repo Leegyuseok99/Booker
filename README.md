@@ -92,7 +92,7 @@
 
 <img width="830" alt="독후감 상세 페이지" src="https://github.com/Leegyuseok99/Booker/assets/115774339/a2e23a90-ac1a-4214-94b9-b5bb8d0d1669">
 
-그 외의 추가 기능은 https://booker.kro.kr/ 에서 확인 가능 합니다.
+그 외의 추가로 사용자 간의 팔로잉 기능과 쪽지 기능등을 추가 하였습니다.
 
 ## 후기
 ### 👍만족스러웠던 부분
